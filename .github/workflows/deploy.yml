@@ -21,9 +21,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: npm
-      - run: npm ci
+      # npm install (not ci): npm 10/11 have a known lockfile self-sync bug with this
+      # dependency tree (commander hoisting) — install self-heals and stays fast with cache
+      - run: npm install --no-audit --no-fund
       - run: npm run generate
         env:
           # served under /Noxioai/ on github.io — remove this when noxioai.com custom domain is attached
