@@ -73,16 +73,32 @@ function resetTilt() {
       @mousemove="onTilt"
       @mouseleave="resetTilt"
     >
+      <!-- backdrop-blur removed on purpose: backdrop-filter flattens preserve-3d children -->
       <div
-        class="rounded-2xl border border-line bg-panel/70 backdrop-blur px-6 pt-8 pb-6 will-change-transform transition-transform duration-150 ease-out"
+        class="deep-3d relative rounded-2xl border border-line bg-panel/90 px-6 pt-8 pb-6 will-change-transform transition-transform duration-150 ease-out"
         :style="{ transform: `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)` }"
       >
-        <div class="flex items-end justify-around">
+        <!-- depth layer 0: pixel floor grid -->
+        <div class="floor-grid absolute inset-0 rounded-2xl" aria-hidden="true" />
+
+        <!-- depth layer 2: the team at their desks -->
+        <div class="relative flex items-end justify-around" style="transform: translateZ(30px)">
           <div v-for="(m, i) in team" :key="m.key" class="flex flex-col items-center gap-1">
             <PixelPerson :hair="m.hair" :shirt="m.shirt" :scale="4" :style="{ animationDelay: i * 0.35 + 's' }" />
-            <div class="h-3 w-16 rounded-sm bg-line" />
+            <div class="h-3 w-16 rounded-sm bg-line" style="transform: translateZ(-12px)" />
             <span class="text-xs text-dim mt-1">{{ $t(`team.members.${m.key}.name`) }}</span>
           </div>
+        </div>
+
+        <!-- depth layer 3: floating "work done" cards — the product, previewed -->
+        <div class="chip-float absolute -top-5 start-4 sm:start-8" style="transform: translateZ(60px); animation-delay: 0s" aria-hidden="true">
+          {{ $t('chips.nika') }}
+        </div>
+        <div class="chip-float absolute top-1/3 -end-2 sm:end-0 hidden sm:block" style="transform: translateZ(75px); animation-delay: 1.1s" aria-hidden="true">
+          {{ $t('chips.sara') }}
+        </div>
+        <div class="chip-float absolute -bottom-4 start-1/3 hidden sm:block" style="transform: translateZ(50px); animation-delay: 2.2s" aria-hidden="true">
+          {{ $t('chips.dara') }}
         </div>
       </div>
     </div>

@@ -35,6 +35,38 @@ html[lang='fa'] body {
 }
 .px-bob { animation: px-bob 2.4s ease-in-out infinite; }
 
+/* true 3D depth: children keep their translateZ inside the tilting panel */
+.deep-3d {
+  transform-style: preserve-3d;
+}
+
+/* pixel-office floor grid */
+.floor-grid {
+  background-image:
+    linear-gradient(rgba(142, 45, 226, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(142, 45, 226, 0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(70% 70% at 50% 60%, #000 40%, transparent 100%);
+}
+
+/* floating employee-work notification cards */
+@keyframes chip-drift {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -8px; }
+}
+.chip-float {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid #262636;
+  background: #191926;
+  color: #ece9f5;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(142, 45, 226, 0.25);
+  animation: chip-drift 3.6s ease-in-out infinite;
+  white-space: nowrap;
+}
+
 /* 3D card hover — transform/opacity only (no layout shift) */
 .card3d {
   transform-style: preserve-3d;

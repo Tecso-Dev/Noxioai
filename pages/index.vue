@@ -16,6 +16,7 @@ useSeoMeta({
     <LandingTeam />
     <LandingFeatures />
     <LandingHow />
+    <LandingFaq />
     <LandingWaitlist />
     <footer class="border-t border-line py-8 text-center text-sm text-dim">
       <p>NOXIOAI — {{ $t('footer.soon') }}</p>

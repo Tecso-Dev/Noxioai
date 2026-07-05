@@ -39,6 +39,32 @@
       "three": { "title": "Delegate the work", "desc": "Content, customer replies, technical guidance — from one screen." }
     }
   },
+  "chips": {
+    "nika": "Nika: Instagram post ready ✓",
+    "sara": "Sara: 12 customer replies drafted ✓",
+    "dara": "Dara: site bug fixed ✓"
+  },
+  "faq": {
+    "heading": "Frequently asked questions",
+    "items": {
+      "one": {
+        "q": "What exactly do the AI employees do?",
+        "a": "Each employee has a specialty: Nika creates marketing content and campaigns, Sara drafts customer replies, Dara gives technical guidance for your site and app, and Avisa plans Instagram & Telegram content. You give the final approval — you're always in control."
+      },
+      "two": {
+        "q": "Is the Persian actually natural, or machine translation?",
+        "a": "NOXIOAI is built Persian-first from the ground up: natural tone, correct half-spaces, the Jalali calendar, and real understanding of the Iranian market. Persian is the product's first language, not a translated second one."
+      },
+      "three": {
+        "q": "When can I use it?",
+        "a": "V1 is in active development. Waitlist members get invited first — leave your email to hold your place."
+      },
+      "four": {
+        "q": "What about pricing?",
+        "a": "Pricing isn't final yet, but it will be in Toman and sized for Iranian businesses — and waitlist members get a launch discount."
+      }
+    }
+  },
   "waitlist": {
     "heading": "Get in before everyone else",
     "sub": "V1 is on its way. Leave your email to hear first — no spam, ever.",
