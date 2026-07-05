@@ -28,8 +28,7 @@ jobs:
       - run: npm install --no-audit --no-fund
       - run: npm run generate
         env:
-          # served under /Noxioai/ on github.io — remove this when noxioai.com custom domain is attached
-          NUXT_APP_BASE_URL: /Noxioai/
+          # custom domain noxioai.com serves from root — no base path
           NUXT_PUBLIC_WEB3FORMS_KEY: ${{ secrets.WEB3FORMS_KEY }}
       - uses: actions/upload-pages-artifact@v3
         with:
