@@ -44,7 +44,9 @@ Full plan, tech decisions, and day-by-day guide: **[docs/ROADMAP.md](docs/ROADMA
 
 **Now:** Nuxt 3 (SSG) · Vue 3 · @nuxtjs/i18n (FA-first + RTL) · Tailwind CSS · @vueuse/motion · CSS pixel-art characters · GitHub Actions → GitHub Pages
 
-**Phase B:** Go API (chi/echo) · PostgreSQL · open-weight LLMs with strong Persian (Qwen/DeepSeek family)
+**Phase B+:** Go API (chi + sqlc) · PostgreSQL (+ pgvector) · Redis · open-weight LLMs with strong Persian (Qwen/DeepSeek) · Telegram Bot API · Zarinpal
+
+📐 **Full approved technology map for every part & phase: [docs/TECH-STACK.md](docs/TECH-STACK.md)**
 
 ## 🧑‍💻 Development
 
