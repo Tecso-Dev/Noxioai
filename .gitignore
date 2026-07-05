@@ -5,6 +5,8 @@ dist
 .env
 .env.*
 !.env.example
+# subscriber PII — lives locally only, imported to Postgres in Phase B
+data/waitlist.json
 .DS_Store
 logs
 *.log
