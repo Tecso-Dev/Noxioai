@@ -49,20 +49,20 @@ More desks appear in later phases (sales, invoicing, recruiting...).
 | Motion | **@vueuse/motion** | Vue equivalent of framer-motion — spring animations, scroll reveals |
 | Pixel art | CSS `box-shadow` pixel characters + keyframe animation | Zero image assets, crisp at any scale, tiny payload |
 | Fonts | Vazirmatn (FA) + Inter (EN) | Persian glyph quality; letter-spacing 0 for FA |
-| Waitlist | Web3Forms (free) → later D1/Postgres | Zero backend for v0; submissions land in Sobhan's email |
-| Hosting | **Cloudflare Pages** | Domains already on CF; free; auto-deploy on every push to `main` |
+| Waitlist | Web3Forms (free) → later Postgres via Go API | Zero backend for v0; submissions land in Sobhan's email |
+| Hosting | **GitHub Pages via GitHub Actions** (Sobhan's choice) | Free; auto-deploy on every push to `main`; noxioai.com attaches via Cloudflare DNS CNAME |
 
 ### Day-by-day
 - **Day 1 (build):** scaffold Nuxt + modules → landing sections (Hero / Meet the Team / Features / How it works / Waitlist) → FA + EN copy → RTL pass (rtl-i18n checklist) → push to `main`.
 - **Day 2 (launch):** Sobhan connects Cloudflare Pages (checklist below) → custom domain noxioai.com → smoke test both locales on mobile → announcement posts (LinkedIn/Instagram/Telegram drafts provided) → Phase A report.
 
 ### Sobhan's checklist (things only you can do)
-1. **Web3Forms key** — web3forms.com → enter email → copy key → give it to Claude (60s).
-2. **Cloudflare Pages connect** — dash.cloudflare.com → Workers & Pages → Create → Pages →
-   Connect to Git → pick `Tecso-Dev/Noxioai` → Build command: `npm run generate` →
-   Output directory: `.output/public` → Save & Deploy.
-3. **Custom domain** — in the new Pages project → Custom domains → add `noxioai.com` (CF auto-configures DNS since the domain is already there). Optionally add `noxioai.ir`.
-4. **Publish the announcement posts** (drafts will be provided — publishing is human work).
+1. **Web3Forms key** — web3forms.com → enter email → copy key → give it to Claude; it's stored as the
+   `WEB3FORMS_KEY` GitHub Actions secret (60s).
+2. **Custom domain (when ready)** — GitHub repo → Settings → Pages → Custom domain: `noxioai.com`,
+   then on Cloudflare DNS add: `CNAME  noxioai.com → tecso-dev.github.io` (proxy OFF/grey first, until cert issues).
+   Until then the site lives at `https://tecso-dev.github.io/Noxioai/`.
+3. **Publish the announcement posts** (drafts will be provided — publishing is human work).
 
 ### Definition of done
 - [ ] Landing live at noxioai.com, both locales, mobile-perfect, RTL flawless
@@ -79,13 +79,14 @@ More desks appear in later phases (sales, invoicing, recruiting...).
 ### Technology
 | Part | Tech | Why |
 |---|---|---|
-| App | Nuxt 3 **full-stack** (Nitro server routes) | One codebase, API + UI together |
-| Database | **PostgreSQL** + Drizzle ORM | Real product data: users, chats, Brain profiles (postgres-patterns skill) |
-| Auth | **nuxt-auth-utils** (sealed sessions) | Simple, secure, no JWT complexity for v1 |
+| Frontend | Nuxt 3 (SPA/SSR) | Sobhan's strongest stack |
+| Backend | **Go API** (Sobhan's choice — chi or echo router) | Learning + shipping vehicle in one; `golang-patterns` + `golang-testing` skills; clean REST per `api-design` |
+| Database | **PostgreSQL** (via sqlc or GORM from Go) | Real product data: users, chats, Brain profiles (postgres-patterns skill) |
+| Auth | Session cookies issued by the Go API | Simple, secure, no JWT complexity for v1 |
 | AI layer | **Pluggable provider interface** — open-weight models (Qwen / DeepSeek / Llama family) | Strong Persian + no US-sanctions fragility; provider swappable by env config |
 | Brain | Structured business profile (JSON schema) injected into every employee's system prompt | Sintra's best idea, Persian-native |
 | Office UI | Canvas/CSS isometric pixel office; each employee = desk; click desk → chat panel | The product's visual identity |
-| Hosting | Cloudflare Pages (UI) + VPS or CF Workers for API/DB | Decided by latency test from Iran in week 1 of B |
+| Hosting | GitHub Pages (UI) + VPS for the Go API + Postgres | VPS location decided by latency test from Iran in week 1 of B |
 
 ### Build order (each step = a PR Sobhan reads + a part-report)
 1. App skeleton: auth, DB schema (users, brain_profiles, conversations, messages), layout shell

@@ -5,6 +5,23 @@ const team = [
   { key: 'sara', hair: '#a05a2c', shirt: '#22c55e' },
   { key: 'avisa', hair: '#f4c430', shirt: '#fb7185' }
 ]
+
+// 3D mouse-tilt on the office panel — transform-only (GPU), disabled for reduced-motion
+const tilt = ref({ rx: 0, ry: 0 })
+let motionOk = false
+onMounted(() => {
+  motionOk = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+})
+function onTilt(e: MouseEvent) {
+  if (!motionOk) return
+  const r = (e.currentTarget as HTMLElement).getBoundingClientRect()
+  const px = (e.clientX - r.left) / r.width - 0.5
+  const py = (e.clientY - r.top) / r.height - 0.5
+  tilt.value = { rx: -py * 8, ry: px * 12 }
+}
+function resetTilt() {
+  tilt.value = { rx: 0, ry: 0 }
+}
 </script>
 
 <template>
@@ -52,8 +69,14 @@ const team = [
     <div
       v-motion :initial="{ opacity: 0, y: 30 }" :enter="{ opacity: 1, y: 0, transition: { duration: 700, delay: 450 } }"
       class="relative z-10 mx-auto max-w-3xl px-6 pb-16"
+      style="perspective: 900px"
+      @mousemove="onTilt"
+      @mouseleave="resetTilt"
     >
-      <div class="rounded-2xl border border-line bg-panel/70 backdrop-blur px-6 pt-8 pb-6">
+      <div
+        class="rounded-2xl border border-line bg-panel/70 backdrop-blur px-6 pt-8 pb-6 will-change-transform transition-transform duration-150 ease-out"
+        :style="{ transform: `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)` }"
+      >
         <div class="flex items-end justify-around">
           <div v-for="(m, i) in team" :key="m.key" class="flex flex-col items-center gap-1">
             <PixelPerson :hair="m.hair" :shirt="m.shirt" :scale="4" :style="{ animationDelay: i * 0.35 + 's' }" />

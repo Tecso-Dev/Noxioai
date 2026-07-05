@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "noxioai-static",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["-y", "serve", ".output/public", "-l", "4173"],
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4173", "--directory", ".output/public"],
       "port": 4173
     }
   ]

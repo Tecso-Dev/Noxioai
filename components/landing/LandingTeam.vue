@@ -19,7 +19,7 @@ const members = [
         v-motion
         :initial="{ opacity: 0, y: 32 }"
         :visible-once="{ opacity: 1, y: 0, transition: { duration: 500, delay: i * 120 } }"
-        class="rounded-2xl border border-line bg-panel p-6 text-center hover:border-brand2 transition"
+        class="card3d rounded-2xl border border-line bg-panel p-6 text-center hover:border-brand2"
       >
         <div class="flex justify-center">
           <PixelPerson :hair="m.hair" :shirt="m.shirt" :scale="5" :style="{ animationDelay: i * 0.3 + 's' }" />

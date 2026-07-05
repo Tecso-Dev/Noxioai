@@ -35,6 +35,23 @@ html[lang='fa'] body {
 }
 .px-bob { animation: px-bob 2.4s ease-in-out infinite; }
 
+/* 3D card hover — transform/opacity only (no layout shift) */
+.card3d {
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease-out, border-color 0.2s ease-out;
+}
+.card3d:hover {
+  transform: perspective(800px) rotateX(3deg) translateY(-4px) scale(1.02);
+}
+
+/* accessible focus rings (never removed, only styled) */
+:focus-visible {
+  outline: 2px solid #48cae4;
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .px-bob { animation: none; }
+  .card3d, .card3d:hover { transform: none; transition: none; }
 }
