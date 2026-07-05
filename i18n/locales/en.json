@@ -1,0 +1,56 @@
+{
+  "meta": {
+    "title": "NOXIOAI — AI employees for your business",
+    "description": "NOXIOAI is a visual online office of AI employees: marketing, social media, customer support and development — run your business from one screen. Coming soon; join the waitlist."
+  },
+  "nav": { "waitlist": "Waitlist" },
+  "hero": {
+    "badge": "Coming soon — v1",
+    "title1": "AI employees",
+    "title2": "for your business",
+    "subtitle": "NOXIOAI is a visual online office: named AI employees with real personalities who handle your marketing, social media, customer support and web/app development — Persian-native, built for the Iranian market.",
+    "cta": "Join the waitlist",
+    "secondary": "Meet the team"
+  },
+  "team": {
+    "heading": "Meet your team",
+    "sub": "Every employee is a specialist with their own personality — all at desks in your office.",
+    "members": {
+      "nika": { "name": "Nika", "role": "Marketing manager", "desc": "Campaigns, copy and SEO content — Nika builds your brand." },
+      "dara": { "name": "Dara", "role": "Developer", "desc": "Technical guidance for your site and app, from idea to code — Dara has your back." },
+      "sara": { "name": "Sara", "role": "Customer support", "desc": "Ready-to-send replies in a perfect professional tone — customers keep coming back." },
+      "avisa": { "name": "Avisa", "role": "Social media", "desc": "Instagram & Telegram posts, captions and content calendars — always on time." }
+    }
+  },
+  "features": {
+    "heading": "Why NOXIOAI?",
+    "items": {
+      "office": { "title": "A visual office", "desc": "See your employees in a living pixel office — every desk is a specialist." },
+      "brain": { "title": "Business Brain", "desc": "Describe your business once; every employee knows it and works in your tone." },
+      "persian": { "title": "Truly Persian", "desc": "Not machine translation — natural Persian, Jalali calendar, real understanding of the Iranian market." },
+      "channels": { "title": "Instagram & Telegram", "desc": "Built for the channels Iranian businesses actually use." }
+    }
+  },
+  "how": {
+    "heading": "How it works",
+    "steps": {
+      "one": { "title": "Introduce your business", "desc": "A few minutes about what you do — this becomes your team's Brain." },
+      "two": { "title": "Pick your employees", "desc": "Nika, Dara, Sara and more — seat whoever you need at a desk." },
+      "three": { "title": "Delegate the work", "desc": "Content, customer replies, technical guidance — from one screen." }
+    }
+  },
+  "waitlist": {
+    "heading": "Get in before everyone else",
+    "sub": "V1 is on its way. Leave your email to hear first — no spam, ever.",
+    "placeholder": "Your email",
+    "button": "Join the waitlist",
+    "sending": "Sending…",
+    "success": "You're in! Good news coming soon. 🎉",
+    "error": "Something went wrong — please try again.",
+    "fallback": "The form isn't live yet; email us at:"
+  },
+  "footer": {
+    "made": "Built by the TECSO team",
+    "soon": "Coming soon…"
+  }
+}

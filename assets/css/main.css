@@ -1,0 +1,40 @@
+/* Persian text rules (rtl-i18n): connected script — never letter-space; taller line-height */
+html[lang='fa'] body {
+  letter-spacing: 0;
+  line-height: 1.75;
+}
+
+::selection {
+  background: #8e2de2;
+  color: #fff;
+}
+
+/* soft gradient glow used behind hero + waitlist */
+.glow {
+  background:
+    radial-gradient(60% 60% at 30% 20%, rgba(142, 45, 226, 0.35), transparent 70%),
+    radial-gradient(50% 50% at 80% 10%, rgba(72, 202, 228, 0.25), transparent 70%);
+  filter: blur(24px);
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, #ece9f5 0%, #48cae4 55%, #8e2de2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* pixel characters: idle bob + typing hands */
+@keyframes px-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+@keyframes px-type {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(2px); }
+}
+.px-bob { animation: px-bob 2.4s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .px-bob { animation: none; }
+}
