@@ -36,7 +36,9 @@ everything below is added around it.
 
 ## 3. Architecture
 
-- **One Go binary**, one repo (`~/Documents/jarvis`). Subcommands:
+- **One Go binary** in `jarvis/` of the Noxioai monorepo
+  (`~/Documents/noxioai/jarvis` — merged 2026-07-11; Nuxt site at repo root,
+  engine here: one project). Subcommands:
   `jarvis` (REPL), `jarvis serve`, `jarvis oracle "<niche>"`,
   `jarvis atlas <lead-id>`, `jarvis approve <outreach-id>`, `jarvis brief`.
 - **Postgres** via docker-compose, host port **5434** (5433/6380 are taken by

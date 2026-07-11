@@ -26,7 +26,7 @@ type Fact struct {
 }
 
 func LoadMemory() *MemoryStore {
-	dir := envOr("JARVIS_MEMORY_DIR", filepath.Join(os.Getenv("HOME"), "Documents", "jarvis", "memory"))
+	dir := envOr("JARVIS_MEMORY_DIR", filepath.Join(os.Getenv("HOME"), "Documents", "noxioai", "jarvis", "memory"))
 	os.MkdirAll(dir, 0o755)
 	m := &MemoryStore{Dir: dir}
 
