@@ -8,9 +8,19 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 	"sync"
 	"time"
 )
+
+// busySet tracks which agents are mid-task so the workspace can show it.
+type busySet struct {
+	mu sync.Mutex
+	m  map[string]bool
+}
+
+func (b *busySet) set(name string, v bool) { b.mu.Lock(); b.m[name] = v; b.mu.Unlock() }
+func (b *busySet) get(name string) bool    { b.mu.Lock(); defer b.mu.Unlock(); return b.m[name] }
 
 //go:embed web/hud.html
 var hudHTML []byte
@@ -54,6 +64,7 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 	act := &activity{}
 	act.add("JARVIS HUD online — brain %s", brain.Model)
 	started := time.Now()
+	busy := &busySet{m: map[string]bool{}}
 
 	mux.HandleFunc("GET /three.min.js", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/javascript")
@@ -72,6 +83,27 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 
 	mux.HandleFunc("GET /api/status", func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
+		lastOps := map[string]string{}
+		if db != nil {
+			if rows, err := db.QueryContext(ctx, `
+				SELECT DISTINCT ON (agent) agent, decision || ' · ' || to_char(created_at,'HH24:MI')
+				FROM experiences ORDER BY agent, created_at DESC`); err == nil {
+				for rows.Next() {
+					var a, d string
+					if rows.Scan(&a, &d) == nil {
+						lastOps[a] = d
+					}
+				}
+				rows.Close()
+			}
+		}
+		mkAgent := func(name, role, st string) map[string]string {
+			if busy.get(name) {
+				st = "busy"
+			}
+			return map[string]string{"name": name, "role": role, "status": st,
+				"last": lastOps[strings.ToLower(name)]}
+		}
 		resp := map[string]any{
 			"model":   brain.Model,
 			"facts":   len(memory.Facts),
@@ -79,12 +111,12 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 			"uptime":  time.Since(started).Round(time.Minute).String(),
 			"db":      "offline",
 			"agents": []map[string]string{
-				{"name": "ORACLE", "role": "Market intelligence", "status": "ready"},
-				{"name": "ATLAS", "role": "Outreach drafting", "status": "ready"},
-				{"name": "FRIDAY", "role": "Daily briefing 08:00", "status": "scheduled"},
-				{"name": "CALEB", "role": "Marketing strategist", "status": "v2"},
-				{"name": "PIXEL", "role": "Design & motion critic", "status": "v2"},
-				{"name": "HERALD", "role": "Email dispatch", "status": heraldStatus()},
+				mkAgent("ORACLE", "Market intelligence", "ready"),
+				mkAgent("ATLAS", "Outreach drafting", "ready"),
+				mkAgent("FRIDAY", "Daily briefing 08:00", "scheduled"),
+				mkAgent("CALEB", "Marketing strategist", "ready"),
+				mkAgent("PIXEL", "Design & motion critic", "v2"),
+				mkAgent("HERALD", "Email dispatch", heraldStatus()),
 			},
 			"activity": act.snapshot(),
 		}
@@ -154,8 +186,11 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 	})
 
 	runAgent := func(a Agent, input, started string) {
+		name := strings.ToUpper(a.Name())
 		act.add("%s", started)
+		busy.set(name, true)
 		go func() {
+			defer busy.set(name, false)
 			res, err := a.Run(context.Background(), Task{Agent: a.Name(), Input: input})
 			if err != nil {
 				act.add("✗ %s: %v", a.Name(), err)
@@ -191,7 +226,11 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 			return
 		}
 		act.add("📨 briefing requested")
+		busy.set("FRIDAY", true)
+		busy.set("CALEB", true)
 		go func() {
+			defer busy.set("FRIDAY", false)
+			defer busy.set("CALEB", false)
 			if err := RunBrief(context.Background(), db, brain); err != nil {
 				act.add("✗ brief: %v", err)
 			} else {

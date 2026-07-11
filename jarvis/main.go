@@ -92,6 +92,18 @@ func main() {
 		return
 	}
 
+	if len(os.Args) > 1 && os.Args[1] == "caleb" {
+		db := mustDB()
+		defer db.Close()
+		memo, err := RunCaleb(context.Background(), db, NewBrainFromEnv())
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "✗ caleb:", err)
+			os.Exit(1)
+		}
+		fmt.Println("📈 CALEB — marketing memo:\n\n" + memo)
+		return
+	}
+
 	if len(os.Args) > 2 && os.Args[1] == "send" {
 		db := mustDB()
 		defer db.Close()

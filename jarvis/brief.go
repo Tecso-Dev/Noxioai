@@ -88,11 +88,9 @@ func RunBrief(ctx context.Context, db *sql.DB, brain *Brain) error {
 		b.WriteString("\n📬 Movement since yesterday:\n" + moved)
 	}
 
-	// One recommendation — best effort; the brief still goes out if the brain is down.
-	if rec, err := brain.Chat([]Message{{Role: "user", Content: "You are JARVIS, Sobhan's business AI (address him as Sir, one short sentence, concrete). Given this status, what is THE one action for today?\n\n" + b.String()}}, nil); err == nil {
-		if r := oneLine(rec, 200); r != "" {
-			b.WriteString("\n💡 " + r + "\n")
-		}
+	// CALEB's marketing memo — best effort; the brief still goes out if the brain is down.
+	if memo, err := RunCaleb(ctx, db, brain); err == nil && memo != "" {
+		b.WriteString("\n📈 CALEB — marketing memo:\n" + memo + "\n")
 	}
 
 	// Brain cost watch (user asked to monitor the DeepSeek balance).
