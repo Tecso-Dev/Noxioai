@@ -92,6 +92,23 @@ func main() {
 		return
 	}
 
+	if len(os.Args) > 2 && os.Args[1] == "send" {
+		db := mustDB()
+		defer db.Close()
+		id, err := strconv.ParseInt(os.Args[2], 10, 64)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "usage: jarvis send <approved-email-outreach-id>")
+			os.Exit(1)
+		}
+		to, err := HeraldSend(context.Background(), db, id)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "✗ HERALD:", err)
+			os.Exit(1)
+		}
+		fmt.Printf("✉️ HERALD dispatched outreach #%d to %s\n", id, to)
+		return
+	}
+
 	if len(os.Args) > 3 && os.Args[1] == "outcome" {
 		db := mustDB()
 		defer db.Close()

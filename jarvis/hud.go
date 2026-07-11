@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"sync"
 	"time"
 )
@@ -37,6 +38,14 @@ func (a *activity) snapshot() []string {
 	a.mu.Lock()
 	defer a.mu.Unlock()
 	return append([]string(nil), a.lines...)
+}
+
+// heraldStatus: "ready" once the Gmail app password is in .env, else standby.
+func heraldStatus() string {
+	if os.Getenv("JARVIS_SMTP_PASS") != "" {
+		return "ready"
+	}
+	return "v2"
 }
 
 // registerHUD wires the Iron-Man dashboard onto the serve mux. db may be nil
@@ -75,7 +84,7 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 				{"name": "FRIDAY", "role": "Daily briefing 08:00", "status": "scheduled"},
 				{"name": "CALEB", "role": "Marketing strategist", "status": "v2"},
 				{"name": "PIXEL", "role": "Design & motion critic", "status": "v2"},
-				{"name": "HERALD", "role": "Publisher & inbox", "status": "v2"},
+				{"name": "HERALD", "role": "Email dispatch", "status": heraldStatus()},
 			},
 			"activity": act.snapshot(),
 		}
@@ -190,6 +199,24 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 			}
 		}()
 		w.WriteHeader(http.StatusAccepted)
+	})
+
+	// HERALD dispatch — only works on drafts Sobhan already approved.
+	mux.HandleFunc("POST /api/send", func(w http.ResponseWriter, r *http.Request) {
+		var req struct{ ID int64 `json:"id"` }
+		if json.NewDecoder(r.Body).Decode(&req) != nil || req.ID == 0 || db == nil {
+			http.Error(w, "need {id} and a live CRM", http.StatusBadRequest)
+			return
+		}
+		to, err := HeraldSend(r.Context(), db, req.ID)
+		if err != nil {
+			act.add("✗ HERALD: %v", err)
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		act.add("✉️ HERALD dispatched #%d to %s", req.ID, to)
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(map[string]string{"to": to})
 	})
 
 	// Approve stays synchronous — it IS the human gate (Principle 1).

@@ -337,7 +337,8 @@ td button{padding:3px 10px;font-size:10px}
     <h2>Approved draft — copy &amp; send it yourself (Principle 1)</h2>
     <div id="drafttext"></div>
     <div class="inrow">
-      <button class="hot" onclick="navigator.clipboard.writeText(document.getElementById('drafttext').textContent);this.textContent='✓ COPIED'">COPY</button>
+      <button class="hot" onclick="heraldSend()">✉️ SEND VIA HERALD</button>
+      <button onclick="navigator.clipboard.writeText(document.getElementById('drafttext').textContent);this.textContent='✓ COPIED'">COPY</button>
       <button onclick="document.getElementById('draftview').style.display='none'">CLOSE</button>
     </div>
   </div>
@@ -743,9 +744,17 @@ async function runOracle(){const n=$('niche').value.trim();if(!n){speak('Name a 
 async function runAtlas(id){await fetch('/api/atlas',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lead:id})});
   speak('ATLAS is drafting outreach for lead '+id);poll()}
 async function briefNow(){await fetch('/api/brief',{method:'POST'});speak('Executive briefing dispatched to Telegram, Sir.')}
+let lastApprovedId=0;
 async function approve(id){
   const r=await(await fetch('/api/approve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id})})).json();
-  if(r.draft){$('drafttext').textContent=r.draft;$('draftview').style.display='flex';poll()}
+  if(r.draft){lastApprovedId=id;$('drafttext').textContent=r.draft;$('draftview').style.display='flex';poll()}
+}
+async function heraldSend(){
+  const r=await fetch('/api/send',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:lastApprovedId})});
+  if(r.ok){const j=await r.json();
+    speak('Email dispatched to '+j.to+', Sir.');
+    document.getElementById('draftview').style.display='none';poll()}
+  else{$('drafttext').textContent+='\n\n[HERALD] '+await r.text()}
 }
 </script>
 </body>
