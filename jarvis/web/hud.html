@@ -356,138 +356,142 @@ setInterval(()=>{const n=new Date();
   $('date').textContent=n.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 },1000);
 
-/* ---------- 3D JARVIS entity: Marvel-style woven filament sphere ----------
-   outer web of connected filaments (the key layer) · tilted great-circle
-   rings · radial spokes · white-hot swirling iris core · atmosphere.
-   Reacts to: per-word speech pulses, YOUR real voice level (mic analyser),
-   and mood — one color-math table drives every layer. */
+/* ---------- 3D JARVIS entity: multi-sphere constellation ----------
+   A roughly spherical formation of DISTINCT, SEPARATE parts: delicate
+   filament-mesh orbs of varying sizes, each tethered to a white-hot core
+   by ultra-fine lines of light. Floats in mid-air. Size & luminosity react
+   to listening / speaking; mood color-math harmonizes with the project. */
 (function(){
   const canvas=$('avatar');
   const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
   renderer.setPixelRatio(Math.min(devicePixelRatio,2));
   const scene=new THREE.Scene();
-  const cam=new THREE.PerspectiveCamera(38,2,.1,100);cam.position.z=2.75;
+  const cam=new THREE.PerspectiveCamera(38,2,.1,100);cam.position.z=2.85;
 
+  // neutral white glow sprite — material color decides the hue
   const cv=document.createElement('canvas');cv.width=cv.height=64;
   const cg=cv.getContext('2d'),cgr=cg.createRadialGradient(32,32,0,32,32,32);
-  cgr.addColorStop(0,'rgba(255,250,235,1)');cgr.addColorStop(.35,'rgba(255,205,110,.85)');cgr.addColorStop(1,'rgba(255,180,60,0)');
+  cgr.addColorStop(0,'rgba(255,255,255,1)');cgr.addColorStop(.4,'rgba(255,255,255,.75)');cgr.addColorStop(1,'rgba(255,255,255,0)');
   cg.fillStyle=cgr;cg.fillRect(0,0,64,64);
   const sprite=new THREE.CanvasTexture(cv);
 
-  const grp=new THREE.Group();scene.add(grp);grp.rotation.x=.15;
+  const grp=new THREE.Group();scene.add(grp);grp.rotation.x=.12;
+  const nodeMats=[],webMats=[];
 
-  // 1. outer shell: nodes + web connecting each node to its 3 nearest — circuitry on a globe
-  const NN=620,nodes=[],phi=Math.PI*(3-Math.sqrt(5));
-  for(let i=0;i<NN;i++){const y=1-(i/(NN-1))*2,r=Math.sqrt(1-y*y),a=phi*i;
-    nodes.push(new THREE.Vector3(Math.cos(a)*r,y,Math.sin(a)*r))}
-  const nodeGeo=new THREE.BufferGeometry().setFromPoints(nodes);
-  const nodeMat=new THREE.PointsMaterial({map:sprite,size:.03,transparent:true,opacity:.95,
-    blending:THREE.AdditiveBlending,depthWrite:false});
-  grp.add(new THREE.Points(nodeGeo,nodeMat));
-  const segs=[];
-  for(let i=0;i<NN;i++){
-    const d=[];
-    for(let j=0;j<NN;j++)if(j!==i)d.push([nodes[i].distanceToSquared(nodes[j]),j]);
-    d.sort((a,b)=>a[0]-b[0]);
-    for(let k=0;k<3;k++)segs.push(nodes[i],nodes[d[k][1]]);
-  }
-  const webGeo=new THREE.BufferGeometry().setFromPoints(segs);
-  const webMat=new THREE.LineBasicMaterial({transparent:true,opacity:.3,
-    blending:THREE.AdditiveBlending,depthWrite:false});
-  grp.add(new THREE.LineSegments(webGeo,webMat));
-
-  // 2. tilted great-circle rings
-  const rings=[];
-  for(let k=0;k<5;k++){
-    const rg=new THREE.Group();
-    rg.rotation.set(Math.random()*Math.PI,Math.random()*Math.PI,Math.random()*Math.PI);
-    const R=.5+k*.11,pts=new THREE.EllipseCurve(0,0,R,R).getPoints(90);
-    const mat=new THREE.LineBasicMaterial({transparent:true,opacity:.42,
+  // one delicate filament-mesh orb: n nodes on radius R, web to 2 nearest
+  function meshOrb(n,R){
+    const g=new THREE.Group(),pts=[],phi=Math.PI*(3-Math.sqrt(5));
+    for(let i=0;i<n;i++){const y=1-(i/(n-1))*2,r=Math.sqrt(1-y*y),a=phi*i;
+      pts.push(new THREE.Vector3(Math.cos(a)*r*R,y*R,Math.sin(a)*r*R))}
+    const nm=new THREE.PointsMaterial({map:sprite,size:.016+R*.05,transparent:true,opacity:.9,
       blending:THREE.AdditiveBlending,depthWrite:false});
-    rg.add(new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(pts),mat));
-    rg.userData={mat,v:(Math.random()-.5)*.01};
-    grp.add(rg);rings.push(rg);
+    g.add(new THREE.Points(new THREE.BufferGeometry().setFromPoints(pts),nm));
+    const segs=[];
+    for(let i=0;i<n;i++){
+      const d=[];
+      for(let j=0;j<n;j++)if(j!==i)d.push([pts[i].distanceToSquared(pts[j]),j]);
+      d.sort((a,b)=>a[0]-b[0]);
+      segs.push(pts[i],pts[d[0][1]],pts[i],pts[d[1][1]]);
+    }
+    const wm=new THREE.LineBasicMaterial({transparent:true,opacity:.3,
+      blending:THREE.AdditiveBlending,depthWrite:false});
+    g.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(segs),wm));
+    nodeMats.push(nm);webMats.push(wm);
+    return g;
   }
 
-  // 3. radial spokes — data streaming out of the core
-  const NS=90,spokeDir=[],spokeSeed=new Float32Array(NS),spokePos=new Float32Array(NS*6);
-  for(let i=0;i<NS;i++){
-    const u=Math.random()*2-1,a=Math.random()*Math.PI*2,s=Math.sqrt(1-u*u);
-    spokeDir.push([s*Math.cos(a),s*Math.sin(a),u]);spokeSeed[i]=Math.random()*Math.PI*2;
-  }
-  const spokeGeo=new THREE.BufferGeometry();
-  spokeGeo.setAttribute('position',new THREE.BufferAttribute(spokePos,3));
-  const spokeMat=new THREE.LineBasicMaterial({transparent:true,opacity:.3,
-    blending:THREE.AdditiveBlending,depthWrite:false});
-  grp.add(new THREE.LineSegments(spokeGeo,spokeMat));
-
-  // 4. core — white-hot heart + swirling iris ("it's alive, it's looking at you")
+  // ---- the core: dense bright orb + blazing heart + swirling iris ----
+  grp.add(meshOrb(110,.2));
   const heart=new THREE.Sprite(new THREE.SpriteMaterial({map:sprite,transparent:true,
     opacity:.95,blending:THREE.AdditiveBlending,depthWrite:false}));
-  heart.scale.set(.8,.8,1);grp.add(heart);
-  const NI=160,irisPos=new Float32Array(NI*3);
-  for(let i=0;i<NI;i++){const a=Math.random()*Math.PI*2,r=.06+Math.random()*.16;
-    irisPos[i*3]=Math.cos(a)*r;irisPos[i*3+1]=(Math.random()-.5)*.08;irisPos[i*3+2]=Math.sin(a)*r}
+  heart.scale.set(.62,.62,1);grp.add(heart);
+  const NI=140,irisPos=new Float32Array(NI*3);
+  for(let i=0;i<NI;i++){const a=Math.random()*Math.PI*2,r=.05+Math.random()*.12;
+    irisPos[i*3]=Math.cos(a)*r;irisPos[i*3+1]=(Math.random()-.5)*.06;irisPos[i*3+2]=Math.sin(a)*r}
   const irisGeo=new THREE.BufferGeometry();
   irisGeo.setAttribute('position',new THREE.BufferAttribute(irisPos,3));
-  const irisMat=new THREE.PointsMaterial({map:sprite,size:.045,transparent:true,opacity:1,
+  const irisMat=new THREE.PointsMaterial({map:sprite,size:.04,transparent:true,opacity:1,
     blending:THREE.AdditiveBlending,depthWrite:false});
   const iris=new THREE.Points(irisGeo,irisMat);grp.add(iris);
 
-  // 5. atmosphere — halo, drifting particles, hologram floor glow
+  // ---- the parts: separate orbs of varying size, roughly spherical formation ----
+  const SAT=13,sats=[];
+  for(let k=0;k<SAT;k++){
+    const R=.09+Math.random()*.24;              // varying sizes
+    const dist=.5+Math.random()*.62;            // varying distance from core
+    const u=Math.random()*2-1,a=Math.random()*Math.PI*2,s=Math.sqrt(1-u*u);
+    const dir=new THREE.Vector3(s*Math.cos(a),s*Math.sin(a),u);
+    const axis=new THREE.Vector3(Math.random()-.5,Math.random()-.5,Math.random()-.5).normalize();
+    const orb=meshOrb(26+((R*260)|0),R);
+    orb.position.copy(dir).multiplyScalar(dist);
+    grp.add(orb);
+    sats.push({orb,dir,dist,axis,ang:0,
+      orbitV:(Math.random()-.5)*.004,spinV:(Math.random()-.5)*.02,
+      bobSeed:Math.random()*Math.PI*2});
+  }
+
+  // ---- ultra-fine light tethers: core → every part ----
+  const tetherPos=new Float32Array(SAT*6);
+  const tetherGeo=new THREE.BufferGeometry();
+  tetherGeo.setAttribute('position',new THREE.BufferAttribute(tetherPos,3));
+  const tetherMat=new THREE.LineBasicMaterial({transparent:true,opacity:.22,
+    blending:THREE.AdditiveBlending,depthWrite:false});
+  grp.add(new THREE.LineSegments(tetherGeo,tetherMat));
+
+  // ---- atmosphere: halo, drifting sparks, hologram floor glow ----
   const halo=new THREE.Sprite(new THREE.SpriteMaterial({map:sprite,transparent:true,
-    opacity:.33,blending:THREE.AdditiveBlending,depthWrite:false}));
-  halo.scale.set(3,3,1);grp.add(halo);
-  const ND=240,driftPos=new Float32Array(ND*3),driftSeed=new Float32Array(ND),driftDir=[];
+    opacity:.25,blending:THREE.AdditiveBlending,depthWrite:false}));
+  halo.scale.set(3.1,3.1,1);grp.add(halo);
+  const ND=160,driftPos=new Float32Array(ND*3),driftSeed=new Float32Array(ND),driftDir=[];
   for(let i=0;i<ND;i++){const u=Math.random()*2-1,a=Math.random()*Math.PI*2,s=Math.sqrt(1-u*u);
     driftDir.push([s*Math.cos(a),s*Math.sin(a),u]);driftSeed[i]=Math.random()}
   const driftGeo=new THREE.BufferGeometry();
   driftGeo.setAttribute('position',new THREE.BufferAttribute(driftPos,3));
-  const driftMat=new THREE.PointsMaterial({map:sprite,size:.022,transparent:true,opacity:.55,
+  const driftMat=new THREE.PointsMaterial({map:sprite,size:.018,transparent:true,opacity:.5,
     blending:THREE.AdditiveBlending,depthWrite:false});
   grp.add(new THREE.Points(driftGeo,driftMat));
   const floorGlow=new THREE.Sprite(new THREE.SpriteMaterial({map:sprite,transparent:true,
-    opacity:.3,blending:THREE.AdditiveBlending,depthWrite:false}));
-  floorGlow.scale.set(2.5,.48,1);floorGlow.position.y=-1.55;scene.add(floorGlow);
+    opacity:.28,blending:THREE.AdditiveBlending,depthWrite:false}));
+  floorGlow.scale.set(2.5,.46,1);floorGlow.position.y=-1.5;scene.add(floorGlow);
 
-  // ---- COLOR MATH: one mood table drives every layer of the whole entity ----
+  // ---- COLOR MATH: harmonized with the project palette (cyan family) ----
   const MOODS={
-    calm:    {hue:36,speed:1,  jitter:.14,label:'CALM'},     // warm gold, steady
-    thinking:{hue:46,speed:.65,jitter:.08,label:'THINKING'}, // cooler amber, contemplative
-    alert:   {hue:12,speed:1.9,jitter:.5, label:'ALERT'},    // red-orange, fast & sharp
-    happy:   {hue:48,speed:1.4,jitter:.28,label:'HAPPY'},    // bright, bouncy
+    calm:    {hue:192,speed:1,  jitter:.14,label:'CALM'},     // project cyan
+    thinking:{hue:212,speed:.65,jitter:.08,label:'THINKING'}, // deeper blue, slow
+    alert:   {hue:12, speed:1.9,jitter:.5, label:'ALERT'},    // red-orange, sharp
+    happy:   {hue:160,speed:1.4,jitter:.28,label:'HAPPY'},    // teal-green, bouncy
   };
   let mood=MOODS.calm;
   const hsl=(h,s,l)=>new THREE.Color().setHSL(h/360,s,l);
   window.setMood=function(name){
     mood=MOODS[name]||MOODS.calm;
-    nodeMat.color=hsl(mood.hue,.95,.62);
-    webMat.color=hsl(mood.hue,.9,.5);
-    spokeMat.color=hsl(mood.hue,.9,.55);
-    irisMat.color=hsl(mood.hue,.7,.8);
-    heart.material.color=hsl(mood.hue,.55,.93);  // near-white core — always brightest
-    halo.material.color=hsl(mood.hue,.9,.45);
-    driftMat.color=hsl(mood.hue,.85,.6);
-    floorGlow.material.color=hsl(mood.hue,.8,.4);
-    rings.forEach(r=>r.userData.mat.color=hsl(mood.hue,.85,.55));
+    nodeMats.forEach(m=>m.color=hsl(mood.hue,.9,.66));
+    webMats.forEach(m=>m.color=hsl(mood.hue,.85,.52));
+    tetherMat.color=hsl(mood.hue,.9,.6);
+    irisMat.color=hsl(mood.hue,.6,.82);
+    heart.material.color=hsl(mood.hue,.45,.94);   // near-white core — brightest
+    halo.material.color=hsl(mood.hue,.85,.45);
+    driftMat.color=hsl(mood.hue,.8,.6);
+    floorGlow.material.color=hsl(mood.hue,.75,.42);
     const m=$('moodline');if(m)m.textContent=mood.label;
   };
   setMood('calm');
 
-  // ---- activity: mode level + per-word pulses + your real voice amplitude ----
+  // ---- activity level: mode + per-word pulses + your real voice amplitude ----
   let act=0,tAct=0,pulse=0;
   window.setAvatar=function(mode){
     tAct = mode==='speaking'?1 : mode==='thinking'?.45 : mode==='listening'?.3 : 0;
     $('voiceline').textContent=mode.toUpperCase();
   };
-  window.wordPulse=function(){pulse=1};  // fired by TTS on every word boundary
-  window.audioLevel=0;                   // fed by the mic analyser while listening
+  window.wordPulse=function(){pulse=1};
+  window.audioLevel=0;
 
   let px=0,py=0;
   addEventListener('mousemove',e=>{px=e.clientX/innerWidth-.5;py=e.clientY/innerHeight-.5});
 
   function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;
     if(canvas.width!==(w*renderer.getPixelRatio()|0)){renderer.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}}
+  const v=new THREE.Vector3();
   let t=0;
   function tick(){
     resize();
@@ -495,39 +499,45 @@ setInterval(()=>{const n=new Date();
     act+=(tAct-act)*.06;
     const level=Math.min(1,act*.7+pulse*.8+window.audioLevel*.9);
     t+=.016*mood.speed;
-    const scale=1.06+Math.sin(t*.8)*.015+level*.16;     // breathe + expand with speech
-    grp.scale.setScalar(scale);
-    const bob=Math.sin(t*.5)*.06;                        // floats in mid-air
+    // whole-form: breathe, expand & brighten with speech; float in mid-air
+    grp.scale.setScalar(1.02+Math.sin(t*.8)*.014+level*.14);
+    const bob=Math.sin(t*.5)*.06;
     grp.position.x+=(px*.3-grp.position.x)*.04;
     grp.position.y+=((bob-py*.2)-grp.position.y)*.05;
-    grp.rotation.y+=.0018*mood.speed+level*.004;
-    const flick=1+(Math.random()-.5)*mood.jitter*level;  // talk flicker
-    webMat.opacity=.28*flick+level*.25;
-    nodeMat.opacity=.85+level*.15;
-    rings.forEach(r=>{r.rotation.y+=r.userData.v*mood.speed*(1+level)});
-    for(let i=0;i<NS;i++){                               // spokes shoot longer when loud
-      const d=spokeDir[i],inner=.16,
-        outer=.45+.4*Math.abs(Math.sin(t*2.2+spokeSeed[i]))+level*.45;
-      spokePos[i*6]=d[0]*inner;spokePos[i*6+1]=d[1]*inner;spokePos[i*6+2]=d[2]*inner;
-      spokePos[i*6+3]=d[0]*outer;spokePos[i*6+4]=d[1]*outer;spokePos[i*6+5]=d[2]*outer;
+    grp.rotation.y+=.0014*mood.speed+level*.003;
+    const flick=1+(Math.random()-.5)*mood.jitter*level;
+    // each part orbits, spins, bobs and pushes outward when he speaks
+    for(let k=0;k<SAT;k++){
+      const s=sats[k];
+      s.ang+=s.orbitV*mood.speed*(1+level*.8);
+      v.copy(s.dir).applyAxisAngle(s.axis,s.ang);
+      const d=s.dist*(1+level*.3)+Math.sin(t*1.3+s.bobSeed)*.025;
+      s.orb.position.copy(v).multiplyScalar(d);
+      s.orb.rotation.y+=s.spinV*(1+level);
+      tetherPos[k*6]=0;tetherPos[k*6+1]=0;tetherPos[k*6+2]=0;
+      tetherPos[k*6+3]=s.orb.position.x;tetherPos[k*6+4]=s.orb.position.y;tetherPos[k*6+5]=s.orb.position.z;
     }
-    spokeGeo.attributes.position.needsUpdate=true;
-    spokeMat.opacity=.22+level*.5;
-    iris.rotation.y-=.02+level*.05;                      // the swirling eye
-    heart.material.opacity=.8+Math.sin(t*2)*.12+level*.2;
-    const hs=.72+Math.sin(t*2)*.05+level*.5;heart.scale.set(hs,hs,1);
-    halo.material.opacity=.28+level*.25;
-    for(let i=0;i<ND;i++){                               // atmosphere drifts off the shell
-      const r=1.04+((t*.12+driftSeed[i])%.5)+level*.15,d=driftDir[i];
+    tetherGeo.attributes.position.needsUpdate=true;
+    // luminosity follows the voice
+    webMats.forEach(m=>m.opacity=.26*flick+level*.3);
+    nodeMats.forEach(m=>m.opacity=.8+level*.2);
+    tetherMat.opacity=.16+level*.5;
+    iris.rotation.y-=.018+level*.05;
+    heart.material.opacity=.78+Math.sin(t*2)*.12+level*.22;
+    const hs=.56+Math.sin(t*2)*.04+level*.42;heart.scale.set(hs,hs,1);
+    halo.material.opacity=.2+level*.28;
+    for(let i=0;i<ND;i++){
+      const r=1.1+((t*.1+driftSeed[i])%.45)+level*.12,d=driftDir[i];
       driftPos[i*3]=d[0]*r;driftPos[i*3+1]=d[1]*r;driftPos[i*3+2]=d[2]*r;
     }
     driftGeo.attributes.position.needsUpdate=true;
-    floorGlow.material.opacity=.28-bob*.8;
+    floorGlow.material.opacity=.26-bob*.8;
     renderer.render(scene,cam);
     requestAnimationFrame(tick); // hidden tabs: browser throttles rAF for us
   }
   tick();
 })();
+
 
 
 /* ---------- count-up + gauges ---------- */
