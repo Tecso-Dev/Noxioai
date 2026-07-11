@@ -39,6 +39,7 @@ body::after{content:"";position:fixed;left:-20%;right:-20%;bottom:-2%;height:34%
   transform:perspective(420px) rotateX(58deg);transform-origin:bottom}
 .grid{display:grid;grid-template-columns:292px 1fr 306px;gap:14px;
   padding:14px;max-width:1760px;margin:0 auto;position:relative;z-index:1}
+@media(max-width:1500px){.grid{grid-template-columns:258px 1fr 276px;gap:11px;padding:11px}}
 @media(max-width:1100px){.grid{grid-template-columns:1fr}}
 /* ---------- panels & reveal ---------- */
 .panel{position:relative;border:1px solid var(--line);background:var(--panel);
@@ -104,7 +105,7 @@ header .sub b{color:var(--cyan-dim)}
 .legend{display:flex;gap:10px;font-size:9px;color:var(--muted);letter-spacing:.12em}
 .legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px;vertical-align:-1px}
 /* ---------- hero avatar ---------- */
-.hero{position:relative;height:352px;overflow:hidden;padding:0!important}
+.hero{position:relative;height:clamp(240px,36vh,372px);overflow:hidden;padding:0!important}
 #avatar{position:absolute;inset:0;width:100%;height:100%}
 .herohud{position:absolute;left:18px;bottom:13px;z-index:2;pointer-events:none}
 .herohud .big{font-size:26px;letter-spacing:.5em;color:#eafcff;font-weight:700;
@@ -182,6 +183,22 @@ td button{padding:3px 10px;font-size:10px}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
 .kv{display:flex;justify-content:space-between;padding:3px 0;font-size:12px}
 .kv b{color:var(--cyan-soft)}
+/* phones & small tablets */
+@media(max-width:700px){
+  header{flex-wrap:wrap;gap:10px;padding:10px 14px}
+  header h1{font-size:15px;letter-spacing:.3em}
+  header .sub{letter-spacing:.14em}
+  #clock{margin-left:0;width:100%;text-align:left}
+  #clock b{font-size:15px}
+  .chip{padding:4px 10px}
+  .herohud .big{font-size:18px;letter-spacing:.32em}
+  .herohud .small{letter-spacing:.16em;font-size:9px}
+  #talkbar{padding:10px 18px;gap:9px}
+  #talkbar .t1{font-size:12px;letter-spacing:.14em}
+  .copyright{letter-spacing:.1em;padding:0 10px}
+  .stats{grid-template-columns:1fr 1fr}
+  td,th{padding:4px}
+}
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
 }
@@ -249,7 +266,7 @@ td button{padding:3px 10px;font-size:10px}
       <div class="scan"></div>
       <div class="herohud">
         <div class="big">J.A.R.V.I.S</div>
-        <div class="small">STATE&nbsp;<b id="voiceline">STANDBY</b>&nbsp;·&nbsp;AI CORE v1.0&nbsp;·&nbsp;PROPERTY OF SOBHAN AZIMZADEH</div>
+        <div class="small">STATE&nbsp;<b id="voiceline">STANDBY</b>&nbsp;·&nbsp;MOOD&nbsp;<b id="moodline">CALM</b>&nbsp;·&nbsp;AI CORE v1.0&nbsp;·&nbsp;PROPERTY OF SOBHAN AZIMZADEH</div>
       </div>
     </div>
     <div class="panel reveal" style="--d:.2s;flex:1">
@@ -339,122 +356,179 @@ setInterval(()=>{const n=new Date();
   $('date').textContent=n.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 },1000);
 
-/* ---------- 3D JARVIS entity: layered energy sphere (bright core → mantle →
-   asymmetric crust + ember veins → outer wisps), floating in mid-air ---------- */
+/* ---------- 3D JARVIS entity: Marvel-style woven filament sphere ----------
+   outer web of connected filaments (the key layer) · tilted great-circle
+   rings · radial spokes · white-hot swirling iris core · atmosphere.
+   Reacts to: per-word speech pulses, YOUR real voice level (mic analyser),
+   and mood — one color-math table drives every layer. */
 (function(){
   const canvas=$('avatar');
   const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
   renderer.setPixelRatio(Math.min(devicePixelRatio,2));
   const scene=new THREE.Scene();
-  const cam=new THREE.PerspectiveCamera(38,2,.1,100);cam.position.z=2.7;
+  const cam=new THREE.PerspectiveCamera(38,2,.1,100);cam.position.z=2.75;
 
-  const c=document.createElement('canvas');c.width=c.height=64;
-  const g=c.getContext('2d'),grad=g.createRadialGradient(32,32,0,32,32,32);
-  grad.addColorStop(0,'rgba(190,245,255,1)');grad.addColorStop(.35,'rgba(62,225,255,.85)');grad.addColorStop(1,'rgba(62,225,255,0)');
-  g.fillStyle=grad;g.fillRect(0,0,64,64);
-  const sprite=new THREE.CanvasTexture(c);
+  const cv=document.createElement('canvas');cv.width=cv.height=64;
+  const cg=cv.getContext('2d'),cgr=cg.createRadialGradient(32,32,0,32,32,32);
+  cgr.addColorStop(0,'rgba(255,250,235,1)');cgr.addColorStop(.35,'rgba(255,205,110,.85)');cgr.addColorStop(1,'rgba(255,180,60,0)');
+  cg.fillStyle=cgr;cg.fillRect(0,0,64,64);
+  const sprite=new THREE.CanvasTexture(cv);
 
-  const grp=new THREE.Group();scene.add(grp);
-  grp.rotation.x=.18;grp.scale.setScalar(1.12);
+  const grp=new THREE.Group();scene.add(grp);grp.rotation.x=.15;
 
-  // fixed pseudo-noise → lumpy, asymmetric radius (no two directions equal)
-  function lump(x,y,z,k){const th=Math.atan2(y,x),ph=Math.acos(Math.max(-1,Math.min(1,z)));
-    return 1+k*(Math.sin(3*th+1.7)*.5+Math.sin(5*ph+.6)*.35+Math.sin(7*th+2*ph)*.15)}
+  // 1. outer shell: nodes + web connecting each node to its 3 nearest — circuitry on a globe
+  const NN=620,nodes=[],phi=Math.PI*(3-Math.sqrt(5));
+  for(let i=0;i<NN;i++){const y=1-(i/(NN-1))*2,r=Math.sqrt(1-y*y),a=phi*i;
+    nodes.push(new THREE.Vector3(Math.cos(a)*r,y,Math.sin(a)*r))}
+  const nodeGeo=new THREE.BufferGeometry().setFromPoints(nodes);
+  const nodeMat=new THREE.PointsMaterial({map:sprite,size:.03,transparent:true,opacity:.95,
+    blending:THREE.AdditiveBlending,depthWrite:false});
+  grp.add(new THREE.Points(nodeGeo,nodeMat));
+  const segs=[];
+  for(let i=0;i<NN;i++){
+    const d=[];
+    for(let j=0;j<NN;j++)if(j!==i)d.push([nodes[i].distanceToSquared(nodes[j]),j]);
+    d.sort((a,b)=>a[0]-b[0]);
+    for(let k=0;k<3;k++)segs.push(nodes[i],nodes[d[k][1]]);
+  }
+  const webGeo=new THREE.BufferGeometry().setFromPoints(segs);
+  const webMat=new THREE.LineBasicMaterial({transparent:true,opacity:.3,
+    blending:THREE.AdditiveBlending,depthWrite:false});
+  grp.add(new THREE.LineSegments(webGeo,webMat));
 
-  // one spherical shell of n particles between radius r0..r1
-  function shell(n,r0,r1,k,color,size,opacity){
-    const base=new Float32Array(n*3),seed=new Float32Array(n);
-    for(let i=0;i<n;i++){
-      const u=Math.random()*2-1,a=Math.random()*Math.PI*2,s=Math.sqrt(1-u*u);
-      const x=s*Math.cos(a),y=s*Math.sin(a),z=u;
-      const r=(r0+Math.random()*(r1-r0))*lump(x,y,z,k);
-      base[i*3]=x*r;base[i*3+1]=y*r;base[i*3+2]=z*r;seed[i]=Math.random()*Math.PI*2;
-    }
-    const pos=new Float32Array(base);
-    const geo=new THREE.BufferGeometry();
-    geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
-    const mat=new THREE.PointsMaterial({map:sprite,color,size,transparent:true,opacity,
+  // 2. tilted great-circle rings
+  const rings=[];
+  for(let k=0;k<5;k++){
+    const rg=new THREE.Group();
+    rg.rotation.set(Math.random()*Math.PI,Math.random()*Math.PI,Math.random()*Math.PI);
+    const R=.5+k*.11,pts=new THREE.EllipseCurve(0,0,R,R).getPoints(90);
+    const mat=new THREE.LineBasicMaterial({transparent:true,opacity:.42,
       blending:THREE.AdditiveBlending,depthWrite:false});
-    const pts=new THREE.Points(geo,mat);grp.add(pts);
-    return {pts,geo,mat,base,seed,pos,n,baseColor:color};
+    rg.add(new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(pts),mat));
+    rg.userData={mat,v:(Math.random()-.5)*.01};
+    grp.add(rg);rings.push(rg);
   }
 
-  const layers=[
-    shell(380,.02,.24,0,  0xeafcff,.05, 1),   // core — shines brightest
-    shell(520,.38,.55,.12,0x7ce8ff,.038,.9),  // inner mantle
-    shell(1650,.72,.95,.22,0x3ee1ff,.03,.8),  // main crust — asymmetric
-    shell(430,.68,1.02,.24,0xff9a4d,.042,1), // ember veins (the orange energy)
-    shell(420,1.02,1.32,.3,0x1e88ad,.026,.5), // outer wisps / aura
-  ];
-  const spinDir=[1,-.6,1,1.4,-.35]; // counter-rotating layers = visible depth
+  // 3. radial spokes — data streaming out of the core
+  const NS=90,spokeDir=[],spokeSeed=new Float32Array(NS),spokePos=new Float32Array(NS*6);
+  for(let i=0;i<NS;i++){
+    const u=Math.random()*2-1,a=Math.random()*Math.PI*2,s=Math.sqrt(1-u*u);
+    spokeDir.push([s*Math.cos(a),s*Math.sin(a),u]);spokeSeed[i]=Math.random()*Math.PI*2;
+  }
+  const spokeGeo=new THREE.BufferGeometry();
+  spokeGeo.setAttribute('position',new THREE.BufferAttribute(spokePos,3));
+  const spokeMat=new THREE.LineBasicMaterial({transparent:true,opacity:.3,
+    blending:THREE.AdditiveBlending,depthWrite:false});
+  grp.add(new THREE.LineSegments(spokeGeo,spokeMat));
 
-  // blazing heart + hologram floor glow (sells "floating in mid-air")
-  const heart=new THREE.Sprite(new THREE.SpriteMaterial({map:sprite,color:0xeafcff,
-    transparent:true,opacity:.95,blending:THREE.AdditiveBlending,depthWrite:false}));
-  heart.scale.set(.95,.95,1);grp.add(heart);
-  const floorGlow=new THREE.Sprite(new THREE.SpriteMaterial({map:sprite,color:0x1e88ad,
-    transparent:true,opacity:.32,blending:THREE.AdditiveBlending,depthWrite:false}));
-  floorGlow.scale.set(2.5,.48,1);floorGlow.position.y=-1.6;scene.add(floorGlow);
+  // 4. core — white-hot heart + swirling iris ("it's alive, it's looking at you")
+  const heart=new THREE.Sprite(new THREE.SpriteMaterial({map:sprite,transparent:true,
+    opacity:.95,blending:THREE.AdditiveBlending,depthWrite:false}));
+  heart.scale.set(.8,.8,1);grp.add(heart);
+  const NI=160,irisPos=new Float32Array(NI*3);
+  for(let i=0;i<NI;i++){const a=Math.random()*Math.PI*2,r=.06+Math.random()*.16;
+    irisPos[i*3]=Math.cos(a)*r;irisPos[i*3+1]=(Math.random()-.5)*.08;irisPos[i*3+2]=Math.sin(a)*r}
+  const irisGeo=new THREE.BufferGeometry();
+  irisGeo.setAttribute('position',new THREE.BufferAttribute(irisPos,3));
+  const irisMat=new THREE.PointsMaterial({map:sprite,size:.045,transparent:true,opacity:1,
+    blending:THREE.AdditiveBlending,depthWrite:false});
+  const iris=new THREE.Points(irisGeo,irisMat);grp.add(iris);
 
-  // orbital rings + riders
-  const rings=[],orbiters=[];
-  [[.5,0],[-.4,.8]].forEach(([rx,rz],k)=>{
-    const rg=new THREE.Group();rg.rotation.x=rx;rg.rotation.z=rz;
-    const pts=new THREE.EllipseCurve(0,0,1.72+k*.16,1.72+k*.16).getPoints(140);
-    rg.add(new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(pts),
-      new THREE.LineBasicMaterial({color:0x3ee1ff,transparent:true,opacity:.25})));
-    const og=new THREE.BufferGeometry();
-    og.setAttribute('position',new THREE.BufferAttribute(new Float32Array(3),3));
-    const orb=new THREE.Points(og,new THREE.PointsMaterial({map:sprite,color:0x9be9ff,size:.085,
-      transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));
-    rg.add(orb);scene.add(rg);
-    rings.push(rg);orbiters.push({orb,r:1.72+k*.16,t:k*2.4,v:.009-k*.004});
-  });
+  // 5. atmosphere — halo, drifting particles, hologram floor glow
+  const halo=new THREE.Sprite(new THREE.SpriteMaterial({map:sprite,transparent:true,
+    opacity:.33,blending:THREE.AdditiveBlending,depthWrite:false}));
+  halo.scale.set(3,3,1);grp.add(halo);
+  const ND=240,driftPos=new Float32Array(ND*3),driftSeed=new Float32Array(ND),driftDir=[];
+  for(let i=0;i<ND;i++){const u=Math.random()*2-1,a=Math.random()*Math.PI*2,s=Math.sqrt(1-u*u);
+    driftDir.push([s*Math.cos(a),s*Math.sin(a),u]);driftSeed[i]=Math.random()}
+  const driftGeo=new THREE.BufferGeometry();
+  driftGeo.setAttribute('position',new THREE.BufferAttribute(driftPos,3));
+  const driftMat=new THREE.PointsMaterial({map:sprite,size:.022,transparent:true,opacity:.55,
+    blending:THREE.AdditiveBlending,depthWrite:false});
+  grp.add(new THREE.Points(driftGeo,driftMat));
+  const floorGlow=new THREE.Sprite(new THREE.SpriteMaterial({map:sprite,transparent:true,
+    opacity:.3,blending:THREE.AdditiveBlending,depthWrite:false}));
+  floorGlow.scale.set(2.5,.48,1);floorGlow.position.y=-1.55;scene.add(floorGlow);
 
-  // state machine — the entity reacts to what JARVIS is doing
-  let amp=0,tAmp=0,spin=.0016,tSpin=.0016,t=0;
+  // ---- COLOR MATH: one mood table drives every layer of the whole entity ----
+  const MOODS={
+    calm:    {hue:36,speed:1,  jitter:.14,label:'CALM'},     // warm gold, steady
+    thinking:{hue:46,speed:.65,jitter:.08,label:'THINKING'}, // cooler amber, contemplative
+    alert:   {hue:12,speed:1.9,jitter:.5, label:'ALERT'},    // red-orange, fast & sharp
+    happy:   {hue:48,speed:1.4,jitter:.28,label:'HAPPY'},    // bright, bouncy
+  };
+  let mood=MOODS.calm;
+  const hsl=(h,s,l)=>new THREE.Color().setHSL(h/360,s,l);
+  window.setMood=function(name){
+    mood=MOODS[name]||MOODS.calm;
+    nodeMat.color=hsl(mood.hue,.95,.62);
+    webMat.color=hsl(mood.hue,.9,.5);
+    spokeMat.color=hsl(mood.hue,.9,.55);
+    irisMat.color=hsl(mood.hue,.7,.8);
+    heart.material.color=hsl(mood.hue,.55,.93);  // near-white core — always brightest
+    halo.material.color=hsl(mood.hue,.9,.45);
+    driftMat.color=hsl(mood.hue,.85,.6);
+    floorGlow.material.color=hsl(mood.hue,.8,.4);
+    rings.forEach(r=>r.userData.mat.color=hsl(mood.hue,.85,.55));
+    const m=$('moodline');if(m)m.textContent=mood.label;
+  };
+  setMood('calm');
+
+  // ---- activity: mode level + per-word pulses + your real voice amplitude ----
+  let act=0,tAct=0,pulse=0;
   window.setAvatar=function(mode){
-    tAmp = mode==='speaking'?.4 : mode==='thinking'?.12 : mode==='listening'?.05 : 0;
-    tSpin = mode==='speaking'?.006 : mode==='thinking'?.01 : mode==='listening'?.0028 : .0016;
-    const tint = mode==='listening'?0xffc25e : null;
-    layers.forEach(l=>l.mat.color.setHex(tint||l.baseColor));
-    heart.material.color.setHex(mode==='listening'?0xffe9c2:0xeafcff);
+    tAct = mode==='speaking'?1 : mode==='thinking'?.45 : mode==='listening'?.3 : 0;
     $('voiceline').textContent=mode.toUpperCase();
   };
+  window.wordPulse=function(){pulse=1};  // fired by TTS on every word boundary
+  window.audioLevel=0;                   // fed by the mic analyser while listening
 
   let px=0,py=0;
   addEventListener('mousemove',e=>{px=e.clientX/innerWidth-.5;py=e.clientY/innerHeight-.5});
 
   function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;
     if(canvas.width!==(w*renderer.getPixelRatio()|0)){renderer.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()}}
+  let t=0;
   function tick(){
-    resize();t+=.02;
-    amp+=(tAmp-amp)*.06;spin+=(tSpin-spin)*.06;
-    // floats in mid-air: slow bob + mouse parallax
-    const bob=Math.sin(t*.55)*.07;
+    resize();
+    pulse*=.9;
+    act+=(tAct-act)*.06;
+    const level=Math.min(1,act*.7+pulse*.8+window.audioLevel*.9);
+    t+=.016*mood.speed;
+    const scale=1.06+Math.sin(t*.8)*.015+level*.16;     // breathe + expand with speech
+    grp.scale.setScalar(scale);
+    const bob=Math.sin(t*.5)*.06;                        // floats in mid-air
     grp.position.x+=(px*.3-grp.position.x)*.04;
     grp.position.y+=((bob-py*.2)-grp.position.y)*.05;
-    layers.forEach((l,li)=>{
-      l.pts.rotation.y+=spin*spinDir[li];
-      const wob=amp*(li===0?.12:.4+li*.16); // core barely stirs, outer layers surge
-      for(let i=0;i<l.n;i++){
-        const k=1+Math.sin(t*2.2+l.seed[i])*.02+wob*Math.abs(Math.sin(t*2.6+l.seed[i]*3));
-        l.pos[i*3]=l.base[i*3]*k;l.pos[i*3+1]=l.base[i*3+1]*k;l.pos[i*3+2]=l.base[i*3+2]*k;
-      }
-      l.geo.attributes.position.needsUpdate=true;
-    });
-    heart.material.opacity=.72+Math.sin(t*1.8)*.2+amp*.4;
-    const hs=.9+Math.sin(t*1.8)*.07+amp*.55;heart.scale.set(hs,hs,1);
-    floorGlow.material.opacity=.3-bob*.9;
-    rings.forEach((r,i)=>r.rotation.y+=.0012*(i+1));
-    orbiters.forEach(o=>{o.t+=o.v;
-      o.orb.geometry.attributes.position.setXYZ(0,Math.cos(o.t)*o.r,Math.sin(o.t)*o.r,0);
-      o.orb.geometry.attributes.position.needsUpdate=true});
+    grp.rotation.y+=.0018*mood.speed+level*.004;
+    const flick=1+(Math.random()-.5)*mood.jitter*level;  // talk flicker
+    webMat.opacity=.28*flick+level*.25;
+    nodeMat.opacity=.85+level*.15;
+    rings.forEach(r=>{r.rotation.y+=r.userData.v*mood.speed*(1+level)});
+    for(let i=0;i<NS;i++){                               // spokes shoot longer when loud
+      const d=spokeDir[i],inner=.16,
+        outer=.45+.4*Math.abs(Math.sin(t*2.2+spokeSeed[i]))+level*.45;
+      spokePos[i*6]=d[0]*inner;spokePos[i*6+1]=d[1]*inner;spokePos[i*6+2]=d[2]*inner;
+      spokePos[i*6+3]=d[0]*outer;spokePos[i*6+4]=d[1]*outer;spokePos[i*6+5]=d[2]*outer;
+    }
+    spokeGeo.attributes.position.needsUpdate=true;
+    spokeMat.opacity=.22+level*.5;
+    iris.rotation.y-=.02+level*.05;                      // the swirling eye
+    heart.material.opacity=.8+Math.sin(t*2)*.12+level*.2;
+    const hs=.72+Math.sin(t*2)*.05+level*.5;heart.scale.set(hs,hs,1);
+    halo.material.opacity=.28+level*.25;
+    for(let i=0;i<ND;i++){                               // atmosphere drifts off the shell
+      const r=1.04+((t*.12+driftSeed[i])%.5)+level*.15,d=driftDir[i];
+      driftPos[i*3]=d[0]*r;driftPos[i*3+1]=d[1]*r;driftPos[i*3+2]=d[2]*r;
+    }
+    driftGeo.attributes.position.needsUpdate=true;
+    floorGlow.material.opacity=.28-bob*.8;
     renderer.render(scene,cam);
     requestAnimationFrame(tick); // hidden tabs: browser throttles rAF for us
   }
   tick();
 })();
+
 
 /* ---------- count-up + gauges ---------- */
 function countUp(el,to){const from=+el.dataset.v||0;if(from===to)return;el.dataset.v=to;
@@ -471,7 +545,7 @@ function addMsg(cls,text){const d=document.createElement('div');d.className='msg
 async function send(text){
   if(!text.trim())return;
   addMsg('you',text);messages.push({role:'user',content:text});
-  const el=addMsg('jarvis','…');setAvatar('thinking');
+  const el=addMsg('jarvis','…');setAvatar('thinking');setMood('thinking');
   let reply='';
   try{
     const r=await fetch('/chat',{method:'POST',headers:{'Content-Type':'application/json'},
@@ -484,8 +558,14 @@ async function send(text){
   }catch(e){reply='(connection lost, Sir)';el.textContent=reply}
   messages.push({role:'assistant',content:reply});
   if(messages.length>24)messages=messages.slice(-24);
+  setMood(moodFromText(reply));
   if($('tts').checked)speak(reply);else setAvatar(micOn?'listening':'idle');
 }
+// mood from tone of speech — drives the color math
+function moodFromText(s){s=s.toLowerCase();
+  if(/error|fail|warning|offline|problem|cannot|alert|down|refused/.test(s))return 'alert';
+  if(/excellent|great|done|success|congratulat|wonderful|perfect|ready|delighted/.test(s))return 'happy';
+  return 'calm'}
 function sendText(){const v=$('say').value;$('say').value='';send(v)}
 
 /* ---------- voice out (closest legal butler voice: en-GB, tuned) ---------- */
@@ -498,6 +578,7 @@ function speak(text){
   if(!clean){setAvatar(micOn?'listening':'idle');return}
   speechSynthesis.cancel();
   const u=new SpeechSynthesisUtterance(clean);if(voice)u.voice=voice;u.rate=1.02;u.pitch=.92;
+  u.onboundary=()=>{if(window.wordPulse)wordPulse()}; // entity pulses on every spoken word
   u.onstart=()=>{setAvatar('speaking');$('talkwave').classList.remove('off');$('talkwave2').classList.remove('off')};
   u.onend=()=>{setAvatar(micOn?'listening':'idle');
     if(!micOn){$('talkwave').classList.add('off');$('talkwave2').classList.add('off')}};
@@ -514,7 +595,30 @@ function toggleMic(){
   $('talkwave').classList.toggle('off',!micOn);$('talkwave2').classList.toggle('off',!micOn);
   $('talkstate').textContent=micOn?'I AM LISTENING…':'TAP TO START LISTENING';
   setAvatar(micOn?'listening':'idle');
-  if(micOn)startRec();else if(rec)rec.stop();
+  if(micOn){startRec();startMeter()}else{if(rec)rec.stop();stopMeter()}
+}
+/* real voice amplitude → entity reacts to YOUR voice while listening */
+let meterCtx=null,meterAnalyser=null,meterStream=null,meterData=null;
+async function startMeter(){
+  try{
+    meterStream=await navigator.mediaDevices.getUserMedia({audio:true});
+    meterCtx=new AudioContext();
+    meterCtx.createMediaStreamSource(meterStream).connect(meterAnalyser=meterCtx.createAnalyser());
+    meterAnalyser.fftSize=512;meterData=new Uint8Array(meterAnalyser.fftSize);
+    (function loop(){
+      if(!meterAnalyser)return;
+      meterAnalyser.getByteTimeDomainData(meterData);
+      let s=0;for(let i=0;i<meterData.length;i++){const v=(meterData[i]-128)/128;s+=v*v}
+      window.audioLevel=micOn?Math.min(1,Math.sqrt(s/meterData.length)*3):0;
+      requestAnimationFrame(loop);
+    })();
+  }catch(e){/* mic denied — entity still reacts to word pulses */}
+}
+function stopMeter(){
+  window.audioLevel=0;
+  if(meterStream){meterStream.getTracks().forEach(tr=>tr.stop());meterStream=null}
+  if(meterCtx){meterCtx.close();meterCtx=null}
+  meterAnalyser=null;
 }
 function startRec(){
   rec=new SR();rec.lang=$('lang').value;rec.continuous=true;rec.interimResults=false;
