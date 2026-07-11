@@ -3,7 +3,10 @@ package main
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"fmt"
+	"net/http"
+	"os"
 	"strings"
 	"time"
 )
@@ -92,5 +95,39 @@ func RunBrief(ctx context.Context, db *sql.DB, brain *Brain) error {
 		}
 	}
 
+	// Brain cost watch (user asked to monitor the DeepSeek balance).
+	if bal := deepseekBalance(); bal != "" {
+		b.WriteString("\n🧠 Brain balance: " + bal + "\n")
+	}
+
 	return SendTelegram(b.String())
+}
+
+// deepseekBalance returns the remaining API credit, or "" when the brain
+// isn't DeepSeek or the check fails (never blocks the briefing).
+func deepseekBalance() string {
+	key := os.Getenv("JARVIS_API_KEY")
+	if key == "" || !strings.Contains(os.Getenv("JARVIS_BASE_URL"), "deepseek") {
+		return ""
+	}
+	req, err := http.NewRequest("GET", "https://api.deepseek.com/user/balance", nil)
+	if err != nil {
+		return ""
+	}
+	req.Header.Set("Authorization", "Bearer "+key)
+	resp, err := (&http.Client{Timeout: 10 * time.Second}).Do(req)
+	if err != nil {
+		return ""
+	}
+	defer resp.Body.Close()
+	var out struct {
+		BalanceInfos []struct {
+			Currency     string `json:"currency"`
+			TotalBalance string `json:"total_balance"`
+		} `json:"balance_infos"`
+	}
+	if json.NewDecoder(resp.Body).Decode(&out) != nil || len(out.BalanceInfos) == 0 {
+		return ""
+	}
+	return "$" + out.BalanceInfos[0].TotalBalance + " " + out.BalanceInfos[0].Currency
 }
