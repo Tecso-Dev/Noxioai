@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -17,6 +18,21 @@ eventually be read aloud. If asked to do something you cannot do yet, say so
 plainly and suggest what you could do instead.`
 
 func main() {
+	if len(os.Args) > 2 && os.Args[1] == "db" && os.Args[2] == "init" {
+		db, err := OpenDB()
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "✗ cannot reach Postgres:", err)
+			os.Exit(1)
+		}
+		defer db.Close()
+		if err := InitSchema(context.Background(), db); err != nil {
+			fmt.Fprintln(os.Stderr, "✗ schema failed:", err)
+			os.Exit(1)
+		}
+		fmt.Println("✓ schema applied: companies, contacts, leads, outreach, experiences")
+		return
+	}
+
 	brain := NewBrainFromEnv()
 	memory := LoadMemory()
 	fmt.Printf("⚡ JARVIS v0.2 — brain: %s (%s) — memory: %d facts\n", brain.Model, brain.BaseURL, len(memory.Facts))
