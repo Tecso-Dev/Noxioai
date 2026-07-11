@@ -1,6 +1,6 @@
 # JARVIS — Specification (source of truth)
 
-**Version 1.0 — 2026-07-11 — Status: approved direction, Phase 1 not started**
+**Version 1.0 — 2026-07-11 — Status: Phase 1 ✅ done (2026-07-11) · Phase 2 ORACLE next**
 
 Every implementation session starts by reading this file. If code and spec
 disagree, fix one of them in the same session — never let them drift.
