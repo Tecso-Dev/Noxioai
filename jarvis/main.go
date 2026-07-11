@@ -173,9 +173,16 @@ func repl(brain *Brain, memory *MemoryStore) {
 	}
 }
 
-// serveHTTP exposes the SSE endpoint the HUD (Step 6) will consume.
+// serveHTTP serves the Iron-Man HUD plus the SSE chat endpoint it consumes.
 func serveHTTP(brain *Brain, memory *MemoryStore) {
 	mux := http.NewServeMux()
+
+	db, err := OpenDB()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "⚠ CRM offline (HUD panels degraded):", err)
+		db = nil
+	}
+	registerHUD(mux, brain, memory, db)
 
 	mux.HandleFunc("POST /chat", func(w http.ResponseWriter, r *http.Request) {
 		var req struct {
@@ -211,7 +218,7 @@ func serveHTTP(brain *Brain, memory *MemoryStore) {
 	})
 
 	addr := envOr("JARVIS_ADDR", "127.0.0.1:7700")
-	fmt.Printf("HTTP up on http://%s  (POST /chat, GET /health)\n", addr)
+	fmt.Printf("⚡ JARVIS HUD on http://%s  (dashboard, POST /chat, GET /health)\n", addr)
 	if err := http.ListenAndServe(addr, mux); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)

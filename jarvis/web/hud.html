@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>J.A.R.V.I.S — NOXIOAI Command Center</title>
+<style>
+:root{
+  --bg:#040d16; --panel:#071a2a; --line:#0e3a4f; --line2:#123c58;
+  --cyan:#35e0ff; --cyan-dim:#1a8fb3; --glow:0 0 12px rgba(53,224,255,.45);
+  --amber:#ffc25e; --red:#ff5e6c; --green:#39ffa0; --text:#bfe9f7; --muted:#5d8aa0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:radial-gradient(1200px 700px at 50% -10%,#0a2438 0%,var(--bg) 60%);
+  color:var(--text);font:14px/1.5 "SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+  min-height:100vh;overflow-x:hidden}
+.grid{display:grid;grid-template-columns:280px 1fr 300px;grid-template-rows:64px 1fr auto;
+  gap:14px;padding:14px;max-width:1700px;margin:0 auto;min-height:100vh}
+header{grid-column:1/4;display:flex;align-items:center;gap:18px;
+  border:1px solid var(--line2);background:linear-gradient(180deg,#0a2438cc,#071a2acc);
+  border-radius:10px;padding:0 22px;box-shadow:var(--glow)}
+header h1{font-size:22px;letter-spacing:.55em;color:var(--cyan);text-shadow:var(--glow);font-weight:600}
+header .sub{color:var(--muted);font-size:11px;letter-spacing:.25em}
+#clock{margin-left:auto;font-size:20px;color:var(--cyan);text-shadow:var(--glow)}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);display:inline-block;margin-right:6px}
+.panel{border:1px solid var(--line2);background:#071a2ab8;border-radius:10px;padding:14px;
+  backdrop-filter:blur(4px)}
+.panel h2{font-size:11px;letter-spacing:.3em;color:var(--cyan-dim);border-bottom:1px solid var(--line2);
+  padding-bottom:8px;margin-bottom:10px;text-transform:uppercase}
+.col{display:flex;flex-direction:column;gap:14px}
+.kv{display:flex;justify-content:space-between;padding:4px 0;font-size:13px}
+.kv b{color:var(--cyan)}
+/* reactor */
+.reactor-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 14px}
+.reactor{position:relative;width:230px;height:230px}
+.ring{position:absolute;inset:0;border-radius:50%;border:2px dashed var(--cyan-dim);
+  animation:spin 18s linear infinite;opacity:.7}
+.ring.r2{inset:22px;border:3px dotted var(--cyan);animation:spinR 12s linear infinite;opacity:.5}
+.ring.r3{inset:46px;border:1px solid var(--cyan);box-shadow:var(--glow),inset 0 0 18px rgba(53,224,255,.3);animation:spin 30s linear infinite}
+.core{position:absolute;inset:72px;border-radius:50%;
+  background:radial-gradient(circle,#eafcff 0%,#7deaff 30%,#123c58 100%);
+  box-shadow:0 0 40px rgba(53,224,255,.8),0 0 90px rgba(53,224,255,.35);
+  display:flex;align-items:center;justify-content:center;
+  animation:pulse 3.2s ease-in-out infinite}
+.core span{color:#04222f;font-weight:700;letter-spacing:.28em;font-size:13px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes spinR{to{transform:rotate(-360deg)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 40px rgba(53,224,255,.8)}50%{box-shadow:0 0 70px rgba(53,224,255,1)}}
+.reactor.talking .ring{animation-duration:4s}
+.reactor.listening .core{background:radial-gradient(circle,#fff2d9 0%,#ffc25e 35%,#123c58 100%);
+  box-shadow:0 0 50px rgba(255,194,94,.9)}
+/* console */
+#log{height:230px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:4px}
+.msg{max-width:88%;padding:8px 12px;border-radius:8px;font-size:13px;white-space:pre-wrap}
+.msg.you{align-self:flex-end;background:#0e3a4f;border:1px solid var(--line2)}
+.msg.jarvis{align-self:flex-start;background:#06131f;border:1px solid var(--cyan-dim);
+  box-shadow:0 0 8px rgba(53,224,255,.15)}
+.msg.jarvis::before{content:"J.A.R.V.I.S";display:block;font-size:9px;letter-spacing:.3em;color:var(--cyan-dim);margin-bottom:3px}
+.inrow{display:flex;gap:8px;margin-top:10px}
+input,select,button{background:#06131f;border:1px solid var(--line2);color:var(--text);
+  border-radius:7px;padding:9px 12px;font:inherit;outline:none}
+input:focus{border-color:var(--cyan);box-shadow:var(--glow)}
+input{flex:1}
+button{cursor:pointer;color:var(--cyan);letter-spacing:.08em;transition:.15s}
+button:hover{border-color:var(--cyan);box-shadow:var(--glow)}
+button.hot{background:#0b2f42;border-color:var(--cyan)}
+#mic{width:46px;font-size:17px}
+#mic.on{background:var(--amber);color:#04222f;box-shadow:0 0 16px rgba(255,194,94,.8)}
+/* agents */
+.agent{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--line2);
+  border-radius:8px;margin-bottom:8px;background:#06131f}
+.agent .st{margin-left:auto;font-size:10px;letter-spacing:.15em;padding:2px 8px;border-radius:10px}
+.st.ready{color:var(--green);border:1px solid var(--green)}
+.st.scheduled{color:var(--cyan);border:1px solid var(--cyan-dim)}
+.st.busy{color:var(--amber);border:1px solid var(--amber)}
+.st.v2{color:var(--muted);border:1px solid var(--line2)}
+.agent b{letter-spacing:.15em}
+.agent small{color:var(--muted);display:block;font-size:10px}
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{color:var(--muted);text-align:left;font-weight:400;letter-spacing:.12em;font-size:10px;
+  border-bottom:1px solid var(--line2);padding:4px 6px}
+td{padding:5px 6px;border-bottom:1px solid #0b2536}
+tr:hover td{background:#0a2438}
+.tier-HIGH{color:var(--green)} .tier-VIP{color:var(--amber)} .tier-MEDIUM{color:var(--cyan)} .tier-LOW{color:var(--muted)}
+td button{padding:3px 9px;font-size:11px}
+.bottom{grid-column:1/4;display:grid;grid-template-columns:1.4fr 1fr .8fr;gap:14px}
+#feed{height:170px;overflow-y:auto;font-size:11px;color:var(--muted)}
+#feed div{padding:2px 0;border-bottom:1px dashed #0b2536}
+#draftview{display:none;position:fixed;inset:0;background:#02080ecc;z-index:9;
+  align-items:center;justify-content:center}
+#draftview .box{width:min(680px,92vw);max-height:80vh;overflow:auto}
+#drafttext{white-space:pre-wrap;background:#06131f;border:1px solid var(--line2);border-radius:8px;
+  padding:14px;margin:10px 0;font-size:13px}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:var(--line2);border-radius:3px}
+</style>
+</head>
+<body>
+<div class="grid">
+  <header>
+    <h1>J.A.R.V.I.S</h1><span class="sub">NOXIOAI&nbsp;COMMAND&nbsp;CENTER</span>
+    <span style="margin-left:20px"><span class="dot"></span><span id="sysstatus">SYSTEM ONLINE</span></span>
+    <span id="clock">--:--:--</span>
+  </header>
+
+  <div class="col">
+    <div class="panel">
+      <h2>AI Core</h2>
+      <div class="kv"><span>Brain</span><b id="model">…</b></div>
+      <div class="kv"><span>Balance</span><b id="balance">…</b></div>
+      <div class="kv"><span>Memory</span><b id="facts">…</b></div>
+      <div class="kv"><span>CRM</span><b id="dbstate">…</b></div>
+      <div class="kv"><span>Leads</span><b id="leadcount">…</b></div>
+      <div class="kv"><span>Awaiting approval</span><b id="draftcount">…</b></div>
+    </div>
+    <div class="panel">
+      <h2>Quick Commands</h2>
+      <div class="inrow" style="margin-top:0"><input id="niche" placeholder='niche e.g. "dentists in Warsaw"'></div>
+      <div class="inrow">
+        <button class="hot" style="flex:1" onclick="runOracle()">🔎 ORACLE hunt</button>
+        <button style="flex:1" onclick="briefNow()">📨 Brief now</button>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Voice</h2>
+      <div class="kv"><span>Language</span>
+        <select id="lang"><option value="en-US">English</option><option value="fa-IR">فارسی</option></select></div>
+      <div class="kv"><span>Wake word "Jarvis"</span>
+        <input type="checkbox" id="wake" style="flex:none;width:18px;height:18px"></div>
+      <div class="kv"><span>Speak replies</span>
+        <input type="checkbox" id="tts" checked style="flex:none;width:18px;height:18px"></div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="panel reactor-wrap">
+      <div class="reactor" id="reactor">
+        <div class="ring"></div><div class="ring r2"></div><div class="ring r3"></div>
+        <div class="core"><span>JARVIS</span></div>
+      </div>
+      <div id="voiceline" style="color:var(--muted);font-size:11px;letter-spacing:.2em">STANDBY</div>
+    </div>
+    <div class="panel" style="flex:1">
+      <h2>Console</h2>
+      <div id="log"></div>
+      <div class="inrow">
+        <button id="mic" onclick="toggleMic()" title="hold conversation by voice">🎙</button>
+        <input id="say" placeholder="Speak or type to JARVIS…" onkeydown="if(event.key==='Enter')sendText()">
+        <button onclick="sendText()">SEND</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="panel" style="flex:1">
+      <h2>Agents</h2>
+      <div id="agents"></div>
+    </div>
+  </div>
+
+  <div class="bottom">
+    <div class="panel">
+      <h2>Lead Board</h2>
+      <div style="max-height:220px;overflow:auto">
+      <table id="leads"><thead><tr><th>ID</th><th>SCORE</th><th>TIER</th><th>COMPANY</th><th>STATUS</th><th></th></tr></thead><tbody></tbody></table>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Drafts — your approval gate</h2>
+      <div style="max-height:220px;overflow:auto">
+      <table id="drafts"><thead><tr><th>ID</th><th>CHANNEL</th><th>COMPANY</th><th></th></tr></thead><tbody></tbody></table>
+      </div>
+    </div>
+    <div class="panel"><h2>Activity</h2><div id="feed"></div></div>
+  </div>
+</div>
+
+<div id="draftview" onclick="if(event.target===this)this.style.display='none'">
+  <div class="panel box">
+    <h2>Approved draft — copy &amp; send it yourself (Principle 1)</h2>
+    <div id="drafttext"></div>
+    <div class="inrow">
+      <button class="hot" onclick="navigator.clipboard.writeText(document.getElementById('drafttext').textContent);this.textContent='✓ COPIED'">COPY</button>
+      <button onclick="document.getElementById('draftview').style.display='none'">CLOSE</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+setInterval(()=>{$('clock').textContent=new Date().toLocaleTimeString('en-GB')},1000);
+
+/* ---------- chat ---------- */
+let messages=[];
+function addMsg(cls,text){const d=document.createElement('div');d.className='msg '+cls;d.textContent=text;
+  $('log').appendChild(d);$('log').scrollTop=1e9;return d}
+async function send(text){
+  if(!text.trim())return;
+  addMsg('you',text);messages.push({role:'user',content:text});
+  const el=addMsg('jarvis','…');$('reactor').classList.add('talking');
+  let reply='';
+  try{
+    const r=await fetch('/chat',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({messages})});
+    const rd=r.body.getReader(),dec=new TextDecoder();let buf='';
+    for(;;){const{done,value}=await rd.read();if(done)break;buf+=dec.decode(value,{stream:true});
+      const parts=buf.split('\n\n');buf=parts.pop();
+      for(const p of parts){const line=p.replace(/^data: /,'');if(line==='[DONE]')continue;
+        try{const j=JSON.parse(line);if(j.token){reply+=j.token;el.textContent=reply}}catch{}}}
+  }catch(e){reply='(connection lost, Sir)';el.textContent=reply}
+  $('reactor').classList.remove('talking');
+  messages.push({role:'assistant',content:reply});
+  if(messages.length>24)messages=messages.slice(-24);
+  if($('tts').checked)speak(reply);
+}
+function sendText(){const v=$('say').value;$('say').value='';send(v)}
+
+/* ---------- voice out ---------- */
+let voice=null;
+function pickVoice(){const vs=speechSynthesis.getVoices();
+  voice=vs.find(v=>/en-GB/i.test(v.lang)&&/daniel/i.test(v.name))||vs.find(v=>/en-GB/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang))||null}
+speechSynthesis.onvoiceschanged=pickVoice;pickVoice();
+function speak(text){
+  const clean=text.replace(/[*_#`]|[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu,'').trim();
+  if(!clean)return;speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(clean);if(voice)u.voice=voice;u.rate=1.04;u.pitch=.95;
+  u.onstart=()=>$('reactor').classList.add('talking');
+  u.onend=()=>$('reactor').classList.remove('talking');
+  speechSynthesis.speak(u);
+}
+
+/* ---------- voice in ---------- */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let rec=null,micOn=false;
+function toggleMic(){
+  if(!SR){alert('Voice input needs Chrome, Edge or Safari.');return}
+  micOn=!micOn;$('mic').classList.toggle('on',micOn);
+  if(micOn)startRec();else if(rec)rec.stop();
+  $('voiceline').textContent=micOn?'LISTENING…':'STANDBY';
+  $('reactor').classList.toggle('listening',micOn);
+}
+function startRec(){
+  rec=new SR();rec.lang=$('lang').value;rec.continuous=true;rec.interimResults=false;
+  rec.onresult=e=>{
+    const t=e.results[e.results.length-1][0].transcript.trim();
+    if($('wake').checked){
+      const m=t.match(/^(hey |ok )?jarvis[,.!]?\s*(.*)$/i);
+      if(!m)return;
+      if(!m[2]){speak('Yes, Sir?');return}
+      send(m[2]);
+    }else send(t);
+  };
+  rec.onend=()=>{if(micOn)try{rec.start()}catch{}};
+  rec.onerror=ev=>{if(ev.error==='not-allowed'){micOn=false;$('mic').classList.remove('on');
+    $('voiceline').textContent='MIC BLOCKED — allow microphone in the browser';}};
+  try{rec.start()}catch{}
+}
+
+/* ---------- status ---------- */
+async function poll(){
+  try{
+    const s=await(await fetch('/api/status')).json();
+    $('model').textContent=s.model;$('balance').textContent=s.balance||'—';
+    $('facts').textContent=s.facts+' facts';$('dbstate').textContent=s.db;
+    $('leadcount').textContent=s.lead_count;$('draftcount').textContent=s.pending_count;
+    $('sysstatus').textContent=s.db==='online'?'SYSTEM ONLINE':'CRM OFFLINE';
+    $('agents').innerHTML=(s.agents||[]).map(a=>
+      `<div class="agent"><b>${a.name}</b><small>${a.role}</small><span class="st ${a.status}">${a.status.toUpperCase()}</span></div>`).join('');
+    $('leads').tBodies[0].innerHTML=(s.leads||[]).map(l=>
+      `<tr><td>${l.id}</td><td>${l.score}</td><td class="tier-${l.tier}">${l.tier}</td><td>${l.name}</td><td>${l.status}</td>
+       <td><button onclick="runAtlas(${l.id})">ATLAS</button></td></tr>`).join('');
+    $('drafts').tBodies[0].innerHTML=(s.drafts||[]).map(d=>
+      `<tr><td>${d.id}</td><td>${d.channel}</td><td>${d.company}</td>
+       <td><button class="hot" onclick="approve(${d.id})">APPROVE</button></td></tr>`).join('');
+    $('feed').innerHTML=(s.activity||[]).slice().reverse().map(x=>`<div>${x}</div>`).join('');
+  }catch(e){$('sysstatus').textContent='SERVER OFFLINE'}
+}
+setInterval(poll,5000);poll();
+
+/* ---------- actions ---------- */
+async function runOracle(){const n=$('niche').value.trim();if(!n){speak('Name a niche first, Sir.');return}
+  await fetch('/api/oracle',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({niche:n})});
+  speak('ORACLE is hunting '+n);poll()}
+async function runAtlas(id){await fetch('/api/atlas',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lead:id})});
+  speak('ATLAS is drafting outreach for lead '+id);poll()}
+async function briefNow(){await fetch('/api/brief',{method:'POST'});speak('Briefing dispatched to Telegram, Sir.')}
+async function approve(id){
+  const r=await(await fetch('/api/approve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id})})).json();
+  if(r.draft){$('drafttext').textContent=r.draft;$('draftview').style.display='flex';poll()}
+}
+window.addEventListener('load',()=>setTimeout(()=>speak('JARVIS online. All systems nominal, Sir.'),800));
+</script>
+</body>
+</html>

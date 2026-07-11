@@ -27,7 +27,7 @@ everything below is added around it.
 | Qdrant / vector DB | keyword search over `experiences` measurably fails; then pgvector, not Qdrant |
 | Redis | a real cache need appears; until then in-process maps |
 | n8n | never — Go cron/launchd covers scheduling |
-| Next.js dashboard | there are enough rows that Telegram + psql stop being enough |
+| Next.js dashboard | SHIPPED 2026-07-11 by user decision as a zero-dependency HUD instead (`web/hud.html`, one file, no framework) — Next.js still cut |
 | Multi-provider AI router | already exists: `JARVIS_BASE_URL`/`JARVIS_MODEL` env vars. It's configuration, not code |
 | PIXEL / STARK agents | never as built agents — Claude Code already does this |
 | Agent registry / workflow engine / task queue | 5+ agents exist; until then a Go interface and a switch |
@@ -50,6 +50,14 @@ everything below is added around it.
   Env: `JARVIS_TELEGRAM_TOKEN`, `JARVIS_TELEGRAM_CHAT`.
 - **Scraping**: plain HTTP fetch first; Playwright (already installed) only
   for JS-heavy sites. No ScrapeGraphAI, no Python sidecar.
+- **HUD** (`jarvis serve`, http://127.0.0.1:7700): Iron-Man dashboard —
+  `web/hud.html` embedded in the binary, voice in/out via browser-native
+  Web Speech API (no whisper/TTS stack), agent cards, lead board, draft
+  approval gate, live activity. Local-only bind.
+- **Runtime home `~/Library/JARVIS/`** (binary, .env, memory): macOS TCC
+  blocks launchd agents from ~/Documents, so LaunchAgents
+  (`com.noxioai.jarvis.serve` KeepAlive + `com.noxioai.jarvis.brief` 08:00)
+  run the copy deployed by `./deploy.sh`. Repo stays the source of truth.
 
 ## 4. Agent contract
 
