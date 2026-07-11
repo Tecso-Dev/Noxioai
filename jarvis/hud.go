@@ -88,6 +88,25 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 			db.QueryRowContext(ctx, `SELECT count(*) FROM experiences`).Scan(&expCount)
 			resp["lead_count"], resp["pending_count"] = leadCount, pendingCount
 			resp["approved_count"], resp["exp_count"] = approvedCount, expCount
+			var contactCount int
+			db.QueryRowContext(ctx, `SELECT count(*) FROM contacts`).Scan(&contactCount)
+			resp["contact_count"] = contactCount
+			groupCount := func(query string) map[string]int {
+				out := map[string]int{}
+				if rows, err := db.QueryContext(ctx, query); err == nil {
+					for rows.Next() {
+						var k string
+						var n int
+						if rows.Scan(&k, &n) == nil {
+							out[k] = n
+						}
+					}
+					rows.Close()
+				}
+				return out
+			}
+			resp["funnel"] = groupCount(`SELECT status, count(*) FROM leads GROUP BY status`)
+			resp["tiers"] = groupCount(`SELECT COALESCE(tier,'?'), count(*) FROM leads GROUP BY 1`)
 
 			leads := []map[string]any{}
 			if rows, err := db.QueryContext(ctx, `
