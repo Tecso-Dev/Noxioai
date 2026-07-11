@@ -77,7 +77,8 @@ header .sub b{color:var(--cyan-dim)}
 #clock span{display:block;color:var(--muted);font-size:10px;letter-spacing:.2em}
 /* ---------- stat cards ---------- */
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.stat{border:1px solid var(--line);border-radius:9px;padding:8px 11px;background:#06131fb0;transition:.25s}
+.stat{border:1px solid var(--line);border-radius:9px;padding:8px 11px;background:#06131fb0;
+  transition:border-color .25s,box-shadow .25s}
 .stat:hover{border-color:var(--cyan-dim);box-shadow:var(--glow)}
 .stat small{display:block;color:var(--muted);font-size:9px;letter-spacing:.2em;text-transform:uppercase}
 .stat b{font-size:16px;color:var(--cyan-soft)}
@@ -130,13 +131,32 @@ input,select,button{background:#06131f;border:1px solid var(--line);color:var(--
   border-radius:8px;padding:9px 12px;font:inherit;outline:none}
 input:focus{border-color:var(--cyan);box-shadow:var(--glow)}
 input{flex:1}
-button{cursor:pointer;color:var(--cyan);letter-spacing:.08em;transition:.18s}
+button{cursor:pointer;color:var(--cyan);letter-spacing:.08em;
+  transition:border-color .18s,box-shadow .18s,transform .18s,background-color .18s}
 button:hover{border-color:var(--cyan);box-shadow:var(--glow);transform:translateY(-1px)}
 button.hot{background:#0b2f42;border-color:var(--cyan-dim)}
+button#sfxcontrol{min-height:40px;margin-left:8px;padding:5px 12px;background:#061d2be6;font-size:9px}
+#sfxcontrol .sfx-glyph{color:var(--cyan);font-size:15px;line-height:1;text-shadow:var(--glow)}
+#sfxcontrol.playing{border-color:var(--cyan);box-shadow:var(--glow)}
+#sfxcontrol.needs-gesture{border-color:var(--amber);color:var(--amber)}
+#sfxcontrol.needs-gesture .sfx-glyph{color:var(--amber);animation:blink 1s infinite}
 /* ---------- agents ---------- */
-.agent{display:flex;align-items:center;gap:10px;padding:6px 10px;border:1px solid var(--line);
-  border-radius:9px;margin-bottom:7px;background:#06131fb0;transition:.25s}
-.agent:hover{border-color:var(--cyan-dim);box-shadow:var(--glow);transform:translateX(3px)}
+.agent-workspace{min-height:452px;overflow:hidden;display:flex;flex-direction:column;
+  background:linear-gradient(145deg,#081e2dbd,#04111dcf 58%,#061722c7)}
+.agent-workspace::before{width:28px;height:28px;border-color:var(--cyan)}
+.agent-workspace::after{width:28px;height:28px;border-color:var(--cyan-dim)}
+.agent-workspace h2{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.workspace-state{color:var(--amber);font-size:8px;letter-spacing:.16em;white-space:nowrap}
+.workspace-intro{margin:-1px 0 11px;color:var(--muted);font-size:9px;letter-spacing:.07em;line-height:1.55;text-wrap:pretty}
+#agents{position:relative;z-index:1;display:flex;flex:1;flex-direction:column;gap:7px}
+.agent{position:relative;display:flex;align-items:center;gap:10px;width:100%;min-height:62px;padding:6px 10px;
+  border:1px solid var(--line);border-radius:9px;background:#06131fd1;text-align:left;overflow:hidden;
+  transition:border-color .2s,box-shadow .2s,transform .2s,background-color .2s}
+.agent::before{content:"";position:absolute;inset:0 auto 0 0;width:2px;background:var(--agent-color,var(--cyan));
+  box-shadow:0 0 12px var(--agent-color,var(--cyan));opacity:.8}
+.agent:hover,.agent:focus-visible{border-color:var(--agent-color,var(--cyan));box-shadow:0 0 0 1px color-mix(in srgb,var(--agent-color,var(--cyan)) 35%,transparent),var(--glow);transform:translateX(3px);background:#0a2636e8}
+.agent:focus-visible{outline:2px solid var(--cyan-soft);outline-offset:2px}
+.agent:active{transform:translateX(2px) scale(.985)}
 .agent .orb{width:52px;height:52px;flex:none}
 .agent b{letter-spacing:.14em;font-size:12px}
 .agent small{color:var(--muted);display:block;font-size:9px}
@@ -146,6 +166,18 @@ button.hot{background:#0b2f42;border-color:var(--cyan-dim)}
 .st.scheduled{color:var(--cyan);border:1px solid var(--cyan-dim)}
 .st.v2{color:var(--muted);border:1px solid var(--line)}
 .st.busy{color:var(--amber);border:1px solid var(--amber);animation:blink 1s infinite}
+.workspace-hint{position:relative;z-index:1;margin-top:10px;padding-top:9px;border-top:1px solid var(--line);
+  color:var(--cyan-dim);font-size:8px;letter-spacing:.12em;text-align:center}
+#workspace-notices{position:absolute;z-index:3;right:14px;bottom:13px;left:14px;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+.workspace-toast{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:start;padding:8px 10px;
+  border:1px solid var(--cyan-dim);border-radius:8px;background:#071c2ef2;box-shadow:0 10px 28px #0008,var(--glow);
+  color:var(--text);font-size:10px;line-height:1.4;opacity:0;transform:translateY(8px);filter:blur(3px);
+  transition:opacity .2s ease,transform .2s ease,filter .2s ease}
+.workspace-toast.in{opacity:1;transform:translateY(0);filter:none}
+.workspace-toast.error{border-color:var(--red);box-shadow:0 10px 28px #0008,0 0 14px #ff5e6c55}
+.workspace-toast .toast-label{color:var(--cyan);font-size:8px;letter-spacing:.15em;white-space:nowrap}
+.workspace-toast.error .toast-label{color:var(--red)}
+.workspace-toast p{margin:0;text-wrap:pretty}
 .wave{display:flex;gap:2px;align-items:flex-end;height:16px;width:34px;flex:none}
 .wave i{flex:1;background:var(--cyan);border-radius:1px;opacity:.85;animation:wv 1.1s ease-in-out infinite}
 .wave i:nth-child(2){animation-delay:.15s}.wave i:nth-child(3){animation-delay:.3s}
@@ -180,9 +212,29 @@ td button{padding:3px 10px;font-size:10px}
 .copyright{color:var(--muted);font-size:10px;letter-spacing:.22em;text-align:center}
 .copyright b{color:var(--cyan-dim)}
 /* modal */
-#draftview{display:none;position:fixed;inset:0;background:#02080ecc;z-index:9;align-items:center;justify-content:center}
-#draftview .box{width:min(680px,92vw);max-height:80vh;overflow:auto;animation:msgin .3s}
+#draftview,#agentview{display:none;position:fixed;inset:0;background:#02080ecc;z-index:9;align-items:center;justify-content:center;padding:16px}
+#draftview .box,#agentview .box{width:min(680px,92vw);max-height:80vh;overflow:auto;animation:msgin .3s}
 #drafttext{white-space:pre-wrap;background:#06131f;border:1px solid var(--line);border-radius:9px;padding:14px;margin:10px 0;font-size:13px}
+.dossier{--dossier-color:var(--cyan);width:min(760px,94vw)!important;padding:18px!important}
+.dossier-top{display:flex;align-items:center;gap:13px;margin-bottom:12px}
+.dossier-sigil{position:relative;width:54px;height:54px;flex:none;border:1px solid var(--dossier-color);border-radius:50%;box-shadow:0 0 18px color-mix(in srgb,var(--dossier-color) 65%,transparent)}
+.dossier-sigil::before,.dossier-sigil::after{content:"";position:absolute;border:1px solid var(--dossier-color);border-radius:50%;inset:8px;opacity:.7;animation:arcpulse 2.6s ease-in-out infinite}
+.dossier-sigil::after{inset:18px;background:var(--dossier-color);box-shadow:0 0 13px var(--dossier-color);opacity:.95}
+.dossier-title{min-width:0;flex:1}.dossier-title h2{margin:0;border:none;padding:0;color:var(--cyan-soft);font-size:15px;letter-spacing:.24em}
+.dossier-title p{margin-top:2px;color:var(--muted);font-size:10px;letter-spacing:.08em;text-wrap:pretty}
+.dossier-close{min-width:44px;min-height:44px;padding:0;font-size:16px}
+.dossier-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.dossier-meta div{border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:#06131fb0;min-width:0}
+.dossier-meta small{display:block;color:var(--muted);font-size:8px;letter-spacing:.16em}
+.dossier-meta b{display:block;margin-top:3px;color:var(--cyan-soft);font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-variant-numeric:tabular-nums}
+.mission-label{color:var(--cyan-dim);font-size:9px;letter-spacing:.2em;margin:15px 0 7px}
+#missionlist{display:flex;flex-direction:column;gap:7px;max-height:320px;overflow:auto;padding-right:2px}
+.mission{border:1px solid var(--line);border-radius:8px;padding:9px 10px;background:#06131fb0}
+.mission-head{display:flex;justify-content:space-between;gap:12px;color:var(--cyan-soft);font-size:10px}
+.mission-time{color:var(--muted);font-size:9px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.mission p{margin-top:4px;color:var(--muted);font-size:10px;text-wrap:pretty}.mission p b{color:var(--text);font-weight:500}
+.mission.empty{color:var(--muted);text-align:center;padding:16px}
+body.modal-open{overflow:hidden}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
 .kv{display:flex;justify-content:space-between;padding:3px 0;font-size:12px}
 .kv b{color:var(--cyan-soft)}
@@ -200,6 +252,7 @@ td button{padding:3px 10px;font-size:10px}
   #talkbar .t1{font-size:12px;letter-spacing:.14em}
   .copyright{letter-spacing:.1em;padding:0 10px}
   .stats{grid-template-columns:1fr 1fr}
+  .agent-workspace{min-height:0}.dossier-meta{grid-template-columns:1fr}
   td,th{padding:4px}
 }
 @media (prefers-reduced-motion: reduce){
@@ -213,6 +266,7 @@ td button{padding:3px 10px;font-size:10px}
     <div class="arc"><i></i><i></i><i></i></div>
     <div><h1>J.A.R.V.I.S</h1><div class="sub">NOXIOAI COMMAND CENTER · COMMANDED BY <b>SOBHAN AZIMZADEH</b></div></div>
     <div class="chip" style="margin-left:22px"><span class="dot"></span><span id="sysstatus">SYSTEM ONLINE</span></div>
+    <button id="sfxcontrol" class="chip" type="button" aria-label="Replay JARVIS startup sound"><span class="sfx-glyph">↯</span><span id="sfxstate">STARTUP SFX</span></button>
     <div class="chip"><span id="uptime">UPTIME —</span></div>
     <div id="clock"><b>--:--:--</b><span id="date">—</span></div>
   </header>
@@ -284,9 +338,12 @@ td button{padding:3px 10px;font-size:10px}
 
   <!-- RIGHT -->
   <div class="col">
-    <div class="panel reveal" style="--d:.14s">
-      <h2>Agent Workspace</h2>
+    <div class="panel agent-workspace reveal" style="--d:.14s">
+      <h2><span>Agent Workspace</span><span class="workspace-state" id="workspace-state">SYNCING</span></h2>
+      <p class="workspace-intro">Six operative cells. Select an agent to inspect its mission record; live field activity appears here.</p>
       <div id="agents"></div>
+      <div class="workspace-hint">SELECT AN ORB · OPEN AGENT DOSSIER</div>
+      <div id="workspace-notices" aria-live="polite" aria-relevant="additions"></div>
     </div>
     <div class="panel reveal" style="--d:.22s">
       <h2>Quick Commands</h2>
@@ -347,13 +404,58 @@ td button{padding:3px 10px;font-size:10px}
   </div>
 </div>
 
+<div id="agentview" onclick="if(event.target===this)closeAgentDossier()">
+  <section class="panel box dossier" role="dialog" aria-modal="true" aria-labelledby="dossier-name" tabindex="-1">
+    <div class="dossier-top">
+      <div class="dossier-sigil" aria-hidden="true"></div>
+      <div class="dossier-title"><h2 id="dossier-name">AGENT DOSSIER</h2><p id="dossier-role">Loading operative record…</p></div>
+      <button class="dossier-close" type="button" aria-label="Close agent dossier" onclick="closeAgentDossier()">×</button>
+    </div>
+    <div class="dossier-meta">
+      <div><small>STATUS</small><b id="dossier-status">—</b></div>
+      <div><small>MISSIONS LOGGED</small><b id="dossier-count">—</b></div>
+      <div><small>LAST OPERATION</small><b id="dossier-last">—</b></div>
+    </div>
+    <div class="mission-label">RECENT MISSION HISTORY</div>
+    <div id="missionlist" aria-live="polite"></div>
+  </section>
+</div>
+
 <script src="/three.min.js"></script>
 <script>
 const $=id=>document.getElementById(id);
 
 /* ---------- boot ---------- */
-window.addEventListener('load',()=>{requestAnimationFrame(()=>document.getElementById('app').classList.add('in'));
-  setTimeout(()=>speak('JARVIS online. Welcome back, Sir. All systems nominal.'),900)});
+const startupSFX=new Audio('/jarvis-startup.mp3');
+startupSFX.preload='auto';startupSFX.volume=.50;
+const welcomeLines=[
+  'Systems are online. Your command center is ready, Sir.',
+  'Good to have you back. All operational channels are standing by.',
+  'Core stabilized. Your workspace is ready, Sir.',
+  'Network aligned. Ready for your next instruction.',
+  'Diagnostics are green. Proceed when ready, Sir.'
+];
+function pickWelcomeLine(){return welcomeLines[Math.floor(Math.random()*welcomeLines.length)]}
+function setStartupSFXState(label,state=''){
+  const control=$('sfxcontrol');$('sfxstate').textContent=label;
+  control.classList.toggle('playing',state==='playing');control.classList.toggle('needs-gesture',state==='needs-gesture');
+}
+async function playStartupSFX(){
+  startupSFX.pause();startupSFX.currentTime=0;
+  try{await startupSFX.play();setStartupSFXState('SFX PLAYING','playing')}
+  catch{setStartupSFXState('ENABLE STARTUP SFX','needs-gesture')}
+}
+startupSFX.addEventListener('ended',()=>setStartupSFXState('REPLAY STARTUP SFX'));
+$('sfxcontrol').addEventListener('click',playStartupSFX);
+window.addEventListener('load',()=>{
+  requestAnimationFrame(()=>document.getElementById('app').classList.add('in'));
+  playStartupSFX();
+  setTimeout(()=>{
+    const welcome=pickWelcomeLine();
+    addMsg('jarvis',welcome);
+    speak(welcome);
+  },1000);
+});
 
 setInterval(()=>{const n=new Date();
   $('clock').firstElementChild.textContent=n.toLocaleTimeString('en-GB');
@@ -684,25 +786,101 @@ function miniOrb(canvas,hue){
   return state;
 }
 const agentOrbs={};
+const agentsByName=new Map();
+let lastAgentTrigger=null;
 function renderAgents(list){
   const box=$('agents');
   list.forEach(a=>{
+    agentsByName.set(a.name,a);
     let card=document.getElementById('ag-'+a.name);
     if(!card){ // build once — canvases keep their WebGL contexts across polls
-      card=document.createElement('div');card.className='agent';card.id='ag-'+a.name;
+      card=document.createElement('button');card.type='button';card.className='agent';card.id='ag-'+a.name;
       card.innerHTML=`<canvas class="orb" width="104" height="104"></canvas>
         <div style="flex:1;min-width:0"><b>${a.name}</b><small>${a.role}</small><small class="lastop"></small></div>
         <span class="st"></span>`;
+      card.addEventListener('click',()=>openAgentDossier(a.name));
       box.appendChild(card);
       agentOrbs[a.name]=miniOrb(card.querySelector('canvas'),AGENT_HUE[a.name]??192);
     }
     const busyNow=a.status==='busy',st=card.querySelector('.st');
+    card.style.setProperty('--agent-color',`hsl(${AGENT_HUE[a.name]??192} 90% 64%)`);
+    card.setAttribute('aria-label',`Open ${a.name} agent dossier`);
     st.className='st '+(busyNow?'busy':a.status);
     st.textContent=busyNow?'WORKING':(a.status==='v2'?'STANDBY':a.status.toUpperCase());
     card.querySelector('.lastop').textContent=a.last||'no missions yet';
     if(agentOrbs[a.name])agentOrbs[a.name].busy=busyNow;
     if(window.netBusy)window.netBusy[a.name]=busyNow; // hero network streams flare too
   });
+  const working=list.filter(a=>a.status==='busy').length;
+  $('workspace-state').textContent=working?`${working} WORKING`:`${list.length} OPERATIVES`;
+}
+
+function addMissionText(item,label,text){
+  if(!text)return;
+  const p=document.createElement('p'),b=document.createElement('b');
+  b.textContent=label+' · ';p.append(b,document.createTextNode(text));item.appendChild(p);
+}
+function renderMissionHistory(missions){
+  const list=$('missionlist');list.replaceChildren();
+  if(!missions.length){
+    const empty=document.createElement('div');empty.className='mission empty';empty.textContent='No completed missions are recorded yet.';list.appendChild(empty);return;
+  }
+  missions.forEach(m=>{
+    const item=document.createElement('article');item.className='mission';
+    const head=document.createElement('div');head.className='mission-head';
+    const decision=document.createElement('b');decision.textContent=m.decision||'Mission recorded';
+    const when=document.createElement('span');when.className='mission-time';when.textContent=m.when||'—';
+    head.append(decision,when);item.appendChild(head);
+    addMissionText(item,'INPUT',m.input);addMissionText(item,'RESULT',m.result);addMissionText(item,'LESSON',m.lesson);
+    list.appendChild(item);
+  });
+}
+async function openAgentDossier(name){
+  const agent=agentsByName.get(name)||{name,role:'NOXIOAI operative',status:'—',last:'—'};
+  lastAgentTrigger=document.activeElement;
+  const view=$('agentview'),box=view.querySelector('.dossier');
+  box.style.setProperty('--dossier-color',`hsl(${AGENT_HUE[name]??192} 90% 64%)`);
+  $('dossier-name').textContent=name+' — DOSSIER';$('dossier-role').textContent=agent.role;
+  $('dossier-status').textContent=agent.status==='busy'?'WORKING':(agent.status||'—').toUpperCase();
+  $('dossier-last').textContent=agent.last||'No mission record yet';$('dossier-count').textContent='…';
+  renderMissionHistory([]);view.style.display='flex';document.body.classList.add('modal-open');box.focus();
+  try{
+    const r=await fetch('/api/agent?name='+encodeURIComponent(name));
+    if(!r.ok)throw new Error('agent record unavailable');
+    const d=await r.json();
+    if(view.style.display==='none'||$('dossier-name').textContent!==name+' — DOSSIER')return;
+    $('dossier-count').textContent=String(d.count??0);renderMissionHistory(d.missions||[]);
+  }catch{
+    $('dossier-count').textContent='—';
+    const list=$('missionlist');list.replaceChildren();
+    const empty=document.createElement('div');empty.className='mission empty';empty.textContent='CRM mission history is unavailable. The HUD can still show this agent’s live status.';list.appendChild(empty);
+  }
+}
+function closeAgentDossier(){
+  $('agentview').style.display='none';document.body.classList.remove('modal-open');
+  if(lastAgentTrigger&&typeof lastAgentTrigger.focus==='function')lastAgentTrigger.focus();
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('agentview').style.display==='flex')closeAgentDossier()});
+
+let seenActivitySeq=null;
+function showWorkspaceNotice(line){
+  const stack=$('workspace-notices'),toast=document.createElement('div');
+  const failed=line.includes('✗');toast.className='workspace-toast'+(failed?' error':'');
+  const label=document.createElement('span');label.className='toast-label';label.textContent=failed?'ACTION FAILED':'LIVE ACTIVITY';
+  const message=document.createElement('p');message.textContent=line;toast.append(label,message);stack.prepend(toast);
+  while(stack.children.length>3)stack.lastElementChild.remove();
+  requestAnimationFrame(()=>toast.classList.add('in'));
+  setTimeout(()=>{toast.classList.remove('in');setTimeout(()=>toast.remove(),220)},4800);
+}
+function observeActivity(s){
+  const seq=Number(s.act_seq);if(!Number.isFinite(seq))return;
+  if(seenActivitySeq===null||seq<seenActivitySeq){seenActivitySeq=seq;return;} // first poll/restart is not a notification
+  const delta=seq-seenActivitySeq;
+  if(delta>0){
+    const lines=(s.activity||[]).slice(-Math.min(delta,3));
+    lines.forEach((line,i)=>setTimeout(()=>showWorkspaceNotice(line),i*160));
+  }
+  seenActivitySeq=seq;
 }
 
 /* ---------- count-up + gauges ---------- */
@@ -851,6 +1029,7 @@ async function poll(){
     const tiers=s.tiers||{};
     $('tierbar').innerHTML=['VIP','HIGH','MEDIUM','LOW'].map(k=>tiers[k]?`<i class="t-${k}" style="flex:${tiers[k]}"></i>`:'').join('')||'<i style="flex:1"></i>';
     renderAgents(s.agents||[]);
+    observeActivity(s);
     $('leads').tBodies[0].innerHTML=(s.leads||[]).map(l=>
       `<tr><td>${l.id}</td><td>${l.score}</td><td class="tier-${l.tier}">${l.tier}</td><td>${l.name}</td><td>${l.status}</td>
        <td><button onclick="runAtlas(${l.id})">ATLAS</button></td></tr>`).join('');
@@ -869,7 +1048,7 @@ async function runOracle(){const n=$('niche').value.trim();if(!n){speak('Name a 
   speak('ORACLE is hunting '+n);poll()}
 async function runAtlas(id){await fetch('/api/atlas',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lead:id})});
   speak('ATLAS is drafting outreach for lead '+id);poll()}
-async function briefNow(){await fetch('/api/brief',{method:'POST'});speak('Executive briefing dispatched to Telegram, Sir.')}
+async function briefNow(){await fetch('/api/brief',{method:'POST'});speak('Executive briefing dispatched to Telegram, Sir.');poll()}
 let lastApprovedId=0;
 async function approve(id){
   const r=await(await fetch('/api/approve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id})})).json();

@@ -28,6 +28,9 @@ var hudHTML []byte
 //go:embed web/three.min.js
 var threeJS []byte
 
+//go:embed web/jarvis-startup.mp3
+var startupSFX []byte
+
 // activity is the HUD's in-memory event feed (last 50 lines, lost on restart —
 // the durable record lives in the experiences table).
 type activity struct {
@@ -73,7 +76,18 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 	mux.HandleFunc("GET /three.min.js", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/javascript")
 		w.Header().Set("Cache-Control", "public, max-age=86400")
-		w.Write(threeJS)
+		if _, err := w.Write(threeJS); err != nil {
+			return
+		}
+	})
+
+	// The startup mix is embedded so the local HUD remains fully self-contained.
+	mux.HandleFunc("GET /jarvis-startup.mp3", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "audio/mpeg")
+		w.Header().Set("Cache-Control", "public, max-age=86400")
+		if _, err := w.Write(startupSFX); err != nil {
+			return
+		}
 	})
 
 	mux.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
@@ -82,7 +96,9 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 			return
 		}
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		w.Write(hudHTML)
+		if _, err := w.Write(hudHTML); err != nil {
+			return
+		}
 	})
 
 	mux.HandleFunc("GET /api/status", func(w http.ResponseWriter, r *http.Request) {
