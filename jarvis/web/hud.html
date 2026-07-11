@@ -356,20 +356,21 @@ setInterval(()=>{const n=new Date();
   $('date').textContent=n.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 },1000);
 
-/* ---------- 3D JARVIS entity: the movie data-sphere ----------
-   Anatomy of the Age-of-Ultron core, rebuilt for real-time WebGL:
-   · hundreds of BROKEN CONCENTRIC ARCS in 3 gyroscope families (the dominant shape)
-   · circuit-board traces random-walking across the shell (the "city map" skin)
-   · thousands of sparkle points riding the geometry
-   · white-hot tangled core + swirling iris
-   · scene fog dims the far side = volumetric depth
-   Reacts to speech/mic/mood exactly as before — one color-math table. */
+/* ---------- 3D JARVIS entity: the data-sphere, definitive version ----------
+   Age-of-Ultron core anatomy in project cyan:
+   · 5 gyroscope families of broken concentric arcs (+ glow pass = pseudo-bloom)
+   · sparse outer fragments breaking the silhouette
+   · circuit-trace random walks + tiny rectangular data blocks on the shells
+   · two sparkle clouds (dust + flares) riding the geometry
+   · tangled blazing core, swirling iris, layered halo
+   · fog depth, slow precession wobble, occasional hologram glitch
+   Reacts to speech words, your live mic level, and mood color-math. */
 (function(){
   const canvas=$('avatar');
   const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
   renderer.setPixelRatio(Math.min(devicePixelRatio,2));
   const scene=new THREE.Scene();
-  scene.fog=new THREE.Fog(0x02070d,2.1,4.3); // far side fades — instant depth
+  scene.fog=new THREE.Fog(0x02070d,2.0,4.0);
   const cam=new THREE.PerspectiveCamera(38,2,.1,100);cam.position.z=2.9;
 
   const cv=document.createElement('canvas');cv.width=cv.height=64;
@@ -384,9 +385,9 @@ setInterval(()=>{const n=new Date();
   function lineMat(op){const m=new THREE.LineBasicMaterial({transparent:true,opacity:op,
     blending:THREE.AdditiveBlending,depthWrite:false});lineMats.push(m);return m}
 
-  // ---- broken concentric arcs, grouped into tilted "gyroscope" families ----
+  // ---- broken concentric arcs in tilted gyroscope families ----
   const families=[];
-  function arcFamily(tx,tz,count,r0,r1,spinV){
+  function arcFamily(tx,tz,count,r0,r1,spinV,glow){
     const fam=new THREE.Group();fam.rotation.x=tx;fam.rotation.z=tz;
     const bright=[],dim=[];
     for(let i=0;i<count;i++){
@@ -405,18 +406,24 @@ setInterval(()=>{const n=new Date();
         prev=p;
       }
     }
-    fam.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(bright),lineMat(.55)));
+    const bg=new THREE.BufferGeometry().setFromPoints(bright);
+    fam.add(new THREE.LineSegments(bg,lineMat(.55)));
+    if(glow){ // pseudo-bloom: same geometry re-drawn faint & slightly larger
+      const halo=new THREE.LineSegments(bg,lineMat(.13));
+      halo.scale.setScalar(1.013);fam.add(halo);
+    }
     fam.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(dim),lineMat(.18)));
     fam.userData.v=spinV;
     grp.add(fam);families.push(fam);
     return fam;
   }
-  arcFamily(  0,   0, 110,.3, 1.0,  .0016);
-  arcFamily( .52, .2,  90,.35,.95, -.0011);
-  arcFamily(-.38, .55, 90,.4, 1.0,  .0008);
-  arcFamily(  .9,-.4,  60,.5, .9,  -.0019);
+  arcFamily(  0,   0, 120,.3, 1.0,  .0016,true);
+  arcFamily( .52, .2, 100,.35,.95, -.0011,true);
+  arcFamily(-.38, .55, 95,.4, 1.0,  .0008,true);
+  arcFamily(  .9,-.4,  65,.5, .9,  -.0019,false);
+  arcFamily( .24,-.65, 46,1.04,1.24,-.0006,false); // outer fragments — ragged silhouette
 
-  // ---- circuit traces: axis-aligned random walks on two shells ----
+  // ---- circuit traces (axis-aligned random walks) on two shells ----
   const sph=(th,ph,r)=>new THREE.Vector3(r*Math.sin(ph)*Math.cos(th),r*Math.cos(ph),r*Math.sin(ph)*Math.sin(th));
   function traces(count,R,jit){
     const segs=[];
@@ -426,7 +433,7 @@ setInterval(()=>{const n=new Date();
       let prev=sph(th,ph,r);
       const steps=3+(Math.random()*6|0);
       for(let s=0;s<steps;s++){
-        if(Math.random()<.5)th+=(Math.random()-.5)*.34;else ph+=(Math.random()-.5)*.22; // 90°-ish turns
+        if(Math.random()<.5)th+=(Math.random()-.5)*.34;else ph+=(Math.random()-.5)*.22;
         const p=sph(th,ph,r);
         segs.push(prev,p);
         if(Math.random()<.2)sparkleSamples.push(p);
@@ -435,11 +442,34 @@ setInterval(()=>{const n=new Date();
     }
     grp.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(segs),lineMat(.3)));
   }
-  traces(650,1.02,.05);   // outer skin — the wrapped city map
-  traces(260,.6,.1);      // inner shell fragments
+  traces(700,1.02,.05);
+  traces(280,.6,.1);
 
-  // ---- tangled core: tight bright arcs + heart + swirling iris ----
-  arcFamily(.3,-.2,46,.07,.26,.004).children.forEach(ls=>ls.material.opacity=.85);
+  // ---- tiny rectangular data blocks tangent to the shells (tech texture) ----
+  function blocks(count,R){
+    const segs=[],up=new THREE.Vector3(0,1,0);
+    for(let i=0;i<count;i++){
+      const u=Math.random()*2-1,a=Math.random()*Math.PI*2,s=Math.sqrt(1-u*u);
+      const p=new THREE.Vector3(s*Math.cos(a),s*Math.sin(a),u).multiplyScalar(R*(1+(Math.random()-.5)*.04));
+      const n=p.clone().normalize();
+      const tu=new THREE.Vector3().crossVectors(n,up).normalize();
+      if(!tu.lengthSq())tu.set(1,0,0);
+      const tv=new THREE.Vector3().crossVectors(n,tu);
+      const w=.012+Math.random()*.05,h=.012+Math.random()*.035;
+      const c=[p.clone().addScaledVector(tu,w).addScaledVector(tv,h),
+               p.clone().addScaledVector(tu,-w).addScaledVector(tv,h),
+               p.clone().addScaledVector(tu,-w).addScaledVector(tv,-h),
+               p.clone().addScaledVector(tu,w).addScaledVector(tv,-h)];
+      for(let k=0;k<4;k++){segs.push(c[k],c[(k+1)%4])}
+      if(Math.random()<.4)sparkleSamples.push(p);
+    }
+    grp.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(segs),lineMat(.4)));
+  }
+  blocks(120,1.0);
+  blocks(50,.62);
+
+  // ---- tangled bright core + heart + swirling iris ----
+  arcFamily(.3,-.2,50,.07,.26,.004,true).children.forEach(ls=>ls.material.opacity=Math.max(ls.material.opacity,.5));
   const heart=new THREE.Sprite(new THREE.SpriteMaterial({map:sprite,transparent:true,
     opacity:.95,blending:THREE.AdditiveBlending,depthWrite:false}));
   heart.scale.set(.66,.66,1);grp.add(heart);
@@ -452,28 +482,33 @@ setInterval(()=>{const n=new Date();
     blending:THREE.AdditiveBlending,depthWrite:false});pointMats.push(irisMat);
   const iris=new THREE.Points(irisGeo,irisMat);grp.add(iris);
 
-  // ---- sparkles riding the arcs & traces ----
-  const NSK=Math.min(2600,sparkleSamples.length);
-  const skPos=new Float32Array(NSK*3);
-  for(let i=0;i<NSK;i++){const p=sparkleSamples[(Math.random()*sparkleSamples.length)|0];
-    skPos[i*3]=p.x;skPos[i*3+1]=p.y;skPos[i*3+2]=p.z}
-  const skGeo=new THREE.BufferGeometry();
-  skGeo.setAttribute('position',new THREE.BufferAttribute(skPos,3));
-  const skMat=new THREE.PointsMaterial({map:sprite,size:.02,transparent:true,opacity:.9,
-    blending:THREE.AdditiveBlending,depthWrite:false});pointMats.push(skMat);
-  grp.add(new THREE.Points(skGeo,skMat));
+  // ---- two sparkle clouds: fine dust + bright flares ----
+  function sparkles(n,size,op){
+    const pos=new Float32Array(n*3);
+    for(let i=0;i<n;i++){const p=sparkleSamples[(Math.random()*sparkleSamples.length)|0];
+      pos[i*3]=p.x;pos[i*3+1]=p.y;pos[i*3+2]=p.z}
+    const g=new THREE.BufferGeometry();
+    g.setAttribute('position',new THREE.BufferAttribute(pos,3));
+    const m=new THREE.PointsMaterial({map:sprite,size,transparent:true,opacity:op,
+      blending:THREE.AdditiveBlending,depthWrite:false});pointMats.push(m);
+    grp.add(new THREE.Points(g,m));
+    return m;
+  }
+  sparkles(2400,.018,.8);
+  const flareMat=sparkles(150,.042,.95);
 
-  // ---- atmosphere ----
-  const halo=new THREE.Sprite(new THREE.SpriteMaterial({map:sprite,transparent:true,
-    opacity:.22,blending:THREE.AdditiveBlending,depthWrite:false}));
-  halo.scale.set(3.2,3.2,1);grp.add(halo);
+  // ---- layered halo + hologram floor glow ----
+  const halos=[[3.3,.16],[2,.14]].map(([sc,op])=>{
+    const h=new THREE.Sprite(new THREE.SpriteMaterial({map:sprite,transparent:true,
+      opacity:op,blending:THREE.AdditiveBlending,depthWrite:false}));
+    h.scale.set(sc,sc,1);grp.add(h);return h});
   const floorGlow=new THREE.Sprite(new THREE.SpriteMaterial({map:sprite,transparent:true,
     opacity:.26,blending:THREE.AdditiveBlending,depthWrite:false}));
   floorGlow.scale.set(2.6,.46,1);floorGlow.position.y=-1.5;scene.add(floorGlow);
 
-  // ---- COLOR MATH: calm = movie gold (flip hue 192 for project cyan) ----
+  // ---- COLOR MATH: calm = PROJECT CYAN; moods shift the whole organism ----
   const MOODS={
-    calm:    {hue:36, speed:1,  jitter:.16,label:'CALM'},     // Age-of-Ultron gold
+    calm:    {hue:192,speed:1,  jitter:.16,label:'CALM'},     // project cyan #3ee1ff
     thinking:{hue:212,speed:.65,jitter:.08,label:'THINKING'},
     alert:   {hue:12, speed:1.9,jitter:.5, label:'ALERT'},
     happy:   {hue:160,speed:1.4,jitter:.28,label:'HAPPY'},
@@ -482,17 +517,17 @@ setInterval(()=>{const n=new Date();
   const hsl=(h,s,l)=>new THREE.Color().setHSL(h/360,s,l);
   window.setMood=function(name){
     mood=MOODS[name]||MOODS.calm;
-    lineMats.forEach(m=>m.color=hsl(mood.hue,.92,.56));
-    pointMats.forEach(m=>m.color=hsl(mood.hue,.7,.78));
-    heart.material.color=hsl(mood.hue,.5,.94);   // near-white core — brightest
-    halo.material.color=hsl(mood.hue,.9,.44);
-    floorGlow.material.color=hsl(mood.hue,.8,.42);
+    lineMats.forEach(m=>m.color=hsl(mood.hue,.92,.58));
+    pointMats.forEach(m=>m.color=hsl(mood.hue,.7,.8));
+    heart.material.color=hsl(mood.hue,.5,.95);   // near-white core — brightest
+    halos.forEach(h=>h.material.color=hsl(mood.hue,.9,.46));
+    floorGlow.material.color=hsl(mood.hue,.8,.44);
     const m=$('moodline');if(m)m.textContent=mood.label;
   };
   setMood('calm');
 
   // ---- activity: mode + per-word pulses + real mic amplitude ----
-  let act=0,tAct=0,pulse=0;
+  let act=0,tAct=0,pulse=0,glitch=0;
   window.setAvatar=function(mode){
     tAct = mode==='speaking'?1 : mode==='thinking'?.45 : mode==='listening'?.3 : 0;
     $('voiceline').textContent=mode.toUpperCase();
@@ -509,29 +544,33 @@ setInterval(()=>{const n=new Date();
   let t=0;
   function tick(){
     resize();
-    pulse*=.9;
+    pulse*=.9;glitch*=.82;
+    if(Math.random()<.005+act*.02)glitch=1;   // hologram instability
     act+=(tAct-act)*.06;
     const level=Math.min(1,act*.7+pulse*.8+window.audioLevel*.9);
     t+=.016*mood.speed;
-    grp.scale.setScalar(1.04+Math.sin(t*.8)*.013+level*.13);  // breathe/expand
-    const bob=Math.sin(t*.5)*.055;                             // floats mid-air
+    grp.scale.setScalar(1.04+Math.sin(t*.8)*.013+level*.13);
+    const bob=Math.sin(t*.5)*.055;
     grp.position.x+=(px*.3-grp.position.x)*.04;
     grp.position.y+=((bob-py*.2)-grp.position.y)*.05;
     grp.rotation.y+=.001*mood.speed+level*.003;
+    grp.rotation.z=.07*Math.sin(t*.13);        // slow precession wobble
     families.forEach(f=>{f.rotation.y+=f.userData.v*mood.speed*(1+level*1.2)});
-    const flick=1+(Math.random()-.5)*mood.jitter*(0.25+level);  // hologram shimmer
+    const flick=1+(Math.random()-.5)*(mood.jitter*(0.25+level)+glitch*.7);
     lineMats.forEach((m,i)=>m.opacity=Math.min(1,baseOps[i]*flick+level*.22));
-    skMat.opacity=.75+level*.25;
+    flareMat.size=.042+level*.03;
     iris.rotation.y-=.02+level*.05;
     heart.material.opacity=.78+Math.sin(t*2)*.12+level*.22;
     const hs=.6+Math.sin(t*2)*.045+level*.42;heart.scale.set(hs,hs,1);
-    halo.material.opacity=.18+level*.28;
+    halos[0].material.opacity=.14+level*.24;
+    halos[1].material.opacity=.12+level*.18;
     floorGlow.material.opacity=.24-bob*.8;
     renderer.render(scene,cam);
     requestAnimationFrame(tick); // hidden tabs: browser throttles rAF for us
   }
   tick();
 })();
+
 
 
 
