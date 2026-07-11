@@ -1,9 +1,12 @@
 # JARVIS — Specification (source of truth)
 
-**Version 1.0 — 2026-07-11 — Status: Phase 1 ✅ · Phase 2 ✅ (12 Warsaw leads, DoD verified) · Phase 3 ✅ code + first drafts (DoD needs 5 human approvals) · Phase 4 ✅ (Telegram brief live, launchd 08:00)**
+**Version 1.1 — 2026-07-12 — Status: v1 complete ✅ · internal daily-use engine · public Noxioai Office still planned**
 
 Every implementation session starts by reading this file. If code and spec
 disagree, fix one of them in the same session — never let them drift.
+
+For setup, commands, the HUD surface, and redacted screenshots, see
+[README.md](README.md). This file remains the product contract.
 
 ---
 
@@ -29,10 +32,10 @@ everything below is added around it.
 | n8n | never — Go cron/launchd covers scheduling |
 | Next.js dashboard | SHIPPED 2026-07-11 by user decision as a zero-dependency HUD instead (`web/hud.html`, one file, no framework) — Next.js still cut |
 | Multi-provider AI router | already exists: `JARVIS_BASE_URL`/`JARVIS_MODEL` env vars. It's configuration, not code |
-| PIXEL / STARK agents | never as built agents — Claude Code already does this |
+| PIXEL / STARK as separate heavy agents | keep responsibilities as small persona prompts until repeated use proves dedicated infrastructure is needed |
 | Agent registry / workflow engine / task queue | 5+ agents exist; until then a Go interface and a switch |
 | Microservices, Kubernetes, multi-user SaaS | paying customers exist for the engine itself |
-| 700-page documentation | never — this file is the documentation |
+| Excessive documentation | never — this file is the product contract; a short [README](README.md) documents setup and operations |
 
 ## 3. Architecture
 
@@ -50,10 +53,13 @@ everything below is added around it.
   Env: `JARVIS_TELEGRAM_TOKEN`, `JARVIS_TELEGRAM_CHAT`.
 - **Scraping**: plain HTTP fetch first; Playwright (already installed) only
   for JS-heavy sites. No ScrapeGraphAI, no Python sidecar.
-- **HUD** (`jarvis serve`, http://127.0.0.1:7700): Iron-Man dashboard —
-  `web/hud.html` embedded in the binary, voice in/out via browser-native
-  Web Speech API (no whisper/TTS stack), agent cards, lead board, draft
-  approval gate, live activity. Local-only bind.
+- **HUD** (`jarvis serve`, http://127.0.0.1:7700): local command center —
+  `web/hud.html`, Three.js, and the startup audio are embedded in the binary.
+  It has browser-native voice in/out (no Whisper/TTS stack), reactive data
+  sphere and agent network, lead board, approval gate, live activity toasts,
+  clickable agent dossiers, and a rotating original welcome sequence.
+  Browser autoplay may require the explicit **Enable Startup SFX** control.
+  It is local-only by default.
 - **Runtime home `~/Library/JARVIS/`** (binary, .env, memory): macOS TCC
   blocks launchd agents from ~/Documents, so LaunchAgents
   (`com.noxioai.jarvis.serve` KeepAlive + `com.noxioai.jarvis.brief` 08:00)
@@ -167,20 +173,33 @@ reasoning a human agrees with.
 ### Phase 3 — ATLAS (outreach)
 `jarvis atlas <lead-id>` → read lead + company + past experiences → draft
 email and/or LinkedIn message honoring Principle 3 → store unapproved.
-`jarvis approve <outreach-id>` flips the gate; sending is manual copy/paste
-in v1. Outcome recorded with `jarvis outcome <outreach-id> replied`.
+`jarvis approve <outreach-id>` flips the gate. Approved email can then be
+dispatched by HERALD with `jarvis send <outreach-id>` when Gmail SMTP is
+configured; LinkedIn remains manual. Outcome is recorded with
+`jarvis outcome <outreach-id> replied`.
 **Done when:** 5 approved drafts exist that cite real observed problems.
 
 ### Phase 4 — FRIDAY briefing + learning loop
 `jarvis brief` → Telegram message: new leads by tier, drafts awaiting
-approval, outcomes since yesterday, one recommendation. Scheduled daily 8:00
-via launchd. Wire experience retrieval into ORACLE scoring and ATLAS
-drafting prompts.
+approval, outcomes since yesterday, and CALEB's CRM-informed marketing memo.
+Scheduled daily 8:00 via launchd. Experience retrieval is wired into ORACLE
+scoring and ATLAS drafting prompts.
 **Done when:** the briefing arrives on Telegram from the schedule, and an
 ATLAS prompt visibly includes a retrieved past lesson.
 
 **v1 is complete after Phase 4.** Everything else (dashboard, campaigns,
 auto-send, semantic memory, multi-user) is expansion justified only by usage.
+
+### Implementation snapshot — 2026-07-12
+
+| Capability | State |
+|---|---|
+| Foundation, ORACLE, ATLAS, FRIDAY | v1 complete |
+| Human approval gate | Enforced in the database and HERALD send path |
+| CALEB | Shipped: daily CRM memo and `jarvis caleb` |
+| HERALD email | Shipped: approved-email Gmail SMTP dispatch only |
+| Command center | Shipped: local HUD, agent workspace, dossiers, activity, voice, startup sequence |
+| PIXEL / HERALD social | Not built; intentionally next only after current value is proven |
 
 ## 8. v2 — persona agents & daily operations (build AFTER Phase 4)
 
@@ -218,8 +237,9 @@ and queues; one-tap Telegram approval sends. Auto-send without approval is
 out of spec — unattended DMs are how LinkedIn/Freelancer accounts die, and
 those accounts are the sales channel this whole system exists to feed.
 
-Build order after Phase 4: HERALD-email → CALEB → HERALD-social → PIXEL
-formalized. One agent at a time, each proving value before the next starts.
+Shipped after Phase 4: HERALD-email → CALEB → HUD workspace. Next order:
+HERALD-social, then PIXEL formalization. One agent at a time, each proving
+value before the next starts.
 
 ## 9. Implementation prompt template (per phase)
 

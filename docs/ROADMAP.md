@@ -6,7 +6,7 @@
 > One shared "Brain" learns your business; every employee uses it. Run your company from one screen.
 >
 > **Domains:** noxioai.com (international) · noxioai.ir (Iran) — both on Cloudflare.
-> **Owner:** Sobhan Azimzadeh (TECSO). **Built with:** Claude Code + the TECSO skill set.
+> **Owner:** Sobhan Azimzadeh (TECSO).
 
 ---
 
@@ -27,18 +27,30 @@ More desks appear in later phases (sales, invoicing, recruiting...).
 
 | Phase | Name | Goal | Success metric (ONE number) | Status |
 |---|---|---|---|---|
-| **A** | Launch | Landing page + waitlist live on noxioai.com | 100 waitlist emails in 30 days | 🔨 in progress |
-| **B** | The Office | Working product: auth + pixel office + 3 AI employees + Brain | Sobhan uses it daily for TECSO | ⬜ |
+| **A** | Launch | Landing page + waitlist live on noxioai.com | 100 waitlist emails in 30 days | 🟢 live; metric running |
+| **B** | The Office | Working product: auth + pixel office + 3 AI employees + Brain | Sobhan uses it daily for TECSO | 🔨 product next; internal engine shipped |
 | **C** | Business | Automations + Instagram/Telegram tools + invite first users | 10 active outside users | ⬜ |
 | **D** | Commercial | Zarinpal billing, plans, more employees, PWA | First paid Toman | ⬜ |
 
 **Rule:** a phase starts only when the previous phase's metric is real (or consciously waived). Every phase ends with a FULL REPORT (template at the bottom).
 
+### Internal JARVIS proving ground
+
+JARVIS lives in [`jarvis/`](../jarvis/README.md) and is the internal Go +
+Postgres engine used to prove the sales and agent patterns before they become
+the public Noxioai Office. Its v1 flow is operational: ORACLE research,
+ATLAS drafts, a human approval gate, HERALD approved-email dispatch, FRIDAY
+Telegram briefings, and CALEB's daily pipeline memo.
+
+This **does not complete Phase B**. Phase B remains the customer-facing
+product: authenticated users, a shared business Brain, and a visual office
+for Nika, Dara, and Sara.
+
 ---
 
 ## Phase A — Launch (target: 1–2 days)
 
-**Deliverable:** animated bilingual landing page + working waitlist, deployed to Cloudflare Pages on noxioai.com.
+**Deliverable:** animated bilingual landing page + working waitlist, deployed through GitHub Pages on noxioai.com.
 
 ### Technology
 | Part | Tech | Why |
@@ -57,7 +69,7 @@ More desks appear in later phases (sales, invoicing, recruiting...).
 - **Day 2 (launch):** Sobhan connects Cloudflare Pages (checklist below) → custom domain noxioai.com → smoke test both locales on mobile → announcement posts (LinkedIn/Instagram/Telegram drafts provided) → Phase A report.
 
 ### Sobhan's checklist (things only you can do)
-1. **Web3Forms key** — web3forms.com → enter email → copy key → give it to Claude; it's stored as the
+1. **Web3Forms key** — web3forms.com → enter email → copy key → store it as the
    `WEB3FORMS_KEY` GitHub Actions secret (60s).
 2. **Custom domain (when ready)** — GitHub repo → Settings → Pages → Custom domain: `noxioai.com`,
    then on Cloudflare DNS add: `CNAME  noxioai.com → tecso-dev.github.io` (proxy OFF/grey first, until cert issues).
@@ -88,6 +100,11 @@ More desks appear in later phases (sales, invoicing, recruiting...).
 | Office UI | Canvas/CSS isometric pixel office; each employee = desk; click desk → chat panel | The product's visual identity |
 | Hosting | GitHub Pages (UI) + VPS for the Go API + Postgres | VPS location decided by latency test from Iran in week 1 of B |
 
+> **Implementation note:** JARVIS deliberately uses Go's standard `net/http`
+> and `database/sql` with pgx for its internal v1. The table above remains the
+> approved stack for the public customer product; JARVIS is validation code,
+> not a silent replacement for that decision.
+
 ### Build order (each step = a PR Sobhan reads + a part-report)
 1. App skeleton: auth, DB schema (users, brain_profiles, conversations, messages), layout shell
 2. The Brain: onboarding form (business type, tone, products, audience) → stored profile
@@ -96,7 +113,8 @@ More desks appear in later phases (sales, invoicing, recruiting...).
 5. Security pass (`security-review`): rate limits on AI endpoints, input validation, secrets audit
 6. Sobhan-as-user week: daily real use for TECSO tasks → fix list → Phase B report
 
-**Phase B gate:** detailed implementation plan via `claude-mem:make-plan` BEFORE coding, approved by Sobhan (Q method).
+**Phase B gate:** a detailed written implementation plan approved by Sobhan
+(Q method) before coding the public Office.
 
 ---
 
@@ -116,9 +134,10 @@ Zarinpal billing (Toman) · plan tiers (desk count = plan) · usage limits · PW
 
 ```
 Noxioai/
-├── README.md              ← public coming-soon / project face
+├── README.md              ← project overview, live status, and links
 ├── docs/
-│   └── ROADMAP.md         ← THIS FILE — the master guide
+│   ├── ROADMAP.md         ← THIS FILE — the master guide
+│   └── TECH-STACK.md      ← approved technology decisions
 ├── nuxt.config.ts         ← framework config (i18n, tailwind, motion)
 ├── package.json
 ├── i18n/locales/
@@ -127,8 +146,12 @@ Noxioai/
 ├── pages/index.vue        ← the landing page
 ├── components/landing/    ← Hero, Team, Features, HowItWorks, Waitlist
 ├── assets/css/            ← Tailwind + pixel-art helpers
-└── public/                ← favicon, OG images
-   (Phase B adds: server/, db/, composables/, office/)
+├── public/                ← favicon, OG images
+└── jarvis/                ← internal Go/Postgres proving ground
+    ├── README.md          ← setup, commands, HUD, and safety rules
+    ├── SPEC.md            ← JARVIS product contract
+    └── web/               ← embedded HUD, Three.js, startup audio
+   (Phase B later adds: public server/, db/, composables/, office/)
 ```
 
 ## Working rules (how we develop — agreed 2026-07-05)

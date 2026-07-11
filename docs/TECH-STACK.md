@@ -8,6 +8,18 @@
 **TypeScript** (frontend) · **Go** (backend) · **SQL** (schema/queries) · **Bash + YAML** (ops/CI).
 Deliberately excluded: Python, PHP. Frontend framework decision: **Vue (stay)** — React ruled out; Vue equivalents (Inspira UI, shadcn-vue, @vueuse/motion) cover every desired React-ecosystem capability.
 
+## Current internal JARVIS implementation
+
+JARVIS in [`jarvis/`](../jarvis/README.md) is a deliberately lean internal
+validation engine, not the final public Phase B architecture. It uses Go's
+standard `net/http`, `database/sql` with pgx, PostgreSQL 16, an embedded
+single-file HUD, and macOS launchd. This lets the sales workflow prove value
+without prematurely adding public authentication, Redis, a queue, or
+multi-user infrastructure.
+
+The Phase B choices below remain the binding plan for the public Noxioai
+Office. JARVIS is evidence for the design, not an unrecorded stack change.
+
 ## 1. Frontend
 | Part | Technology | Notes |
 |---|---|---|

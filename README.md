@@ -1,71 +1,129 @@
 <div align="center">
 
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:4A00E0,50:8E2DE2,100:48CAE4&height=280&section=header&text=NOXIOAI&fontSize=90&fontAlignY=35&animation=twinkling&fontColor=ffffff" />
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:4A00E0,50:8E2DE2,100:48CAE4&height=220&section=header&text=NOXIOAI&fontSize=76&fontAlignY=35&animation=twinkling&fontColor=ffffff" />
 
-  ![Typing Animation](https://readme-typing-svg.herokuapp.com/?lines=🤖+AI+Employees+For+Your+Business;🏢+A+Visual+Online+Office;🇮🇷+Persian-Native,+Built+for+Iran;🚀+Landing+Live+—+Product+In+Development&font=Fira%20Code&center=true&width=700&height=45&color=8E2DE2&vCenter=true&size=22)
+  **AI employees for Iranian businesses — a visual office, one shared business brain, and real work getting done.**
 
-  <br/>
-
-  [![Live Site](https://img.shields.io/badge/🌐_Live-noxioai_landing-8E2DE2?style=for-the-badge)](https://tecso-dev.github.io/Noxioai/)
-  [![Roadmap](https://img.shields.io/badge/🗺️_Roadmap-docs%2FROADMAP.md-48CAE4?style=for-the-badge)](docs/ROADMAP.md)
-  [![Deploy](https://img.shields.io/github/actions/workflow/status/Tecso-Dev/Noxioai/deploy.yml?style=for-the-badge&label=🚀_Deploy)](https://github.com/Tecso-Dev/Noxioai/actions)
+  [![Landing](https://img.shields.io/badge/Live-noxioai.com-48CAE4?style=for-the-badge)](https://noxioai.com)
+  [![Roadmap](https://img.shields.io/badge/Roadmap-docs%2FROADMAP.md-8E2DE2?style=for-the-badge)](docs/ROADMAP.md)
+  [![JARVIS](https://img.shields.io/badge/Internal_engine-JARVIS-3ee1ff?style=for-the-badge)](jarvis/README.md)
 
 </div>
 
 ---
 
-**Noxioai is an AI-employee platform that lets Iranian businesses run their marketing, social media, customer support, and development from one visual online office — built by [TECSO](https://github.com/Tecso-Dev).**
+NOXIOAI is building a Persian-first workspace where named AI employees help a business with marketing, development, support, and social operations. The product is designed for the channels that matter to its market, especially Telegram and Instagram, while keeping the business context shared through one **Brain**.
 
-Named AI employees with real personalities sit at desks in a pixel-art office. You describe your business once (the **Brain**), and every employee works with that knowledge — in natural Persian, on the channels Iranian businesses actually use (Instagram & Telegram).
+## What is working today
 
-**نوکسیو** یک دفتر کار آنلاین با کارمندان هوش مصنوعی است: بازاریابی، شبکه‌های اجتماعی، پشتیبانی مشتری و توسعه — همه از یک صفحه، به فارسی. **[به لیست انتظار بپیوندید ←](https://tecso-dev.github.io/Noxioai/)**
-
-## 👥 Meet the team
-
-| | Employee | Role |
+| Surface | Status | What it proves |
 |---|---|---|
-| 🩷 | **Nika · نیکا** | Marketing manager — campaigns, copy, SEO content |
-| 💙 | **Dara · دارا** | Developer — site & app guidance, from idea to code |
-| 💚 | **Sara · سارا** | Customer support — tone-perfect Persian replies |
-| 🌸 | **Avisa · آویسا** | Social media — Instagram & Telegram content, always on time |
+| [Noxioai landing](https://noxioai.com) | Live | Bilingual FA-first landing page and waitlist |
+| [JARVIS](jarvis/README.md) | Internal v1 shipped | Go/Postgres sales operating system used as the proving ground for the future Noxioai engine |
+| Public Noxioai Office | Planned | Auth, shared Brain, and pixel-office workflow for Nika, Dara, and Sara |
 
-## 🗺️ Status
+JARVIS is **not** the public customer product or the completion of Phase B. It is the internal system that validates the useful parts first: research, personalized drafts, approval gates, delivery, daily briefings, and learning from outcomes.
+
+## Current product status
 
 | Phase | Goal | Status |
 |---|---|---|
-| **A — Launch** | Landing + waitlist live | ✅ **[Live](https://tecso-dev.github.io/Noxioai/)** |
-| **B — The Office** | Auth + pixel office + 3 working AI employees + Brain | 🔨 Next |
-| **C — Business** | Automations, social tools, first users | ⬜ |
-| **D — Commercial** | Billing (Toman), plans, PWA | ⬜ |
+| A — Launch | Landing and waitlist | 🟢 Live; waitlist metric is running |
+| B — The Office | Public visual office and shared Brain | 🔨 Next product build; JARVIS is the internal proving ground |
+| C — Business | Automations, social tools, first outside users | ⬜ |
+| D — Commercial | Billing, plans, PWA | ⬜ |
 
-Full plan, tech decisions, and day-by-day guide: **[docs/ROADMAP.md](docs/ROADMAP.md)**
+The detailed product plan lives in [docs/ROADMAP.md](docs/ROADMAP.md). The approved technology decisions live in [docs/TECH-STACK.md](docs/TECH-STACK.md).
 
-## 🛠️ Stack
+## JARVIS command center
 
-**Now:** Nuxt 3 (SSG) · Vue 3 · @nuxtjs/i18n (FA-first + RTL) · Tailwind CSS · @vueuse/motion · CSS pixel-art characters · GitHub Actions → GitHub Pages
+JARVIS is a local-first agent system for Sobhan's own sales operations. It discovers and scores companies, drafts personalized outreach, requires human approval before outbound delivery, sends approved email through HERALD, and delivers a daily Telegram briefing with CALEB's pipeline memo.
 
-**Phase B+:** Go API (chi + sqlc) · PostgreSQL (+ pgvector) · Redis · open-weight LLMs with strong Persian (Qwen/DeepSeek) · Telegram Bot API · Zarinpal
+![JARVIS command center — local demo data](jarvis/docs/screenshots/command-center.png)
 
-📐 **Full approved technology map for every part & phase: [docs/TECH-STACK.md](docs/TECH-STACK.md)**
+The HUD includes a reactive Three.js data sphere, a live agent network, voice interaction, a startup sequence, a lead board, a human approval gate, and per-agent activity. Screenshots use sample data; no operational CRM data is documented here.
 
-## 🧑‍💻 Development
+<details>
+<summary><strong>Agent dossier</strong></summary>
 
-```bash
-npm install        # install dependencies
-npm run dev        # dev server at localhost:3000
-npm run generate   # static build → .output/public
+<br>
+
+![JARVIS agent dossier — local demo data](jarvis/docs/screenshots/agent-dossier.png)
+
+</details>
+
+Read the [JARVIS guide](jarvis/README.md) for commands, architecture, environment variables, safety constraints, and deployment details.
+
+## Architecture
+
+```mermaid
+flowchart LR
+  B[Business context / Brain] --> E[AI employees]
+  E --> O[Public Noxioai Office\nPhase B]
+  E --> J[JARVIS internal engine]
+  J --> R[ORACLE\nresearch + scoring]
+  R --> P[(PostgreSQL CRM)]
+  P --> A[ATLAS\npersonalized drafts]
+  A --> G[Human approval gate]
+  G --> H[HERALD\napproved email only]
+  P --> F[FRIDAY + CALEB\ndaily briefing]
 ```
 
-Every push to `main` auto-deploys via [GitHub Actions](.github/workflows/deploy.yml).
+## Repository map
+
+```text
+Noxioai/
+├── pages/ and components/     Nuxt landing page
+├── i18n/locales/              Persian-first and English copy
+├── assets/                    Landing styles
+├── docs/                      Product roadmap and approved stack
+├── jarvis/                    Internal Go/Postgres agent engine
+│   ├── web/                   Embedded local HUD and startup audio
+│   ├── docs/screenshots/      Redacted documentation screenshots
+│   ├── SPEC.md                Product contract for JARVIS
+│   └── README.md              Operating guide and command reference
+└── .github/workflows/         Landing deployment workflow
+```
+
+## Technology
+
+| Area | Current implementation |
+|---|---|
+| Landing | Nuxt 3, Vue 3, TypeScript, Tailwind, `@nuxtjs/i18n`, `@vueuse/motion` |
+| Languages | TypeScript, Go, SQL, Bash, YAML |
+| Internal engine | Go, `database/sql` + pgx, PostgreSQL 16, OpenAI-compatible model interface |
+| JARVIS HUD | Embedded HTML, vendored Three.js, browser-native Web Speech API |
+| Operations | Docker Compose for Postgres, local launchd runtime, Telegram and Gmail SMTP integrations |
+| Planned public product | Nuxt office UI, Go API, PostgreSQL, session auth, shared business Brain, REST + SSE |
+
+## Run locally
+
+### Landing
+
+```bash
+npm install
+npm run dev
+```
+
+### JARVIS
+
+```bash
+cd jarvis
+docker compose up -d
+go build -o jarvis .
+./jarvis db init
+./jarvis serve
+```
+
+Open `http://127.0.0.1:7700`. See [jarvis/README.md](jarvis/README.md) for configuration and every available command.
+
+## Safety and operating rules
+
+- No outbound message or email is sent before a human approves it.
+- Secrets live in local environment files; they are never committed.
+- JARVIS binds locally by default and keeps its private memory on the local machine.
+- The public product starts only from an approved plan; the internal engine is deliberately small and evidence-driven.
 
 ---
 
-<div align="center">
-
-  ⭐ **Star this repo to follow the build** ⭐
-
-  *An AI product by [Sobhan Azimzadeh](https://github.com/sobhanaz) × [TECSO](https://github.com/Tecso-Dev)*
-
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:4A00E0,50:8E2DE2,100:48CAE4&height=120&section=footer" />
-
-</div>
+Built by [Sobhan Azimzadeh](https://github.com/sobhanaz) × [TECSO](https://github.com/Tecso-Dev).
