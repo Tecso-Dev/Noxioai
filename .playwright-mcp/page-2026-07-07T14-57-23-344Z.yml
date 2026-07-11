@@ -1,0 +1,751 @@
+- generic [active] [ref=f2e1]:
+  - generic [ref=f2e3]:
+    - generic [ref=f2e6]:
+      - link "Sintra.ai homepage" [ref=f2e7] [cursor=pointer]:
+        - /url: /
+        - img "Sintra.ai homepage" [ref=f2e8]
+      - generic [ref=f2e9]:
+        - generic [ref=f2e10]:
+          - generic [ref=f2e11]:
+            - generic [ref=f2e12]:
+              - generic [ref=f2e13]: Products
+              - img [ref=f2e15]
+            - generic:
+              - generic:
+                - generic:
+                  - link "Full Team Sintra X":
+                    - /url: /ai-team
+                    - generic: Full Team
+                    - generic: Sintra X
+                  - link "Social Media Manager Soshie":
+                    - /url: /soshie
+                    - generic:
+                      - generic: Social Media Manager
+                      - generic: Soshie
+                  - link "Customer Support Cassie":
+                    - /url: /cassie
+                    - generic:
+                      - generic: Customer Support
+                      - generic: Cassie
+                  - link "Data Analyst Dexter":
+                    - /url: /dexter
+                    - generic:
+                      - generic: Data Analyst
+                      - generic: Dexter
+                  - link "Business Strategist Buddy":
+                    - /url: /buddy
+                    - generic:
+                      - generic: Business Strategist
+                      - generic: Buddy
+                  - link "Email Marketer Emmie":
+                    - /url: /emmie
+                    - generic:
+                      - generic: Email Marketer
+                      - generic: Emmie
+                  - link "Personal Growth Gigi":
+                    - /url: /gigi
+                    - generic:
+                      - generic: Personal Growth
+                      - generic: Gigi
+                  - link "Recruiter Scouty":
+                    - /url: /scouty
+                    - generic:
+                      - generic: Recruiter
+                      - generic: Scouty
+                  - link "Copywriter Penn":
+                    - /url: /penn
+                    - generic:
+                      - generic: Copywriter
+                      - generic: Penn
+                  - link "eCom Specialist Commet":
+                    - /url: /commet
+                    - generic:
+                      - generic: eCom Specialist
+                      - generic: Commet
+                  - link "Sales Strategist Milli":
+                    - /url: /milli
+                    - generic:
+                      - generic: Sales Strategist
+                      - generic: Milli
+                  - link "SEO Mastermind Seomi":
+                    - /url: /seomi
+                    - generic:
+                      - generic: SEO Mastermind
+                      - generic: Seomi
+                  - link "Virtual Assistant Vizzy":
+                    - /url: /vizzy
+                    - generic:
+                      - generic: Virtual Assistant
+                      - generic: Vizzy
+          - generic [ref=f2e17]:
+            - generic [ref=f2e18]:
+              - generic [ref=f2e19]: Features
+              - img [ref=f2e21]
+            - generic:
+              - generic:
+                - generic:
+                  - link "Brain AI":
+                    - /url: /features/brain-ai
+                    - generic: Brain AI
+                  - link "Integrations":
+                    - /url: /integrations
+                    - generic: Integrations
+          - link "Pricing" [ref=f2e23] [cursor=pointer]:
+            - /url: /pricing
+            - generic [ref=f2e24]: Pricing
+          - generic [ref=f2e25]:
+            - generic [ref=f2e26]:
+              - generic [ref=f2e27]: Resources
+              - img [ref=f2e29]
+            - generic:
+              - generic:
+                - generic:
+                  - link "Blog":
+                    - /url: /blog
+                    - generic: Blog
+                  - link "Use cases":
+                    - /url: /use-cases
+                    - generic: Use cases
+                  - link "Case studies":
+                    - /url: /case-studies
+                    - generic: Case studies
+                  - link "FAQ":
+                    - /url: /#faq
+                    - generic: FAQ
+                  - link "Help center":
+                    - /url: /help
+                    - generic: Help center
+                  - link "What is an AI Helper":
+                    - /url: /ai-helpers
+                    - generic: What is an AI Helper
+                  - link "Careers":
+                    - /url: /careers
+                    - generic: Careers
+          - link "Book a Demo" [ref=f2e31] [cursor=pointer]:
+            - /url: /bookademo
+            - generic [ref=f2e32]: Book a Demo
+        - generic [ref=f2e33]:
+          - link "Log in" [ref=f2e34] [cursor=pointer]:
+            - /url: https://app.sintra.ai/login
+            - generic [ref=f2e35]: Log in
+          - link "Get Started" [ref=f2e36] [cursor=pointer]:
+            - /url: /pricing
+            - generic [ref=f2e37]: Get Started
+    - generic [ref=f2e47]:
+      - 'heading "AI Employees: Your First Digital Workers Team That Never Sleep" [level=1] [ref=f2e49]'
+      - paragraph [ref=f2e51]: Hire AI employees today - get your first 24/7 digital team that runs your socials, inbox, website, content, customer support, and business and sales operations without adding extra headcount.
+      - link "Get Sintra" [ref=f2e54] [cursor=pointer]:
+        - /url: /pricing
+        - generic [ref=f2e55]: Get Sintra
+    - generic [ref=f2e58]:
+      - img [ref=f2e61]
+      - generic [ref=f2e66]:
+        - heading "Find The Right AI Employee for Any Business" [level=2] [ref=f2e67]:
+          - text: Find The Right AI Employee
+          - text: for Any Business
+        - paragraph [ref=f2e69]: Every business is different. Your team should be too. That’s why we built AI employees for real business roles. Each worker is designed to take ownership of a specific function - so you can stop juggling, start delegating, and build a team that actually scales with you.
+    - generic [ref=f2e73]:
+      - generic [ref=f2e74]:
+        - img [ref=f2e77] [cursor=pointer]
+        - img [ref=f2e81] [cursor=pointer]
+        - generic [ref=f2e83]:
+          - group "9 / 12" [ref=f2e84]:
+            - link [ref=f2e85] [cursor=pointer]:
+              - /url: /seomi
+            - generic [ref=f2e88]:
+              - link "Seomi" [ref=f2e89] [cursor=pointer]:
+                - /url: /seomi
+                - heading "Seomi" [level=2] [ref=f2e90]
+              - paragraph [ref=f2e91]: SEO Specialist. Streamline business processes with Seomi’s proven SEO strategies, SEO-optimized blog posts, and AI-powered solutions to boost your website rankings. Seomi brings advanced SEO skills to your team, helping you stay ahead in search rankings.
+          - group "10 / 12" [ref=f2e92]:
+            - link [ref=f2e93] [cursor=pointer]:
+              - /url: /soshie
+            - generic [ref=f2e96]:
+              - link "Soshie" [ref=f2e97] [cursor=pointer]:
+                - /url: /soshie
+                - heading "Soshie" [level=2] [ref=f2e98]
+              - paragraph [ref=f2e99]: Social Media Manager. Boost Productivity with AI social media manager by using business automation tools—generate content, plan strategies, schedule posts, find trends, and more. Soshie can collaborate with your marketing and content teams to ensure a unified social media strategy.
+          - group "11 / 12" [ref=f2e100]:
+            - link [ref=f2e101] [cursor=pointer]:
+              - /url: /vizzy
+            - generic [ref=f2e104]:
+              - link "Vizzy" [ref=f2e105] [cursor=pointer]:
+                - /url: /vizzy
+                - heading "Vizzy" [level=2] [ref=f2e106]
+              - paragraph [ref=f2e107]: Virtual Assistant. A trustworthy AI for business owners and busy entrepreneurs to handle calendars, schedule meetings, plan trips, or simply ask AI questions about daily challenges.
+          - group "12 / 12" [ref=f2e108]:
+            - link [ref=f2e109] [cursor=pointer]:
+              - /url: /milli
+            - generic [ref=f2e112]:
+              - link "Milli" [ref=f2e113] [cursor=pointer]:
+                - /url: /milli
+                - heading "Milli" [level=2] [ref=f2e114]
+              - paragraph [ref=f2e115]: Sales Manager. Milli uses your business insights to craft compelling cold call scripts, design persuasive cold emails, and build pitches that help you close deals with confidence. Milli is also capable of adapting sales strategies to different audiences and markets.
+          - group "1 / 12" [ref=f2e116]:
+            - link [ref=f2e117] [cursor=pointer]:
+              - /url: /buddy
+            - generic [ref=f2e120]:
+              - link "Buddy" [ref=f2e121] [cursor=pointer]:
+                - /url: /buddy
+                - heading "Buddy" [level=2] [ref=f2e122]
+              - paragraph [ref=f2e123]: Business Development Manager. Your go-to AI for business development, crafting growth strategies, delivering business insights, and excelling in AI for marketing to ensure success in product launches, audience analysis, and more. Buddy has helped companies of all sizes achieve their business development goals.
+          - group "2 / 12" [ref=f2e124]:
+            - link [ref=f2e125] [cursor=pointer]:
+              - /url: /cassie
+            - generic [ref=f2e128]:
+              - link "Cassie" [ref=f2e129] [cursor=pointer]:
+                - /url: /cassie
+                - heading "Cassie" [level=2] [ref=f2e130]
+              - paragraph [ref=f2e131]: Customer Support Specialist. As a smart and charming AI for customer support, Cassie crafts expertly tailored responses to customer queries while maintaining your brand’s unique voice. Cassie works alongside your human employees, supporting them to deliver exceptional customer support.
+          - group "3 / 12" [ref=f2e132]:
+            - link [ref=f2e133] [cursor=pointer]:
+              - /url: /commet
+            - generic [ref=f2e136]:
+              - link "Commet" [ref=f2e137] [cursor=pointer]:
+                - /url: /commet
+                - heading "Commet" [level=2] [ref=f2e138]
+              - paragraph [ref=f2e139]: eCommerce Manager. Your trusted eCommerce guru, here to guide you through online store setup, product launches, and streamline business processes with efficient processing of orders, inventory, and customer data.
+          - group "4 / 12" [ref=f2e140]:
+            - link [ref=f2e141] [cursor=pointer]:
+              - /url: /dexter
+            - generic [ref=f2e144]:
+              - link "Dexter" [ref=f2e145] [cursor=pointer]:
+                - /url: /dexter
+                - heading "Dexter" [level=2] [ref=f2e146]
+              - paragraph [ref=f2e147]: Data Analyst. A data genius seamlessly transforming complex data into precise calculations, forecasts, and clear, actionable business insights that drive results. With Dexter, you gain actionable insights that inform your business decisions.
+          - group "5 / 12" [ref=f2e148]:
+            - link [ref=f2e149] [cursor=pointer]:
+              - /url: /emmie
+            - generic [ref=f2e152]:
+              - link "Emmie" [ref=f2e153] [cursor=pointer]:
+                - /url: /emmie
+                - heading "Emmie" [level=2] [ref=f2e154]
+              - paragraph [ref=f2e155]: Email Marketing Specialist. From crafting engaging emails to generating effective win-back flows, Emmie uses her AI-powered solutions to turn your subscriber list into revenue. Emmie also helps reduce the cost of email marketing campaigns while increasing ROI.
+          - group "6 / 12" [ref=f2e156]:
+            - link [ref=f2e157] [cursor=pointer]:
+              - /url: /gigi
+            - generic [ref=f2e160]:
+              - link "Gigi" [ref=f2e161] [cursor=pointer]:
+                - /url: /gigi
+                - heading "Gigi" [level=2] [ref=f2e162]
+              - paragraph [ref=f2e163]: Personal Growth Coach. Boost productivity with AI—whether you need help planning meals, organizing study sessions, or building workout routines, Gigi is here to support your journey to a better self and bring balance and improvement to your daily life.
+          - group "7 / 12" [ref=f2e164]:
+            - link [ref=f2e165] [cursor=pointer]:
+              - /url: /penn
+            - generic [ref=f2e168]:
+              - link "Penn" [ref=f2e169] [cursor=pointer]:
+                - /url: /penn
+                - heading "Penn" [level=2] [ref=f2e170]
+              - paragraph [ref=f2e171]: Copywriter. Dedicated to writing compelling copy for your ads, blog posts, websites, advertorials and other marketing campaigns that convert readers into customers. For example, Penn can generate engaging ad copy for a new product launch or craft a persuasive email marketing campaign to boost conversions.
+          - group "8 / 12" [ref=f2e172]:
+            - link [ref=f2e173] [cursor=pointer]:
+              - /url: /scouty
+            - generic [ref=f2e176]:
+              - link "Scouty" [ref=f2e177] [cursor=pointer]:
+                - /url: /scouty
+                - heading "Scouty" [level=2] [ref=f2e178]
+              - paragraph [ref=f2e179]: Recruiter. Turning hiring challenges into opportunities, crafting magnetic job posts, and guiding smooth team onboarding. Scouty can support recruitment needs across all departments, from HR to finance to customer service. For any recruitment-related topics, this is your go-to employee to ask AI questions.
+      - link "Get helpers" [ref=f2e181] [cursor=pointer]:
+        - /url: /ai-team
+    - generic [ref=f2e186]:
+      - generic [ref=f2e188]:
+        - heading "Employ AI staff to automate work. Even while you sleep." [level=2] [ref=f2e189]
+        - paragraph [ref=f2e191]: You don’t need hundreds of employees to run a modern business. Sintra AI gives you the best AI employees to automate day-to-day work - so your business keeps moving. Work gets done continuously, efficiently, around the clock and without burnout.
+      - generic [ref=f2e192]:
+        - generic [ref=f2e194]:
+          - heading "Soshie, schedule social media posts for me" [level=3] [ref=f2e196]
+          - paragraph [ref=f2e197]: Automate your social media game with AI for marketing. Write, create, and post content effortlessly with AI-powered solutions.
+        - generic [ref=f2e199]:
+          - heading "Cassie, check my Facebook comments" [level=3] [ref=f2e201]
+          - paragraph [ref=f2e202]: Engage your audience with business automation tools. Use AI for customer support to analyze comments and craft personalized responses. By automating comment analysis, your team can focus on building stronger customer relationships.
+        - generic [ref=f2e204]:
+          - heading "Vizzy, help me prepare for today's meetings" [level=3] [ref=f2e206]
+          - paragraph [ref=f2e207]: Boost productivity with AI. Streamline business processes with daily summaries based on your email and calendar to keep your schedule on track.
+    - generic [ref=f2e211]:
+      - generic [ref=f2e212]:
+        - heading "From setup to value in minutes" [level=2] [ref=f2e213]
+        - paragraph [ref=f2e215]: Getting started with our AI employees is intentionally simple. Add your business once, define how you work, and your they are ready to operate - no complex configuration, no technical setup.
+      - generic [ref=f2e218]:
+        - generic [ref=f2e219]:
+          - generic [ref=f2e220]: "1"
+          - generic [ref=f2e221]:
+            - heading "Share how your business works" [level=3] [ref=f2e222]
+            - paragraph [ref=f2e223]: Add your brand context, workflows, and goals once. This becomes the foundation your AI employees use to make decisions and produce work that fits your business.
+        - generic [ref=f2e224]:
+          - generic [ref=f2e225]: "2"
+          - generic [ref=f2e226]:
+            - heading "Connect your tools and systems" [level=3] [ref=f2e227]
+            - paragraph: Link the platforms you already use. Your AI employees gain real context and can operate directly where work happens.
+        - generic [ref=f2e228]:
+          - generic [ref=f2e229]: "3"
+          - generic [ref=f2e230]:
+            - heading "Define rules and success criteria" [level=3] [ref=f2e231]
+            - paragraph: Set priorities, guidelines, and approval levels. AI employees follow these instructions consistently across roles and tasks.
+        - generic [ref=f2e232]:
+          - generic [ref=f2e233]: "4"
+          - generic [ref=f2e234]:
+            - heading "Sit back while AI employees do the work" [level=3] [ref=f2e235]
+            - paragraph: Once set up, your AI employees handle execution, adapt as your business evolves, and keep work moving - with minimal input from you.
+    - generic [ref=f2e239]:
+      - heading "Work globally with no extra effort." [level=2] [ref=f2e241]
+      - paragraph [ref=f2e244]:
+        - generic [ref=f2e245]:
+          - strong [ref=f2e246]: Speaks in 100+ languages.
+          - text: Sintra’s digital AI employees are built to work across different markets - write social media content in Italian, answer German emails, support your Spanish e-commerce store, or build websites in French. Forget hiring local teams or buying multiple tools. Enter foreign markets with confidence using one platform.
+      - paragraph
+    - generic [ref=f2e252]:
+      - heading "They learn your business. Just like real workers." [level=2] [ref=f2e253]
+      - paragraph [ref=f2e255]:
+        - text: Onboard your AI employees by sharing your brand context. Add documents, provide tone of voice, branded guidelines, and explain your business values. Every interaction adds to their understanding, so outputs stay consistent, on-brand, and aligned with how your business actually operates.
+        - text: ‍
+        - text: As your business grows, your AI workers grow with it - they learn from new work, adapt to requested changes, and improve over time without retraining or setup. Work with digital employee team that evolves alongside you, not tools you constantly have to reconfigure.
+    - generic [ref=f2e265]:
+      - heading "Integrates with your favorite tools." [level=2] [ref=f2e267]
+      - paragraph [ref=f2e269]: Your AI employees don’t live in a silo. They work directly inside the tools your business already relies on - from email and calendars to social platforms, CRMs, to personal apps. By connecting your existing stack, Sintra gives your digital staff the context they need to follow your workflows, act at the right moment, and keep work moving without manual handoffs. No new processes to learn. No disruption. Just smarter execution across your tools.
+    - generic [ref=f2e274]:
+      - heading "Multiple workspaces. One team with different AI agents as employees." [level=2] [ref=f2e276]
+      - generic [ref=f2e277]:
+        - generic [ref=f2e278]:
+          - heading "Up to 5 profiles" [level=3] [ref=f2e279]
+          - paragraph [ref=f2e281]: Create up to 5 business profiles, each customized to your unique business needs and specific goals, powered by AI employees ready to deliver results.
+        - generic [ref=f2e282]:
+          - heading "Share workspace with the team" [level=3] [ref=f2e283]
+          - paragraph [ref=f2e285]: Collaborate with your team in real-time. Share your workspace to make business insights accessible to everyone involved.
+    - generic [ref=f2e292]:
+      - generic [ref=f2e295]:
+        - heading "The benefits of hiring AI helpers" [level=2] [ref=f2e297]
+        - paragraph [ref=f2e299]:
+          - text: Hiring AI staff isn’t just about getting work done - it’s about changing how your business operates day to day.
+          - text: With Sintra, you gain reliability, clarity, and momentum that’s hard to achieve with traditional teams or disconnected tools.
+      - generic [ref=f2e300]:
+        - generic [ref=f2e302]:
+          - heading "Consistent execution, every time" [level=3] [ref=f2e303]: Consistent execution, every time
+          - paragraph [ref=f2e304]: AI employees follow instructions precisely and apply them the same way across every task. No dropped details, no inconsistency, no “it depends who’s doing it” - just dependable execution aligned with how you want things done.
+        - generic [ref=f2e306]:
+          - heading "Faster decisions, less friction" [level=3] [ref=f2e307]: Faster decisions, less friction
+          - paragraph [ref=f2e308]: With AI employees handling structured work and surfacing relevant information, decisions happen quicker. You spend less time chasing updates or clarifying context and more time acting with confidence.
+        - generic [ref=f2e310]:
+          - heading "Predictable output without management overhead" [level=3] [ref=f2e311]: Predictable output without management overhead
+          - paragraph [ref=f2e312]: AI employees don’t require supervision, follow-ups, or performance check-ins. Once assigned, they execute reliably - giving you predictable results without the time cost of managing people or processes.
+      - generic [ref=f2e313]:
+        - generic [ref=f2e315]:
+          - heading "More room for creative and strategic thinking" [level=3] [ref=f2e316]: More room for creative and strategic thinking
+          - paragraph [ref=f2e317]: By offloading operational and repetitive responsibilities, AI workers free up mental space. Your human team can focus on problem-solving, innovation, and growth - the areas where human judgment matters most.
+        - generic [ref=f2e319]:
+          - heading "Objective decisions without personal bias" [level=3] [ref=f2e320]
+          - paragraph [ref=f2e321]: AI employees execute work based on data, instructions, and context - not moods, assumptions, or personal bias. This leads to fairer decisions, more consistent outcomes, and processes that stay aligned with your standards, regardless of volume or pressure.
+    - generic [ref=f2e325]:
+      - generic [ref=f2e326]:
+        - generic [ref=f2e327]:
+          - heading "Built on real work, proven at scale." [level=2] [ref=f2e328]
+          - paragraph [ref=f2e329]: Every task completed adds experience. Every experience sharpens intelligence. Sintra’s AI employees are trained through real business work, at global scale.
+        - generic [ref=f2e330]:
+          - generic [ref=f2e331]:
+            - generic [ref=f2e332]:
+              - paragraph [ref=f2e333]: More than
+              - heading "100M+" [level=3] [ref=f2e334]
+            - paragraph [ref=f2e335]: prompts processed in 2025
+          - generic [ref=f2e336]:
+            - generic [ref=f2e337]:
+              - paragraph [ref=f2e338]: More than
+              - heading "600K+" [level=3] [ref=f2e339]
+            - paragraph [ref=f2e340]: accounts managed overall
+          - generic [ref=f2e341]:
+            - generic [ref=f2e342]:
+              - paragraph [ref=f2e343]: Active across
+              - heading "50+" [level=3] [ref=f2e344]
+            - paragraph [ref=f2e345]: countries in 2025
+          - generic [ref=f2e346]:
+            - generic [ref=f2e347]:
+              - paragraph [ref=f2e348]: Available
+              - heading "24/7" [level=3] [ref=f2e349]
+            - paragraph [ref=f2e350]: on web and mobile
+      - link "Automate your business!" [ref=f2e352] [cursor=pointer]:
+        - /url: /pricing
+        - generic [ref=f2e353]: Automate your business!
+    - generic [ref=f2e356]:
+      - generic [ref=f2e358]:
+        - heading "AI workers of the month, every month." [level=2] [ref=f2e359]
+        - paragraph [ref=f2e361]: Trusted by 40,000+ entrepreneurs across 100+ countries.Whether you’re a solo founder, a growing team, or a global company, Sintra adapts to how you work - and grows with you. Join tens of thousands of businesses across the world using AI employees and get ahead of your competition. New features are added continuously, so your team keeps getting better, month after month.
+      - generic [ref=f2e362]:
+        - generic [ref=f2e363]:
+          - generic [ref=f2e364]:
+            - generic [ref=f2e365]:
+              - generic [ref=f2e369]: SintraAI has been a Game-Changer for My Business!
+              - paragraph [ref=f2e371]: I can’t recommend SintraAI enough. It’s like having a personal business coach 24/7, mapping out steps to grow my company and clarifying my priorities. I feel a renewed sense of focus and control every day.
+              - paragraph [ref=f2e372]: December 29, 2024 • Socrate Concepcion • US
+            - generic [ref=f2e373]:
+              - generic [ref=f2e377]: Perfect for Solopreneurs—New or Seasoned
+              - paragraph [ref=f2e379]: Each AI bot tackles my to-do list, from scheduling tasks to crawling my website for SEO tips. I love how it set up calendar reminders for all my commitments. Sintra.ai is well worth every penny, especially for a busy single-person business.
+              - paragraph [ref=f2e380]: December 14, 2024 • Jennifer Glenn • US
+            - generic [ref=f2e381]:
+              - generic [ref=f2e385]: Additional Help from Very Organized Helpers!
+              - paragraph [ref=f2e387]: As an entrepreneur launching a new venture, Sintra.ai has made a real difference. The AI assistants are like personal staff I can rely on. And whenever I needed support, the team was on point. A must-try for any budding business!
+              - paragraph [ref=f2e388]: December 21, 2024 • Custódio Barreiros • HU
+            - generic [ref=f2e389]:
+              - generic [ref=f2e393]: No psychology degree needed and no drama!
+              - paragraph [ref=f2e395]: I once had a large team, and although I loved my helpers, they needed constant motivation. With Sintra, there’s no drama, just new ideas that I can simply accept or reject. It’s a huge relief—100% recommended.
+              - paragraph [ref=f2e396]: December 26, 2024 • Holly Wehde • US
+            - generic [ref=f2e397]:
+              - generic [ref=f2e401]: Perfect AI Support for My Online Boutique
+              - paragraph [ref=f2e403]: Hiring Sintra was a great decision for my struggling boutique. They handle social media posts, guide my ads, and even offered a solution for double social media pages. Now I can focus on my inventory and customers.
+              - paragraph [ref=f2e404]: December 17, 2024 • Michele Davis • US
+          - generic [ref=f2e405]:
+            - generic [ref=f2e406]:
+              - generic [ref=f2e410]: Sintra X Saved Me Time
+              - paragraph [ref=f2e412]: Signed up for Sintra X—it felt overwhelming at first, but once it understood how I think, it turned into a creative powerhouse. Support is top-notch, and the daily integrations impress me.
+              - paragraph [ref=f2e413]: Dec 10, 2024 • Sami Liftoff • US
+            - generic [ref=f2e414]:
+              - generic [ref=f2e418]: Some Time They’re Too Effective with Ideas
+              - paragraph [ref=f2e420]: I’m not usually one to give top marks, but once I got comfortable with Sintra’s 12 helpers, I was blown away by their efficiency. They churn out so many analytical ideas I have to pause and digest them. It’s sometimes overwhelming, but in a good way.
+              - paragraph [ref=f2e421]: December 29, 2024 • lars • DK
+            - generic [ref=f2e422]:
+              - generic [ref=f2e426]: SOOO much better than ChatGPT
+              - paragraph [ref=f2e428]: Sintra integrates with all my favorite tools and these little helpers automate my tasks in a huge way. They actually learn my company’s style day by day. It’s a massive step up from generic AI chats.
+              - paragraph [ref=f2e429]: December 30, 2024 • Michelangelo • IT
+            - generic [ref=f2e430]:
+              - generic [ref=f2e434]: So far, I love it!
+              - paragraph [ref=f2e436]: My life is simpler with Sintra. It handles content creation, next steps, brainstorming, and copy. I highly recommend it if you want to free up mental space for what truly matters in your business.
+              - paragraph [ref=f2e437]: December 28, 2024 • Lionel D'Alvia • US
+            - generic [ref=f2e438]:
+              - generic [ref=f2e442]: I Love Using Sintra
+              - paragraph [ref=f2e444]: My “team” in Sintra knocks out tasks like magic, offering fresh ideas for efficiency and better customer outreach. It’s a relief knowing I have AI assistants ready to go around the clock.
+              - paragraph [ref=f2e445]: December 31, 2024 • Kat Angelica • US
+          - generic [ref=f2e446]:
+            - generic [ref=f2e447]:
+              - generic [ref=f2e451]: Early but satisfied user
+              - paragraph [ref=f2e453]: I’ve only been using Sintra for a couple of weeks, but the experience has been great—especially with the social media bot reaching out to me with new ideas. The pull model feels super proactive and makes me more confident in my daily tasks.
+              - paragraph [ref=f2e454]: December 30, 2024 • Bayan Qandil • US
+            - generic [ref=f2e455]:
+              - generic [ref=f2e459]: 1st class service by everyone at Sintra.ai
+              - paragraph [ref=f2e461]: I challenge anyone to compare other platforms to Sintra.ai and their staff—you won’t find a better customer experience. Everyone is professional, responsive, and genuinely cares about helping. Truly top-notch!
+              - paragraph [ref=f2e462]: December 28, 2024 • Timothy Montjoy • US
+            - generic [ref=f2e463]:
+              - generic [ref=f2e467]: Sintra is Amazing!
+              - paragraph [ref=f2e469]: This platform helps me like a full-time employee would. As a startup, I can’t afford extra staff, so Sintra stepped in to handle complex tasks and free me up for big-picture thinking.
+              - paragraph [ref=f2e470]: December 28, 2024 • Jules Kincaid • US
+            - generic [ref=f2e471]:
+              - generic [ref=f2e475]: So Much on My Plate, But Sintra Makes It Easy
+              - paragraph [ref=f2e477]: I’m juggling multiple hats in my business, and these 12 AI “helpers” lighten the load. They even crack jokes and celebrate milestones with me! I saved thousands in consultant fees by letting Sintra handle SEO and content tasks.
+              - paragraph [ref=f2e478]: December 30, 2024 • Michelle Smith • US
+            - generic [ref=f2e479]:
+              - generic [ref=f2e483]: I Was Pleasantly Surprised with Sintra
+              - paragraph [ref=f2e485]: This platform helps me like a full-time employee would. As a startup, I can’t afford extra staff, so Sintra stepped in to handle complex tasks and free me up for big-picture thinking.
+              - paragraph [ref=f2e486]: December 24, 2024 • Domanic R.H • US
+        - generic [ref=f2e488] [cursor=pointer]:
+          - generic [ref=f2e491]: 40,000+ business owners use Sintra
+          - generic [ref=f2e493]:
+            - generic [ref=f2e494]: View more
+            - img [ref=f2e496]
+    - generic [ref=f2e501]:
+      - heading "How we compare" [level=2] [ref=f2e504]
+      - generic [ref=f2e506]:
+        - generic [ref=f2e507]:
+          - generic [ref=f2e510]:
+            - img "OpenAI logo"
+          - generic [ref=f2e511]:
+            - img "Claude logo"
+          - generic [ref=f2e512]:
+            - img "Lindy company logo."
+        - generic [ref=f2e514]:
+          - generic [ref=f2e515]:
+            - generic [ref=f2e517]: Daily business ideas
+            - generic [ref=f2e519]: "12"
+            - generic [ref=f2e521]: "1"
+            - generic [ref=f2e523]: "4"
+            - generic [ref=f2e525]: "1"
+            - generic [ref=f2e527]: "6"
+          - generic [ref=f2e528]:
+            - generic [ref=f2e530]: Highly trained on top profiles
+            - img [ref=f2e533]
+            - img [ref=f2e537]
+            - img [ref=f2e541]
+            - img [ref=f2e545]
+            - img [ref=f2e549]
+          - generic [ref=f2e551]:
+            - generic [ref=f2e553]: Posts automatically to platforms
+            - img [ref=f2e556]
+            - img [ref=f2e560]
+            - img [ref=f2e564]
+            - img [ref=f2e568]
+            - img [ref=f2e572]
+          - generic [ref=f2e574]:
+            - generic [ref=f2e576]: Personalized to your brand
+            - img [ref=f2e579]
+            - img [ref=f2e583]
+            - img [ref=f2e587]
+            - img [ref=f2e591]
+            - img [ref=f2e595]
+          - generic [ref=f2e597]:
+            - generic [ref=f2e599]: Built for teams
+            - img [ref=f2e602]
+            - img [ref=f2e606]
+            - img [ref=f2e610]
+            - img [ref=f2e614]
+            - img [ref=f2e618]
+          - generic [ref=f2e620]:
+            - generic [ref=f2e622]: Meeting Note-Taking
+            - img [ref=f2e625]
+            - img [ref=f2e629]
+            - img [ref=f2e633]
+            - img [ref=f2e637]
+            - img [ref=f2e641]
+          - generic [ref=f2e643]:
+            - generic [ref=f2e645]: SEO Optimization
+            - img [ref=f2e648]
+            - img [ref=f2e652]
+            - img [ref=f2e656]
+            - img [ref=f2e660]
+            - img [ref=f2e664]
+          - generic [ref=f2e666]:
+            - generic [ref=f2e668]: Marketing Plan Creation
+            - img [ref=f2e671]
+            - img [ref=f2e675]
+            - img [ref=f2e679]
+            - img [ref=f2e683]
+            - img [ref=f2e687]
+          - generic [ref=f2e689]:
+            - generic [ref=f2e691]: Automated Copywriting
+            - img [ref=f2e694]
+            - img [ref=f2e698]
+            - img [ref=f2e702]
+            - img [ref=f2e706]
+            - img [ref=f2e710]
+          - generic [ref=f2e712]:
+            - generic [ref=f2e714]: Business Analysis
+            - img [ref=f2e717]
+            - img [ref=f2e721]
+            - img [ref=f2e725]
+            - img [ref=f2e729]
+            - img [ref=f2e733]
+          - generic [ref=f2e735]:
+            - generic [ref=f2e737]: Sales Script Creation
+            - img [ref=f2e740]
+            - img [ref=f2e744]
+            - img [ref=f2e748]
+            - img [ref=f2e752]
+            - img [ref=f2e756]
+          - generic [ref=f2e758]:
+            - generic [ref=f2e760]: Image Generation
+            - img [ref=f2e763]
+            - img [ref=f2e767]
+            - img [ref=f2e771]
+            - img [ref=f2e775]
+            - img [ref=f2e779]
+          - link "Get Sintra" [ref=f2e784] [cursor=pointer]:
+            - /url: /pricing
+            - generic [ref=f2e785]: Get Sintra
+    - heading "Trusted by leading teams worldwide" [level=2] [ref=f2e798]
+    - generic [ref=f2e805]:
+      - heading "Get Sintra Today" [level=1] [ref=f2e808]
+      - generic [ref=f2e810]:
+        - generic [ref=f2e812]:
+          - 'button "Monthly plan For steady monthly growth $97 $48.50 /mo Total: $97 $48.50 for 1 month Save 50%" [ref=f2e813] [cursor=pointer]':
+            - generic [ref=f2e815]:
+              - generic [ref=f2e816]: Monthly plan
+              - generic [ref=f2e817]: For steady monthly growth
+            - generic [ref=f2e819]:
+              - generic [ref=f2e820]: $97
+              - generic [ref=f2e821]:
+                - generic [ref=f2e822]: $48.50
+                - generic [ref=f2e823]: /mo
+              - generic [ref=f2e824]:
+                - paragraph [ref=f2e825]: "Total: $97 $48.50 for 1 month"
+                - generic [ref=f2e827]: Save 50%
+          - 'button "Yearly plan For achieving long-term business goals $52 $15.60 /mo Total: $468 $187.20 for 12 months Save 70% Most Popular" [ref=f2e828] [cursor=pointer]':
+            - generic [ref=f2e830]:
+              - generic [ref=f2e831]: Yearly plan
+              - generic [ref=f2e832]: For achieving long-term business goals
+            - generic [ref=f2e834]:
+              - generic [ref=f2e835]: $52
+              - generic [ref=f2e836]:
+                - generic [ref=f2e837]: $15.60
+                - generic [ref=f2e838]: /mo
+              - generic [ref=f2e839]:
+                - paragraph [ref=f2e840]: "Total: $468 $187.20 for 12 months"
+                - generic [ref=f2e842]: Save 70%
+            - generic [ref=f2e844]: Most Popular
+          - 'button "Quarterly plan For hitting your quarter goals $59 $23.60 /mo Total: $177 $70.8 for 3 months Save 60%" [ref=f2e845] [cursor=pointer]':
+            - generic [ref=f2e847]:
+              - generic [ref=f2e848]: Quarterly plan
+              - generic [ref=f2e849]: For hitting your quarter goals
+            - generic [ref=f2e851]:
+              - generic [ref=f2e852]: $59
+              - generic [ref=f2e853]:
+                - generic [ref=f2e854]: $23.60
+                - generic [ref=f2e855]: /mo
+              - generic [ref=f2e856]:
+                - paragraph [ref=f2e857]: "Total: $177 $70.8 for 3 months"
+                - generic [ref=f2e859]: Save 60%
+        - generic [ref=f2e860]:
+          - link "Get Sintra" [ref=f2e861] [cursor=pointer]:
+            - /url: https://app.sintra.ai/checkout?yearly_toggle=true&plan=yearly&discount=w70
+            - generic [ref=f2e862]: Get Sintra
+          - generic [ref=f2e864]:
+            - img [ref=f2e866]
+            - generic [ref=f2e868]: 14-day money-back guarantee
+    - generic [ref=f2e877]:
+      - heading "Your new AI digital workers team with infinite knowledge." [level=2] [ref=f2e878]
+      - paragraph [ref=f2e880]: AI for business has never been this personal. Hire your new team - work less, but do more.
+      - link "Get Sintra" [ref=f2e883] [cursor=pointer]:
+        - /url: /pricing
+        - generic [ref=f2e884]: Get Sintra
+    - generic [ref=f2e891]:
+      - generic [ref=f2e892]:
+        - heading "AI Employee FAQs. Let’s clear things up." [level=2] [ref=f2e893]
+        - paragraph [ref=f2e895]:
+          - text: Yes, we understand - AI-powered solutions, business automation tools, AI workers, digital AI staff… a lot of big words can get confusing.
+          - text: We’re here to clear the air - and if you still feel the need to ask AI questions - Cassie is ready to answer 24/7.
+      - generic [ref=f2e896]:
+        - generic [ref=f2e897]:
+          - generic [ref=f2e898] [cursor=pointer]:
+            - heading "What is AI employee?" [level=3] [ref=f2e899]
+            - img [ref=f2e902]
+          - paragraph [ref=f2e904]: An AI employee is a role-based digital worker designed to handle real business tasks. It operates inside your tools, follows your workflows, learns your business over time, and takes ownership of specific functions - like marketing, support, or operations - so work gets done consistently without constant supervision.
+        - generic [ref=f2e906]:
+          - generic [ref=f2e907] [cursor=pointer]:
+            - heading "Is there a money-back guarantee?" [level=3] [ref=f2e908]
+            - img [ref=f2e911]
+          - paragraph [ref=f2e913]:
+            - text: Yes, we offer a
+            - link "money-back guarantee scheme" [ref=f2e914] [cursor=pointer]:
+              - /url: https://sintra.ai/legal/money-back-guarantee
+            - text: to ensure your satisfaction with Sintra AI services. If you're not happy with the platform, we allow a specified guarantee period, when you can request a full refund.
+        - generic [ref=f2e916]:
+          - generic [ref=f2e917] [cursor=pointer]:
+            - heading "Can I invite my team to use Sintra?" [level=3] [ref=f2e918]
+            - img [ref=f2e921]
+          - paragraph [ref=f2e923]: Absolutely! Sintra allows you to collaborate with your team by inviting them to the platform. You can work together seamlessly - all in one place. It's perfect for boosting team productivity and coordination without any additional handovers.
+        - generic [ref=f2e925]:
+          - generic [ref=f2e926] [cursor=pointer]:
+            - heading "What can I use Sintra's AI employees for?" [level=3] [ref=f2e927]
+            - img [ref=f2e930]
+          - paragraph [ref=f2e932]:
+            - text: Sintra is designed to boost productivity and simplify your business operations. You can use it for tasks like administrative work, lead generation, content creation, email outreach, social media management, project management, and much more. It’s like having an
+            - link "AI Helper" [ref=f2e933] [cursor=pointer]:
+              - /url: /ai-helpers
+            - text: that completes your day-to-day tasks.
+        - generic [ref=f2e935]:
+          - generic [ref=f2e936] [cursor=pointer]:
+            - heading "How to use Sintra's AI employees?" [level=3] [ref=f2e937]
+            - img [ref=f2e940]
+          - paragraph [ref=f2e942]:
+            - text: Using Sintra AI is very intuitive and simple. Every AI worker runs as a chatbot. We also provide a variety of resources to help you make the most of our platform. Browse our
+            - link "blog" [ref=f2e943] [cursor=pointer]:
+              - /url: https://sintra.ai/case-studies
+            - text: ","
+            - link "case studies" [ref=f2e944] [cursor=pointer]:
+              - /url: https://sintra.ai/case-studies
+            - text: ", or the"
+            - link "help center" [ref=f2e945] [cursor=pointer]:
+              - /url: https://help.sintra.ai/
+            - text: . For developer users, we also offer guides and documentation to assist in building and customizing AI agents. These materials are designed to guide you through using the platform effectively and answer any questions you may have.
+        - generic [ref=f2e947]:
+          - generic [ref=f2e948] [cursor=pointer]:
+            - heading "Can AI employees replace human employees?" [level=3] [ref=f2e949]
+            - img [ref=f2e952]
+          - paragraph [ref=f2e954]: No. AI employees are designed to support and extend your team, not replace it. They handle repetitive and operational work, so human employees can focus on strategy, creativity, and decision-making where people add the most value.
+  - generic [ref=f2e961]:
+    - generic [ref=f2e962]:
+      - generic [ref=f2e963]:
+        - generic [ref=f2e964]: "Follow us on socials:"
+        - generic [ref=f2e965]:
+          - link [ref=f2e966] [cursor=pointer]:
+            - /url: https://www.instagram.com/sintra.ai/
+          - link [ref=f2e967] [cursor=pointer]:
+            - /url: https://www.facebook.com/trysintra/
+          - link [ref=f2e968] [cursor=pointer]:
+            - /url: https://www.linkedin.com/company/sintradotai/
+          - link [ref=f2e969] [cursor=pointer]:
+            - /url: https://www.tiktok.com/@sintra.ai
+      - generic [ref=f2e970]:
+        - generic [ref=f2e971]: Want a welcome gift?
+        - form "Email Form" [ref=f2e973]:
+          - textbox "Enter your email" [ref=f2e975]
+          - button "Redeem" [ref=f2e976] [cursor=pointer]
+    - generic [ref=f2e978]:
+      - generic [ref=f2e979]:
+        - generic [ref=f2e980]:
+          - generic [ref=f2e981]: Features
+          - generic [ref=f2e982]:
+            - link "Sintra X" [ref=f2e983] [cursor=pointer]:
+              - /url: /ai-team
+            - link "Brain AI" [ref=f2e984] [cursor=pointer]:
+              - /url: /features/brain-ai
+            - link "Power-ups" [ref=f2e985] [cursor=pointer]:
+              - /url: /integrations
+        - generic [ref=f2e986]:
+          - generic [ref=f2e987]: Resources
+          - generic [ref=f2e988]:
+            - link "Blog" [ref=f2e989] [cursor=pointer]:
+              - /url: /blog
+            - link "Use cases" [ref=f2e990] [cursor=pointer]:
+              - /url: /use-cases
+            - link "Case studies" [ref=f2e991] [cursor=pointer]:
+              - /url: /case-studies
+            - link "Book a Demo" [ref=f2e992] [cursor=pointer]:
+              - /url: /bookademo
+        - generic [ref=f2e993]:
+          - generic [ref=f2e994]: About Us
+          - generic [ref=f2e995]:
+            - link "Become an Affiliate" [ref=f2e996] [cursor=pointer]:
+              - /url: /affiliate
+            - link "Careers" [ref=f2e997] [cursor=pointer]:
+              - /url: /careers
+            - link "How we compare" [ref=f2e998] [cursor=pointer]:
+              - /url: /comparison
+        - generic [ref=f2e999]:
+          - generic [ref=f2e1000]: Support
+          - generic [ref=f2e1001]:
+            - link "Help center" [ref=f2e1002] [cursor=pointer]:
+              - /url: https://help.sintra.ai/en/
+            - link "Contact" [ref=f2e1003] [cursor=pointer]:
+              - /url: mailto:help@sintra.ai?subject=Help%20Request%20%7C%20Sintra.ai
+            - link "Plans and Payments" [ref=f2e1004] [cursor=pointer]:
+              - /url: /pricing
+        - generic [ref=f2e1005]:
+          - generic [ref=f2e1006]: Legal
+          - generic [ref=f2e1007]:
+            - link "Privacy policy" [ref=f2e1008] [cursor=pointer]:
+              - /url: /legal/privacy-policy
+            - link "Terms and conditions" [ref=f2e1009] [cursor=pointer]:
+              - /url: /legal/terms-and-conditions
+            - link "Refund policy" [ref=f2e1010] [cursor=pointer]:
+              - /url: /legal/refund-policy
+            - link "Money-Back Guarantee" [ref=f2e1011] [cursor=pointer]:
+              - /url: /legal/money-back-guarantee
+            - link "Fair use policy" [ref=f2e1012] [cursor=pointer]:
+              - /url: /legal/fair-use-policy
+            - link "Other policies" [ref=f2e1013] [cursor=pointer]:
+              - /url: /legal
+        - generic [ref=f2e1014]:
+          - generic [ref=f2e1015]: Solutions
+          - generic [ref=f2e1016]:
+            - generic [ref=f2e1017]:
+              - link "AI agents" [ref=f2e1018] [cursor=pointer]:
+                - /url: /ai-agents
+              - link "AI assistants" [ref=f2e1019] [cursor=pointer]:
+                - /url: /ai-assistants
+              - link "Generative AI" [ref=f2e1020] [cursor=pointer]:
+                - /url: /generative-ai-agents
+              - link "Conversational AI" [ref=f2e1021] [cursor=pointer]:
+                - /url: /conversational-ai-agents
+            - generic [ref=f2e1022]:
+              - link "Agentic AI" [ref=f2e1023] [cursor=pointer]:
+                - /url: /agentic-ai-agents
+              - link "AI chatbots" [ref=f2e1024] [cursor=pointer]:
+                - /url: /ai-chatbots
+              - link "AI bots" [ref=f2e1025] [cursor=pointer]:
+                - /url: /ai-bots
+              - link "AI workforce" [ref=f2e1026] [cursor=pointer]:
+                - /url: /ai-workforce
+            - generic [ref=f2e1027]:
+              - link "AI copilots" [ref=f2e1028] [cursor=pointer]:
+                - /url: /ai-copilots
+              - link "AI operators" [ref=f2e1029] [cursor=pointer]:
+                - /url: /ai-operators
+              - link "AI bots" [ref=f2e1030] [cursor=pointer]:
+                - /url: /ai-bots
+              - link "AI orchestration" [ref=f2e1031] [cursor=pointer]:
+                - /url: /ai-agent-orchestrator
+      - generic [ref=f2e1033]: Copyright © 2026 PlayOS, Inc. All rights reserved

@@ -33,16 +33,20 @@ var threeJS []byte
 type activity struct {
 	mu    sync.Mutex
 	lines []string
+	total int // monotonic counter so the HUD can toast only NEW events
 }
 
 func (a *activity) add(format string, args ...any) {
 	a.mu.Lock()
 	defer a.mu.Unlock()
+	a.total++
 	a.lines = append(a.lines, time.Now().Format("15:04:05")+"  "+fmt.Sprintf(format, args...))
 	if len(a.lines) > 50 {
 		a.lines = a.lines[len(a.lines)-50:]
 	}
 }
+
+func (a *activity) seq() int { a.mu.Lock(); defer a.mu.Unlock(); return a.total }
 
 func (a *activity) snapshot() []string {
 	a.mu.Lock()
@@ -119,6 +123,7 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 				mkAgent("HERALD", "Email dispatch", heraldStatus()),
 			},
 			"activity": act.snapshot(),
+			"act_seq":  act.seq(),
 		}
 		if db != nil && db.PingContext(ctx) == nil {
 			resp["db"] = "online"
@@ -183,6 +188,33 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 		}
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(resp)
+	})
+
+	// Agent dossier for the workspace popups: mission history from experiences.
+	mux.HandleFunc("GET /api/agent", func(w http.ResponseWriter, r *http.Request) {
+		name := strings.ToLower(r.URL.Query().Get("name"))
+		if db == nil || name == "" {
+			http.Error(w, "need ?name and a live CRM", http.StatusBadRequest)
+			return
+		}
+		missions := []map[string]string{}
+		if rows, err := db.QueryContext(r.Context(), `
+			SELECT to_char(created_at,'DD Mon HH24:MI'), COALESCE(input,''), COALESCE(decision,''),
+			       COALESCE(result,''), COALESCE(lesson,'')
+			FROM experiences WHERE agent=$1 ORDER BY created_at DESC LIMIT 10`, name); err == nil {
+			for rows.Next() {
+				var when, in, dec, res, les string
+				if rows.Scan(&when, &in, &dec, &res, &les) == nil {
+					missions = append(missions, map[string]string{
+						"when": when, "input": in, "decision": dec, "result": res, "lesson": les})
+				}
+			}
+			rows.Close()
+		}
+		var count int
+		db.QueryRowContext(r.Context(), `SELECT count(*) FROM experiences WHERE agent=$1`, name).Scan(&count)
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(map[string]any{"name": name, "count": count, "missions": missions})
 	})
 
 	runAgent := func(a Agent, input, started string) {

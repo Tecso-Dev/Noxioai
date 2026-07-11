@@ -1,0 +1,92 @@
+- generic [ref=f7e3]:
+  - banner [ref=f7e4]:
+    - generic [ref=f7e5]:
+      - link "د دیجی‌کالا" [ref=f7e6] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f7e7]: د
+        - generic [ref=f7e8]: دیجی‌کالا
+      - generic [ref=f7e9]:
+        - searchbox "جست‌وجو در محصولات …" [ref=f7e10]
+        - img [ref=f7e11]
+      - link "حساب من" [ref=f7e14] [cursor=pointer]:
+        - /url: /account
+        - img [ref=f7e15]
+        - generic [ref=f7e18]: حساب من
+      - link "۱" [ref=f7e19] [cursor=pointer]:
+        - /url: /cart
+        - img [ref=f7e20]
+        - generic [ref=f7e24]: ۱
+    - navigation [ref=f7e25]:
+      - generic [ref=f7e26]:
+        - link "موبایل" [ref=f7e27] [cursor=pointer]:
+          - /url: /category/mobile-phone
+        - link "لپ‌تاپ و کامپیوتر" [ref=f7e28] [cursor=pointer]:
+          - /url: /category/laptop
+        - link "کالای دیجیتال" [ref=f7e29] [cursor=pointer]:
+          - /url: /category/digital
+        - link "لوازم خانگی" [ref=f7e30] [cursor=pointer]:
+          - /url: /category/home-appliance
+        - link "مد و پوشاک" [ref=f7e31] [cursor=pointer]:
+          - /url: /category/fashion
+        - link "کتاب و لوازم تحریر" [ref=f7e32] [cursor=pointer]:
+          - /url: /category/book
+        - link "آرایشی و بهداشتی" [ref=f7e33] [cursor=pointer]:
+          - /url: /category/beauty
+        - link "ورزش و سفر" [ref=f7e34] [cursor=pointer]:
+          - /url: /category/sport
+  - main [ref=f7e35]:
+    - generic [ref=f7e36]:
+      - heading "سبد خرید" [level=1] [ref=f7e37]
+      - generic [ref=f7e38]:
+        - generic [ref=f7e40]:
+          - link [ref=f7e41] [cursor=pointer]:
+            - /url: /product/mock-930001
+            - img [ref=f7e42]
+          - generic [ref=f7e43]:
+            - link "گوشی موبایل سامسونگ Galaxy S24 Ultra" [ref=f7e44] [cursor=pointer]:
+              - /url: /product/mock-930001
+            - generic [ref=f7e45]: "رنگ: صورتی"
+            - generic [ref=f7e46]:
+              - generic [ref=f7e47]:
+                - button "+" [ref=f7e48] [cursor=pointer]
+                - generic [ref=f7e49]: ۱
+                - button "−" [ref=f7e50] [cursor=pointer]
+              - generic [ref=f7e51]: ۷۲٬۰۰۰٬۰۰۰ تومان
+          - button "✕" [ref=f7e52] [cursor=pointer]
+        - complementary [ref=f7e53]:
+          - generic [ref=f7e54]:
+            - generic [ref=f7e55]: تعداد کالا
+            - generic [ref=f7e56]: ۱
+          - generic [ref=f7e57]:
+            - generic [ref=f7e58]: جمع کل
+            - generic [ref=f7e59]: ۷۲٬۰۰۰٬۰۰۰ تومان
+          - link "ادامه فرآیند خرید" [ref=f7e60] [cursor=pointer]:
+            - /url: /checkout
+  - contentinfo [ref=f7e61]:
+    - generic [ref=f7e62]:
+      - generic [ref=f7e63]:
+        - generic [ref=f7e64]:
+          - generic [ref=f7e65]: د
+          - generic [ref=f7e66]: دیجی‌کالا
+        - paragraph [ref=f7e67]: بزرگ‌ترین فروشگاه اینترنتی — این یک نسخهٔ نمایشی آموزشی است.
+      - generic [ref=f7e68]:
+        - heading "با دیجی‌کالا" [level=4] [ref=f7e69]
+        - list [ref=f7e70]:
+          - listitem [ref=f7e71]: اتاق خبر
+          - listitem [ref=f7e72]: فرصت‌های شغلی
+          - listitem [ref=f7e73]: تماس با ما
+          - listitem [ref=f7e74]: درباره ما
+      - generic [ref=f7e75]:
+        - heading "خدمات مشتریان" [level=4] [ref=f7e76]
+        - list [ref=f7e77]:
+          - listitem [ref=f7e78]: پاسخ به پرسش‌ها
+          - listitem [ref=f7e79]: رویه بازگرداندن کالا
+          - listitem [ref=f7e80]: شرایط استفاده
+          - listitem [ref=f7e81]: حریم خصوصی
+      - generic [ref=f7e82]:
+        - heading "راهنمای خرید" [level=4] [ref=f7e83]
+        - list [ref=f7e84]:
+          - listitem [ref=f7e85]: نحوه ثبت سفارش
+          - listitem [ref=f7e86]: رویه ارسال سفارش
+          - listitem [ref=f7e87]: شیوه‌های پرداخت
+    - generic [ref=f7e88]: ساخته‌شده برای تمرین — Digikala clone · Nuxt 3 + Go + PostgreSQL

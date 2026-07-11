@@ -1,0 +1,142 @@
+- generic [ref=f6e3]:
+  - banner [ref=f6e4]:
+    - generic [ref=f6e5]:
+      - link "د دیجی‌کالا" [ref=f6e6] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f6e7]: د
+        - generic [ref=f6e8]: دیجی‌کالا
+      - generic [ref=f6e9]:
+        - searchbox "جست‌وجو در محصولات …" [ref=f6e10]
+        - img [ref=f6e11]
+      - link "حساب من" [ref=f6e14] [cursor=pointer]:
+        - /url: /account
+        - img [ref=f6e15]
+        - generic [ref=f6e18]: حساب من
+      - link [ref=f6e19] [cursor=pointer]:
+        - /url: /cart
+        - img [ref=f6e20]
+    - navigation [ref=f6e24]:
+      - generic [ref=f6e25]:
+        - link "موبایل" [ref=f6e26] [cursor=pointer]:
+          - /url: /category/mobile-phone
+        - link "لپ‌تاپ و کامپیوتر" [ref=f6e27] [cursor=pointer]:
+          - /url: /category/laptop
+        - link "کالای دیجیتال" [ref=f6e28] [cursor=pointer]:
+          - /url: /category/digital
+        - link "لوازم خانگی" [ref=f6e29] [cursor=pointer]:
+          - /url: /category/home-appliance
+        - link "مد و پوشاک" [ref=f6e30] [cursor=pointer]:
+          - /url: /category/fashion
+        - link "کتاب و لوازم تحریر" [ref=f6e31] [cursor=pointer]:
+          - /url: /category/book
+        - link "آرایشی و بهداشتی" [ref=f6e32] [cursor=pointer]:
+          - /url: /category/beauty
+        - link "ورزش و سفر" [ref=f6e33] [cursor=pointer]:
+          - /url: /category/sport
+  - main [ref=f6e34]:
+    - generic [ref=f6e35]:
+      - navigation [ref=f6e36]:
+        - link "دیجی‌کالا" [ref=f6e37] [cursor=pointer]:
+          - /url: /
+        - generic [ref=f6e38]:
+          - text: /
+          - link "موبایل" [ref=f6e39] [cursor=pointer]:
+            - /url: /category/mobile-phone
+      - generic [ref=f6e40]:
+        - generic [ref=f6e41]:
+          - img "گوشی موبایل سامسونگ Galaxy S24 Ultra" [ref=f6e43]
+          - generic [ref=f6e44]:
+            - button [ref=f6e45] [cursor=pointer]:
+              - img [ref=f6e46]
+            - button [ref=f6e47] [cursor=pointer]:
+              - img [ref=f6e48]
+            - button [ref=f6e49] [cursor=pointer]:
+              - img [ref=f6e50]
+        - generic [ref=f6e51]:
+          - paragraph [ref=f6e52]: سامسونگ
+          - heading "گوشی موبایل سامسونگ Galaxy S24 Ultra" [level=1] [ref=f6e53]
+          - generic [ref=f6e54]:
+            - img [ref=f6e55]
+            - generic [ref=f6e57]: ۳.۶
+            - generic [ref=f6e58]: (۱۰۴۰ نظر)
+          - generic [ref=f6e59]:
+            - paragraph [ref=f6e60]: "رنگ:"
+            - button "صورتی" [ref=f6e62] [cursor=pointer]: صورتی
+          - generic [ref=f6e64]:
+            - heading "مشخصات" [level=2] [ref=f6e65]
+            - table [ref=f6e66]:
+              - rowgroup [ref=f6e67]:
+                - row "برند سامسونگ" [ref=f6e68]:
+                  - cell "برند" [ref=f6e69]
+                  - cell "سامسونگ" [ref=f6e70]
+                - row "دسته‌بندی موبایل" [ref=f6e71]:
+                  - cell "دسته‌بندی" [ref=f6e72]
+                  - cell "موبایل" [ref=f6e73]
+                - row "گارانتی ۱۸ ماه گارانتی شرکتی" [ref=f6e74]:
+                  - cell "گارانتی" [ref=f6e75]
+                  - cell "۱۸ ماه گارانتی شرکتی" [ref=f6e76]
+        - complementary [ref=f6e77]:
+          - generic [ref=f6e78]:
+            - generic [ref=f6e79]:
+              - generic [ref=f6e80]: ٪۸
+              - generic [ref=f6e81]: ۷۸٬۲۶۱٬۰۰۰
+            - generic [ref=f6e82]:
+              - text: ۷۲٬۰۰۰٬۰۰۰
+              - generic [ref=f6e83]: تومان
+            - paragraph [ref=f6e84]: "فروشنده: تکنولایف"
+            - button "افزودن به سبد خرید" [ref=f6e85] [cursor=pointer]
+      - generic [ref=f6e86]:
+        - heading "دیدگاه کاربران" [level=2] [ref=f6e87]
+        - generic [ref=f6e88]:
+          - generic [ref=f6e89]:
+            - generic [ref=f6e90]:
+              - generic [ref=f6e91]: علی
+              - generic [ref=f6e92]: خریدار
+              - generic [ref=f6e93]: ★★★★★
+            - paragraph [ref=f6e94]: بسته‌بندی خیلی خوب و ارسال سریع بود.
+          - generic [ref=f6e95]:
+            - generic [ref=f6e96]:
+              - generic [ref=f6e97]: علی
+              - generic [ref=f6e98]: خریدار
+              - generic [ref=f6e99]: ★★★
+            - paragraph [ref=f6e100]: دقیقاً همون چیزی بود که توی عکس‌ها دیدم.
+          - generic [ref=f6e101]:
+            - generic [ref=f6e102]:
+              - generic [ref=f6e103]: سارا
+              - generic [ref=f6e104]: خریدار
+              - generic [ref=f6e105]: ★★★★★
+            - paragraph [ref=f6e106]: ارزش خرید داره، به قیمتش می‌ارزه.
+          - generic [ref=f6e107]:
+            - generic [ref=f6e108]:
+              - generic [ref=f6e109]: مریم
+              - generic [ref=f6e110]: خریدار
+              - generic [ref=f6e111]: ★★★★
+            - paragraph [ref=f6e112]: پیشنهاد می‌کنم، من دومین باره که می‌خرم.
+  - contentinfo [ref=f6e113]:
+    - generic [ref=f6e114]:
+      - generic [ref=f6e115]:
+        - generic [ref=f6e116]:
+          - generic [ref=f6e117]: د
+          - generic [ref=f6e118]: دیجی‌کالا
+        - paragraph [ref=f6e119]: بزرگ‌ترین فروشگاه اینترنتی — این یک نسخهٔ نمایشی آموزشی است.
+      - generic [ref=f6e120]:
+        - heading "با دیجی‌کالا" [level=4] [ref=f6e121]
+        - list [ref=f6e122]:
+          - listitem [ref=f6e123]: اتاق خبر
+          - listitem [ref=f6e124]: فرصت‌های شغلی
+          - listitem [ref=f6e125]: تماس با ما
+          - listitem [ref=f6e126]: درباره ما
+      - generic [ref=f6e127]:
+        - heading "خدمات مشتریان" [level=4] [ref=f6e128]
+        - list [ref=f6e129]:
+          - listitem [ref=f6e130]: پاسخ به پرسش‌ها
+          - listitem [ref=f6e131]: رویه بازگرداندن کالا
+          - listitem [ref=f6e132]: شرایط استفاده
+          - listitem [ref=f6e133]: حریم خصوصی
+      - generic [ref=f6e134]:
+        - heading "راهنمای خرید" [level=4] [ref=f6e135]
+        - list [ref=f6e136]:
+          - listitem [ref=f6e137]: نحوه ثبت سفارش
+          - listitem [ref=f6e138]: رویه ارسال سفارش
+          - listitem [ref=f6e139]: شیوه‌های پرداخت
+    - generic [ref=f6e140]: ساخته‌شده برای تمرین — Digikala clone · Nuxt 3 + Go + PostgreSQL

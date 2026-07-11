@@ -1,0 +1,573 @@
+- generic [ref=f13e3]:
+  - banner [ref=f13e4]:
+    - generic [ref=f13e5]:
+      - link "د" [ref=f13e6] [cursor=pointer]:
+        - /url: /digikala-clone/
+        - generic [ref=f13e7]: د
+      - generic [ref=f13e8]:
+        - searchbox "جست‌وجو در محصولات …" [ref=f13e9]
+        - img [ref=f13e10]
+      - link [ref=f13e13] [cursor=pointer]:
+        - /url: /digikala-clone/cart
+        - img [ref=f13e14]
+    - navigation [ref=f13e18]:
+      - generic [ref=f13e19]:
+        - link "موبایل" [ref=f13e20] [cursor=pointer]:
+          - /url: /digikala-clone/category/mobile-phone
+        - link "لپ‌تاپ و کامپیوتر" [ref=f13e21] [cursor=pointer]:
+          - /url: /digikala-clone/category/laptop
+        - link "کالای دیجیتال" [ref=f13e22] [cursor=pointer]:
+          - /url: /digikala-clone/category/digital
+        - link "لوازم خانگی" [ref=f13e23] [cursor=pointer]:
+          - /url: /digikala-clone/category/home-appliance
+        - link "مد و پوشاک" [ref=f13e24] [cursor=pointer]:
+          - /url: /digikala-clone/category/fashion
+        - link "کتاب و لوازم تحریر" [ref=f13e25] [cursor=pointer]:
+          - /url: /digikala-clone/category/book
+        - link "آرایشی و بهداشتی" [ref=f13e26] [cursor=pointer]:
+          - /url: /digikala-clone/category/beauty
+        - link "ورزش و سفر" [ref=f13e27] [cursor=pointer]:
+          - /url: /digikala-clone/category/sport
+  - main [ref=f13e28]:
+    - generic [ref=f13e29]:
+      - generic [ref=f13e31]:
+        - heading "هر چه بخواهی، این‌جاست" [level=1] [ref=f13e32]
+        - paragraph [ref=f13e33]: میلیون‌ها کالا با ارسال سریع و بهترین قیمت
+        - link "شروع خرید" [ref=f13e34] [cursor=pointer]:
+          - /url: /digikala-clone/category/mobile-phone
+      - generic [ref=f13e35]:
+        - generic [ref=f13e36]:
+          - heading "⚡ ۰۷:۴۲:۳۳ پیشنهاد شگفت‌انگیز" [level=2] [ref=f13e37]:
+            - generic [ref=f13e38]: ⚡ ۰۷:۴۲:۳۳
+            - text: پیشنهاد شگفت‌انگیز
+          - link "مشاهده همه ←" [ref=f13e39] [cursor=pointer]:
+            - /url: /digikala-clone/search?q=
+        - generic [ref=f13e40]:
+          - link "گوشی موبایل اپل مدل iPhone 15 Pro Max ٪۳۳ گوشی موبایل اپل مدل iPhone 15 Pro Max ۳.۶ ۱۲۶٬۸۶۶٬۰۰۰ ۸۵٬۰۰۰٬۰۰۰ تومان" [ref=f13e41] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930000
+            - generic [ref=f13e42]:
+              - img "گوشی موبایل اپل مدل iPhone 15 Pro Max" [ref=f13e43]
+              - generic [ref=f13e44]: ٪۳۳
+            - heading "گوشی موبایل اپل مدل iPhone 15 Pro Max" [level=3] [ref=f13e45]
+            - generic [ref=f13e46]:
+              - img [ref=f13e47]
+              - generic [ref=f13e49]: ۳.۶
+            - generic [ref=f13e50]:
+              - generic [ref=f13e51]: ۱۲۶٬۸۶۶٬۰۰۰
+              - generic [ref=f13e52]:
+                - generic [ref=f13e53]: ۸۵٬۰۰۰٬۰۰۰
+                - generic [ref=f13e54]: تومان
+          - link "هندزفری بی‌سیم شیائومی Buds 5 ٪۳۳ هندزفری بی‌سیم شیائومی Buds 5 ۳.۵ ۵٬۰۷۵٬۰۰۰ ۳٬۴۰۰٬۰۰۰ تومان" [ref=f13e55] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930017
+            - generic [ref=f13e56]:
+              - img "هندزفری بی‌سیم شیائومی Buds 5" [ref=f13e57]
+              - generic [ref=f13e58]: ٪۳۳
+            - heading "هندزفری بی‌سیم شیائومی Buds 5" [level=3] [ref=f13e59]
+            - generic [ref=f13e60]:
+              - img [ref=f13e61]
+              - generic [ref=f13e63]: ۳.۵
+            - generic [ref=f13e64]:
+              - generic [ref=f13e65]: ۵٬۰۷۵٬۰۰۰
+              - generic [ref=f13e66]:
+                - generic [ref=f13e67]: ۳٬۴۰۰٬۰۰۰
+                - generic [ref=f13e68]: تومان
+          - link "دوچرخه کوهستان 26 اینچ ٪۳۳ دوچرخه کوهستان 26 اینچ ۳.۶ ۱۷٬۶۱۲٬۰۰۰ ۱۱٬۸۰۰٬۰۰۰ تومان" [ref=f13e69] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930038
+            - generic [ref=f13e70]:
+              - img "دوچرخه کوهستان 26 اینچ" [ref=f13e71]
+              - generic [ref=f13e72]: ٪۳۳
+            - heading "دوچرخه کوهستان 26 اینچ" [level=3] [ref=f13e73]
+            - generic [ref=f13e74]:
+              - img [ref=f13e75]
+              - generic [ref=f13e77]: ۳.۶
+            - generic [ref=f13e78]:
+              - generic [ref=f13e79]: ۱۷٬۶۱۲٬۰۰۰
+              - generic [ref=f13e80]:
+                - generic [ref=f13e81]: ۱۱٬۸۰۰٬۰۰۰
+                - generic [ref=f13e82]: تومان
+          - link "دمبل ثابت 10 کیلوگرمی ٪۳۳ دمبل ثابت 10 کیلوگرمی ۳.۹ ۱٬۴۱۸٬۰۰۰ ۹۵۰٬۰۰۰ تومان" [ref=f13e83] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930036
+            - generic [ref=f13e84]:
+              - img "دمبل ثابت 10 کیلوگرمی" [ref=f13e85]
+              - generic [ref=f13e86]: ٪۳۳
+            - heading "دمبل ثابت 10 کیلوگرمی" [level=3] [ref=f13e87]
+            - generic [ref=f13e88]:
+              - img [ref=f13e89]
+              - generic [ref=f13e91]: ۳.۹
+            - generic [ref=f13e92]:
+              - generic [ref=f13e93]: ۱٬۴۱۸٬۰۰۰
+              - generic [ref=f13e94]:
+                - generic [ref=f13e95]: ۹۵۰٬۰۰۰
+                - generic [ref=f13e96]: تومان
+          - link "گوشی موبایل اپل مدل iPhone 14 ٪۲۵ گوشی موبایل اپل مدل iPhone 14 ۴.۵ ۷۴٬۶۶۷٬۰۰۰ ۵۶٬۰۰۰٬۰۰۰ تومان" [ref=f13e97] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930004
+            - generic [ref=f13e98]:
+              - img "گوشی موبایل اپل مدل iPhone 14" [ref=f13e99]
+              - generic [ref=f13e100]: ٪۲۵
+            - heading "گوشی موبایل اپل مدل iPhone 14" [level=3] [ref=f13e101]
+            - generic [ref=f13e102]:
+              - img [ref=f13e103]
+              - generic [ref=f13e105]: ۴.۵
+            - generic [ref=f13e106]:
+              - generic [ref=f13e107]: ۷۴٬۶۶۷٬۰۰۰
+              - generic [ref=f13e108]:
+                - generic [ref=f13e109]: ۵۶٬۰۰۰٬۰۰۰
+                - generic [ref=f13e110]: تومان
+          - link "هودی مردانه متفرقه ٪۲۵ هودی مردانه متفرقه ۴.۳ ۲٬۴۰۰٬۰۰۰ ۱٬۸۰۰٬۰۰۰ تومان" [ref=f13e111] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930027
+            - generic [ref=f13e112]:
+              - img "هودی مردانه متفرقه" [ref=f13e113]
+              - generic [ref=f13e114]: ٪۲۵
+            - heading "هودی مردانه متفرقه" [level=3] [ref=f13e115]
+            - generic [ref=f13e116]:
+              - img [ref=f13e117]
+              - generic [ref=f13e119]: ۴.۳
+            - generic [ref=f13e120]:
+              - generic [ref=f13e121]: ۲٬۴۰۰٬۰۰۰
+              - generic [ref=f13e122]:
+                - generic [ref=f13e123]: ۱٬۸۰۰٬۰۰۰
+                - generic [ref=f13e124]: تومان
+          - link "کتاب اثر مرکب اثر دارن هاردی ٪۲۰ کتاب اثر مرکب اثر دارن هاردی ۴.۷ ۳۰۰٬۰۰۰ ۲۴۰٬۰۰۰ تومان" [ref=f13e125] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930028
+            - generic [ref=f13e126]:
+              - img "کتاب اثر مرکب اثر دارن هاردی" [ref=f13e127]
+              - generic [ref=f13e128]: ٪۲۰
+            - heading "کتاب اثر مرکب اثر دارن هاردی" [level=3] [ref=f13e129]
+            - generic [ref=f13e130]:
+              - img [ref=f13e131]
+              - generic [ref=f13e133]: ۴.۷
+            - generic [ref=f13e134]:
+              - generic [ref=f13e135]: ۳۰۰٬۰۰۰
+              - generic [ref=f13e136]:
+                - generic [ref=f13e137]: ۲۴۰٬۰۰۰
+                - generic [ref=f13e138]: تومان
+          - link "لپ‌تاپ اپل MacBook Air M2 13 اینچ ٪۲۰ لپ‌تاپ اپل MacBook Air M2 13 اینچ ۴.۰ ۱۲۲٬۵۰۰٬۰۰۰ ۹۸٬۰۰۰٬۰۰۰ تومان" [ref=f13e139] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930007
+            - generic [ref=f13e140]:
+              - img "لپ‌تاپ اپل MacBook Air M2 13 اینچ" [ref=f13e141]
+              - generic [ref=f13e142]: ٪۲۰
+            - heading "لپ‌تاپ اپل MacBook Air M2 13 اینچ" [level=3] [ref=f13e143]
+            - generic [ref=f13e144]:
+              - img [ref=f13e145]
+              - generic [ref=f13e147]: ۴.۰
+            - generic [ref=f13e148]:
+              - generic [ref=f13e149]: ۱۲۲٬۵۰۰٬۰۰۰
+              - generic [ref=f13e150]:
+                - generic [ref=f13e151]: ۹۸٬۰۰۰٬۰۰۰
+                - generic [ref=f13e152]: تومان
+          - link "کرم مرطوب‌کننده نیوآ Soft ٪۲۰ کرم مرطوب‌کننده نیوآ Soft ۴.۲ ۴۷۵٬۰۰۰ ۳۸۰٬۰۰۰ تومان" [ref=f13e153] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930032
+            - generic [ref=f13e154]:
+              - img "کرم مرطوب‌کننده نیوآ Soft" [ref=f13e155]
+              - generic [ref=f13e156]: ٪۲۰
+            - heading "کرم مرطوب‌کننده نیوآ Soft" [level=3] [ref=f13e157]
+            - generic [ref=f13e158]:
+              - img [ref=f13e159]
+              - generic [ref=f13e161]: ۴.۲
+            - generic [ref=f13e162]:
+              - generic [ref=f13e163]: ۴۷۵٬۰۰۰
+              - generic [ref=f13e164]:
+                - generic [ref=f13e165]: ۳۸۰٬۰۰۰
+                - generic [ref=f13e166]: تومان
+          - link "اسپیکر بلوتوثی سونی SRS-XB13 ٪۲۰ اسپیکر بلوتوثی سونی SRS-XB13 ۳.۸ ۲٬۷۵۰٬۰۰۰ ۲٬۲۰۰٬۰۰۰ تومان" [ref=f13e167] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930015
+            - generic [ref=f13e168]:
+              - img "اسپیکر بلوتوثی سونی SRS-XB13" [ref=f13e169]
+              - generic [ref=f13e170]: ٪۲۰
+            - heading "اسپیکر بلوتوثی سونی SRS-XB13" [level=3] [ref=f13e171]
+            - generic [ref=f13e172]:
+              - img [ref=f13e173]
+              - generic [ref=f13e175]: ۳.۸
+            - generic [ref=f13e176]:
+              - generic [ref=f13e177]: ۲٬۷۵۰٬۰۰۰
+              - generic [ref=f13e178]:
+                - generic [ref=f13e179]: ۲٬۲۰۰٬۰۰۰
+                - generic [ref=f13e180]: تومان
+          - link "کتاب صد سال تنهایی ٪۲۰ کتاب صد سال تنهایی ۴.۶ ۳۵۰٬۰۰۰ ۲۸۰٬۰۰۰ تومان" [ref=f13e181] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930030
+            - generic [ref=f13e182]:
+              - img "کتاب صد سال تنهایی" [ref=f13e183]
+              - generic [ref=f13e184]: ٪۲۰
+            - heading "کتاب صد سال تنهایی" [level=3] [ref=f13e185]
+            - generic [ref=f13e186]:
+              - img [ref=f13e187]
+              - generic [ref=f13e189]: ۴.۶
+            - generic [ref=f13e190]:
+              - generic [ref=f13e191]: ۳۵۰٬۰۰۰
+              - generic [ref=f13e192]:
+                - generic [ref=f13e193]: ۲۸۰٬۰۰۰
+                - generic [ref=f13e194]: تومان
+          - link "تلویزیون سامسونگ 55 اینچ Crystal UHD ٪۱۵ تلویزیون سامسونگ 55 اینچ Crystal UHD ۴.۶ ۴۸٬۲۳۵٬۰۰۰ ۴۱٬۰۰۰٬۰۰۰ تومان" [ref=f13e195] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930021
+            - generic [ref=f13e196]:
+              - img "تلویزیون سامسونگ 55 اینچ Crystal UHD" [ref=f13e197]
+              - generic [ref=f13e198]: ٪۱۵
+            - heading "تلویزیون سامسونگ 55 اینچ Crystal UHD" [level=3] [ref=f13e199]
+            - generic [ref=f13e200]:
+              - img [ref=f13e201]
+              - generic [ref=f13e203]: ۴.۶
+            - generic [ref=f13e204]:
+              - generic [ref=f13e205]: ۴۸٬۲۳۵٬۰۰۰
+              - generic [ref=f13e206]:
+                - generic [ref=f13e207]: ۴۱٬۰۰۰٬۰۰۰
+                - generic [ref=f13e208]: تومان
+      - generic [ref=f13e209]:
+        - generic [ref=f13e210]:
+          - heading "پرفروش‌ترین‌ها" [level=2] [ref=f13e211]
+          - link "مشاهده همه ←" [ref=f13e212] [cursor=pointer]:
+            - /url: /digikala-clone/search?q=
+        - generic [ref=f13e213]:
+          - link "تی‌شرت مردانه نایکی Dri-FIT ٪۱۵ تی‌شرت مردانه نایکی Dri-FIT ۳.۵ ۱٬۷۰۶٬۰۰۰ ۱٬۴۵۰٬۰۰۰ تومان" [ref=f13e214] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930025
+            - generic [ref=f13e215]:
+              - img "تی‌شرت مردانه نایکی Dri-FIT" [ref=f13e216]
+              - generic [ref=f13e217]: ٪۱۵
+            - heading "تی‌شرت مردانه نایکی Dri-FIT" [level=3] [ref=f13e218]
+            - generic [ref=f13e219]:
+              - img [ref=f13e220]
+              - generic [ref=f13e222]: ۳.۵
+            - generic [ref=f13e223]:
+              - generic [ref=f13e224]: ۱٬۷۰۶٬۰۰۰
+              - generic [ref=f13e225]:
+                - generic [ref=f13e226]: ۱٬۴۵۰٬۰۰۰
+                - generic [ref=f13e227]: تومان
+          - link "اسپیکر بلوتوثی سونی SRS-XB13 ٪۲۰ اسپیکر بلوتوثی سونی SRS-XB13 ۳.۸ ۲٬۷۵۰٬۰۰۰ ۲٬۲۰۰٬۰۰۰ تومان" [ref=f13e228] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930015
+            - generic [ref=f13e229]:
+              - img "اسپیکر بلوتوثی سونی SRS-XB13" [ref=f13e230]
+              - generic [ref=f13e231]: ٪۲۰
+            - heading "اسپیکر بلوتوثی سونی SRS-XB13" [level=3] [ref=f13e232]
+            - generic [ref=f13e233]:
+              - img [ref=f13e234]
+              - generic [ref=f13e236]: ۳.۸
+            - generic [ref=f13e237]:
+              - generic [ref=f13e238]: ۲٬۷۵۰٬۰۰۰
+              - generic [ref=f13e239]:
+                - generic [ref=f13e240]: ۲٬۲۰۰٬۰۰۰
+                - generic [ref=f13e241]: تومان
+          - link "کرم ضد آفتاب SPF50 ٪۵ کرم ضد آفتاب SPF50 ۴.۴ ۶۷۴٬۰۰۰ ۶۴۰٬۰۰۰ تومان" [ref=f13e242] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930035
+            - generic [ref=f13e243]:
+              - img "کرم ضد آفتاب SPF50" [ref=f13e244]
+              - generic [ref=f13e245]: ٪۵
+            - heading "کرم ضد آفتاب SPF50" [level=3] [ref=f13e246]
+            - generic [ref=f13e247]:
+              - img [ref=f13e248]
+              - generic [ref=f13e250]: ۴.۴
+            - generic [ref=f13e251]:
+              - generic [ref=f13e252]: ۶۷۴٬۰۰۰
+              - generic [ref=f13e253]:
+                - generic [ref=f13e254]: ۶۴۰٬۰۰۰
+                - generic [ref=f13e255]: تومان
+          - link "دفتر یادداشت 100 برگ ٪۱۵ دفتر یادداشت 100 برگ ۴.۷ ۱۰۰٬۰۰۰ ۸۵٬۰۰۰ تومان" [ref=f13e256] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930031
+            - generic [ref=f13e257]:
+              - img "دفتر یادداشت 100 برگ" [ref=f13e258]
+              - generic [ref=f13e259]: ٪۱۵
+            - heading "دفتر یادداشت 100 برگ" [level=3] [ref=f13e260]
+            - generic [ref=f13e261]:
+              - img [ref=f13e262]
+              - generic [ref=f13e264]: ۴.۷
+            - generic [ref=f13e265]:
+              - generic [ref=f13e266]: ۱۰۰٬۰۰۰
+              - generic [ref=f13e267]:
+                - generic [ref=f13e268]: ۸۵٬۰۰۰
+                - generic [ref=f13e269]: تومان
+          - link "تشک یوگا حرفه‌ای ٪۱۵ تشک یوگا حرفه‌ای ۴.۹ ۸۴۷٬۰۰۰ ۷۲۰٬۰۰۰ تومان" [ref=f13e270] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930037
+            - generic [ref=f13e271]:
+              - img "تشک یوگا حرفه‌ای" [ref=f13e272]
+              - generic [ref=f13e273]: ٪۱۵
+            - heading "تشک یوگا حرفه‌ای" [level=3] [ref=f13e274]
+            - generic [ref=f13e275]:
+              - img [ref=f13e276]
+              - generic [ref=f13e278]: ۴.۹
+            - generic [ref=f13e279]:
+              - generic [ref=f13e280]: ۸۴۷٬۰۰۰
+              - generic [ref=f13e281]:
+                - generic [ref=f13e282]: ۷۲۰٬۰۰۰
+                - generic [ref=f13e283]: تومان
+          - link "یخچال فریزر ال‌جی دوقلو ٪۱۵ یخچال فریزر ال‌جی دوقلو ۴.۳ ۹۱٬۷۶۵٬۰۰۰ ۷۸٬۰۰۰٬۰۰۰ تومان" [ref=f13e284] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930020
+            - generic [ref=f13e285]:
+              - img "یخچال فریزر ال‌جی دوقلو" [ref=f13e286]
+              - generic [ref=f13e287]: ٪۱۵
+            - heading "یخچال فریزر ال‌جی دوقلو" [level=3] [ref=f13e288]
+            - generic [ref=f13e289]:
+              - img [ref=f13e290]
+              - generic [ref=f13e292]: ۴.۳
+            - generic [ref=f13e293]:
+              - generic [ref=f13e294]: ۹۱٬۷۶۵٬۰۰۰
+              - generic [ref=f13e295]:
+                - generic [ref=f13e296]: ۷۸٬۰۰۰٬۰۰۰
+                - generic [ref=f13e297]: تومان
+          - link "شارژر فست شارژ سامسونگ 25 وات ٪۱۵ شارژر فست شارژ سامسونگ 25 وات ۴.۶ ۸۰۰٬۰۰۰ ۶۸۰٬۰۰۰ تومان" [ref=f13e298] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930016
+            - generic [ref=f13e299]:
+              - img "شارژر فست شارژ سامسونگ 25 وات" [ref=f13e300]
+              - generic [ref=f13e301]: ٪۱۵
+            - heading "شارژر فست شارژ سامسونگ 25 وات" [level=3] [ref=f13e302]
+            - generic [ref=f13e303]:
+              - img [ref=f13e304]
+              - generic [ref=f13e306]: ۴.۶
+            - generic [ref=f13e307]:
+              - generic [ref=f13e308]: ۸۰۰٬۰۰۰
+              - generic [ref=f13e309]:
+                - generic [ref=f13e310]: ۶۸۰٬۰۰۰
+                - generic [ref=f13e311]: تومان
+          - link "ماکروویو سامسونگ 28 لیتری ماکروویو سامسونگ 28 لیتری ۳.۸ ۱۷٬۸۰۰٬۰۰۰ تومان" [ref=f13e312] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930019
+            - img "ماکروویو سامسونگ 28 لیتری" [ref=f13e314]
+            - heading "ماکروویو سامسونگ 28 لیتری" [level=3] [ref=f13e315]
+            - generic [ref=f13e316]:
+              - img [ref=f13e317]
+              - generic [ref=f13e319]: ۳.۸
+            - generic [ref=f13e321]:
+              - generic [ref=f13e322]: ۱۷٬۸۰۰٬۰۰۰
+              - generic [ref=f13e323]: تومان
+          - link "کفش ورزشی مردانه نایکی Air Max ٪۱۲ کفش ورزشی مردانه نایکی Air Max ۵.۰ ۶٬۵۹۱٬۰۰۰ ۵٬۸۰۰٬۰۰۰ تومان" [ref=f13e324] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930023
+            - generic [ref=f13e325]:
+              - img "کفش ورزشی مردانه نایکی Air Max" [ref=f13e326]
+              - generic [ref=f13e327]: ٪۱۲
+            - heading "کفش ورزشی مردانه نایکی Air Max" [level=3] [ref=f13e328]
+            - generic [ref=f13e329]:
+              - img [ref=f13e330]
+              - generic [ref=f13e332]: ۵.۰
+            - generic [ref=f13e333]:
+              - generic [ref=f13e334]: ۶٬۵۹۱٬۰۰۰
+              - generic [ref=f13e335]:
+                - generic [ref=f13e336]: ۵٬۸۰۰٬۰۰۰
+                - generic [ref=f13e337]: تومان
+          - link "ساعت هوشمند اپل Watch Series 9 ٪۵ ساعت هوشمند اپل Watch Series 9 ۴.۱ ۳۳٬۶۸۴٬۰۰۰ ۳۲٬۰۰۰٬۰۰۰ تومان" [ref=f13e338] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930014
+            - generic [ref=f13e339]:
+              - img "ساعت هوشمند اپل Watch Series 9" [ref=f13e340]
+              - generic [ref=f13e341]: ٪۵
+            - heading "ساعت هوشمند اپل Watch Series 9" [level=3] [ref=f13e342]
+            - generic [ref=f13e343]:
+              - img [ref=f13e344]
+              - generic [ref=f13e346]: ۴.۱
+            - generic [ref=f13e347]:
+              - generic [ref=f13e348]: ۳۳٬۶۸۴٬۰۰۰
+              - generic [ref=f13e349]:
+                - generic [ref=f13e350]: ۳۲٬۰۰۰٬۰۰۰
+                - generic [ref=f13e351]: تومان
+          - link "گوشی موبایل شیائومی Redmi Note 13 Pro گوشی موبایل شیائومی Redmi Note 13 Pro ۴.۱ ۱۴٬۵۰۰٬۰۰۰ تومان" [ref=f13e352] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930002
+            - img "گوشی موبایل شیائومی Redmi Note 13 Pro" [ref=f13e354]
+            - heading "گوشی موبایل شیائومی Redmi Note 13 Pro" [level=3] [ref=f13e355]
+            - generic [ref=f13e356]:
+              - img [ref=f13e357]
+              - generic [ref=f13e359]: ۴.۱
+            - generic [ref=f13e361]:
+              - generic [ref=f13e362]: ۱۴٬۵۰۰٬۰۰۰
+              - generic [ref=f13e363]: تومان
+          - link "دمبل ثابت 10 کیلوگرمی ٪۳۳ دمبل ثابت 10 کیلوگرمی ۳.۹ ۱٬۴۱۸٬۰۰۰ ۹۵۰٬۰۰۰ تومان" [ref=f13e364] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930036
+            - generic [ref=f13e365]:
+              - img "دمبل ثابت 10 کیلوگرمی" [ref=f13e366]
+              - generic [ref=f13e367]: ٪۳۳
+            - heading "دمبل ثابت 10 کیلوگرمی" [level=3] [ref=f13e368]
+            - generic [ref=f13e369]:
+              - img [ref=f13e370]
+              - generic [ref=f13e372]: ۳.۹
+            - generic [ref=f13e373]:
+              - generic [ref=f13e374]: ۱٬۴۱۸٬۰۰۰
+              - generic [ref=f13e375]:
+                - generic [ref=f13e376]: ۹۵۰٬۰۰۰
+                - generic [ref=f13e377]: تومان
+      - generic [ref=f13e378]:
+        - generic [ref=f13e379]:
+          - heading "جدیدترین کالاها" [level=2] [ref=f13e380]
+          - link "مشاهده همه ←" [ref=f13e381] [cursor=pointer]:
+            - /url: /digikala-clone/search?q=
+        - generic [ref=f13e382]:
+          - link "لپ‌تاپ اپل MacBook Pro 14 M3 ٪۸ لپ‌تاپ اپل MacBook Pro 14 M3 ۳.۷ ۱۹۳٬۴۷۸٬۰۰۰ ۱۷۸٬۰۰۰٬۰۰۰ تومان" [ref=f13e383] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930010
+            - generic [ref=f13e384]:
+              - img "لپ‌تاپ اپل MacBook Pro 14 M3" [ref=f13e385]
+              - generic [ref=f13e386]: ٪۸
+            - heading "لپ‌تاپ اپل MacBook Pro 14 M3" [level=3] [ref=f13e387]
+            - generic [ref=f13e388]:
+              - img [ref=f13e389]
+              - generic [ref=f13e391]: ۳.۷
+            - generic [ref=f13e392]:
+              - generic [ref=f13e393]: ۱۹۳٬۴۷۸٬۰۰۰
+              - generic [ref=f13e394]:
+                - generic [ref=f13e395]: ۱۷۸٬۰۰۰٬۰۰۰
+                - generic [ref=f13e396]: تومان
+          - link "لپ‌تاپ اپل MacBook Air M2 13 اینچ ٪۲۰ لپ‌تاپ اپل MacBook Air M2 13 اینچ ۴.۰ ۱۲۲٬۵۰۰٬۰۰۰ ۹۸٬۰۰۰٬۰۰۰ تومان" [ref=f13e397] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930007
+            - generic [ref=f13e398]:
+              - img "لپ‌تاپ اپل MacBook Air M2 13 اینچ" [ref=f13e399]
+              - generic [ref=f13e400]: ٪۲۰
+            - heading "لپ‌تاپ اپل MacBook Air M2 13 اینچ" [level=3] [ref=f13e401]
+            - generic [ref=f13e402]:
+              - img [ref=f13e403]
+              - generic [ref=f13e405]: ۴.۰
+            - generic [ref=f13e406]:
+              - generic [ref=f13e407]: ۱۲۲٬۵۰۰٬۰۰۰
+              - generic [ref=f13e408]:
+                - generic [ref=f13e409]: ۹۸٬۰۰۰٬۰۰۰
+                - generic [ref=f13e410]: تومان
+          - link "گوشی موبایل اپل مدل iPhone 14 ٪۲۵ گوشی موبایل اپل مدل iPhone 14 ۴.۵ ۷۴٬۶۶۷٬۰۰۰ ۵۶٬۰۰۰٬۰۰۰ تومان" [ref=f13e411] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930004
+            - generic [ref=f13e412]:
+              - img "گوشی موبایل اپل مدل iPhone 14" [ref=f13e413]
+              - generic [ref=f13e414]: ٪۲۵
+            - heading "گوشی موبایل اپل مدل iPhone 14" [level=3] [ref=f13e415]
+            - generic [ref=f13e416]:
+              - img [ref=f13e417]
+              - generic [ref=f13e419]: ۴.۵
+            - generic [ref=f13e420]:
+              - generic [ref=f13e421]: ۷۴٬۶۶۷٬۰۰۰
+              - generic [ref=f13e422]:
+                - generic [ref=f13e423]: ۵۶٬۰۰۰٬۰۰۰
+                - generic [ref=f13e424]: تومان
+          - link "گوشی موبایل اپل مدل iPhone 15 Pro Max ٪۳۳ گوشی موبایل اپل مدل iPhone 15 Pro Max ۳.۶ ۱۲۶٬۸۶۶٬۰۰۰ ۸۵٬۰۰۰٬۰۰۰ تومان" [ref=f13e425] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930000
+            - generic [ref=f13e426]:
+              - img "گوشی موبایل اپل مدل iPhone 15 Pro Max" [ref=f13e427]
+              - generic [ref=f13e428]: ٪۳۳
+            - heading "گوشی موبایل اپل مدل iPhone 15 Pro Max" [level=3] [ref=f13e429]
+            - generic [ref=f13e430]:
+              - img [ref=f13e431]
+              - generic [ref=f13e433]: ۳.۶
+            - generic [ref=f13e434]:
+              - generic [ref=f13e435]: ۱۲۶٬۸۶۶٬۰۰۰
+              - generic [ref=f13e436]:
+                - generic [ref=f13e437]: ۸۵٬۰۰۰٬۰۰۰
+                - generic [ref=f13e438]: تومان
+          - link "تلویزیون سامسونگ 55 اینچ Crystal UHD ٪۱۵ تلویزیون سامسونگ 55 اینچ Crystal UHD ۴.۶ ۴۸٬۲۳۵٬۰۰۰ ۴۱٬۰۰۰٬۰۰۰ تومان" [ref=f13e439] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930021
+            - generic [ref=f13e440]:
+              - img "تلویزیون سامسونگ 55 اینچ Crystal UHD" [ref=f13e441]
+              - generic [ref=f13e442]: ٪۱۵
+            - heading "تلویزیون سامسونگ 55 اینچ Crystal UHD" [level=3] [ref=f13e443]
+            - generic [ref=f13e444]:
+              - img [ref=f13e445]
+              - generic [ref=f13e447]: ۴.۶
+            - generic [ref=f13e448]:
+              - generic [ref=f13e449]: ۴۸٬۲۳۵٬۰۰۰
+              - generic [ref=f13e450]:
+                - generic [ref=f13e451]: ۴۱٬۰۰۰٬۰۰۰
+                - generic [ref=f13e452]: تومان
+          - link "ماکروویو سامسونگ 28 لیتری ماکروویو سامسونگ 28 لیتری ۳.۸ ۱۷٬۸۰۰٬۰۰۰ تومان" [ref=f13e453] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930019
+            - img "ماکروویو سامسونگ 28 لیتری" [ref=f13e455]
+            - heading "ماکروویو سامسونگ 28 لیتری" [level=3] [ref=f13e456]
+            - generic [ref=f13e457]:
+              - img [ref=f13e458]
+              - generic [ref=f13e460]: ۳.۸
+            - generic [ref=f13e462]:
+              - generic [ref=f13e463]: ۱۷٬۸۰۰٬۰۰۰
+              - generic [ref=f13e464]: تومان
+          - link "شارژر فست شارژ سامسونگ 25 وات ٪۱۵ شارژر فست شارژ سامسونگ 25 وات ۴.۶ ۸۰۰٬۰۰۰ ۶۸۰٬۰۰۰ تومان" [ref=f13e465] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930016
+            - generic [ref=f13e466]:
+              - img "شارژر فست شارژ سامسونگ 25 وات" [ref=f13e467]
+              - generic [ref=f13e468]: ٪۱۵
+            - heading "شارژر فست شارژ سامسونگ 25 وات" [level=3] [ref=f13e469]
+            - generic [ref=f13e470]:
+              - img [ref=f13e471]
+              - generic [ref=f13e473]: ۴.۶
+            - generic [ref=f13e474]:
+              - generic [ref=f13e475]: ۸۰۰٬۰۰۰
+              - generic [ref=f13e476]:
+                - generic [ref=f13e477]: ۶۸۰٬۰۰۰
+                - generic [ref=f13e478]: تومان
+          - link "کامپیوتر همه‌کاره سامسونگ ٪۱۲ کامپیوتر همه‌کاره سامسونگ ۳.۹ ۷۰٬۴۵۵٬۰۰۰ ۶۲٬۰۰۰٬۰۰۰ تومان" [ref=f13e479] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930011
+            - generic [ref=f13e480]:
+              - img "کامپیوتر همه‌کاره سامسونگ" [ref=f13e481]
+              - generic [ref=f13e482]: ٪۱۲
+            - heading "کامپیوتر همه‌کاره سامسونگ" [level=3] [ref=f13e483]
+            - generic [ref=f13e484]:
+              - img [ref=f13e485]
+              - generic [ref=f13e487]: ۳.۹
+            - generic [ref=f13e488]:
+              - generic [ref=f13e489]: ۷۰٬۴۵۵٬۰۰۰
+              - generic [ref=f13e490]:
+                - generic [ref=f13e491]: ۶۲٬۰۰۰٬۰۰۰
+                - generic [ref=f13e492]: تومان
+          - link "گوشی موبایل سامسونگ Galaxy A15 ٪۱۵ گوشی موبایل سامسونگ Galaxy A15 ۳.۷ ۱۰٬۸۲۴٬۰۰۰ ۹٬۲۰۰٬۰۰۰ تومان" [ref=f13e493] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930006
+            - generic [ref=f13e494]:
+              - img "گوشی موبایل سامسونگ Galaxy A15" [ref=f13e495]
+              - generic [ref=f13e496]: ٪۱۵
+            - heading "گوشی موبایل سامسونگ Galaxy A15" [level=3] [ref=f13e497]
+            - generic [ref=f13e498]:
+              - img [ref=f13e499]
+              - generic [ref=f13e501]: ۳.۷
+            - generic [ref=f13e502]:
+              - generic [ref=f13e503]: ۱۰٬۸۲۴٬۰۰۰
+              - generic [ref=f13e504]:
+                - generic [ref=f13e505]: ۹٬۲۰۰٬۰۰۰
+                - generic [ref=f13e506]: تومان
+          - link "گوشی موبایل سامسونگ Galaxy A55 گوشی موبایل سامسونگ Galaxy A55 ۳.۹ ۲۱٬۰۰۰٬۰۰۰ تومان" [ref=f13e507] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930003
+            - img "گوشی موبایل سامسونگ Galaxy A55" [ref=f13e509]
+            - heading "گوشی موبایل سامسونگ Galaxy A55" [level=3] [ref=f13e510]
+            - generic [ref=f13e511]:
+              - img [ref=f13e512]
+              - generic [ref=f13e514]: ۳.۹
+            - generic [ref=f13e516]:
+              - generic [ref=f13e517]: ۲۱٬۰۰۰٬۰۰۰
+              - generic [ref=f13e518]: تومان
+          - link "گوشی موبایل سامسونگ Galaxy S24 Ultra ٪۸ گوشی موبایل سامسونگ Galaxy S24 Ultra ۳.۶ ۷۸٬۲۶۱٬۰۰۰ ۷۲٬۰۰۰٬۰۰۰ تومان" [ref=f13e519] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930001
+            - generic [ref=f13e520]:
+              - img "گوشی موبایل سامسونگ Galaxy S24 Ultra" [ref=f13e521]
+              - generic [ref=f13e522]: ٪۸
+            - heading "گوشی موبایل سامسونگ Galaxy S24 Ultra" [level=3] [ref=f13e523]
+            - generic [ref=f13e524]:
+              - img [ref=f13e525]
+              - generic [ref=f13e527]: ۳.۶
+            - generic [ref=f13e528]:
+              - generic [ref=f13e529]: ۷۸٬۲۶۱٬۰۰۰
+              - generic [ref=f13e530]:
+                - generic [ref=f13e531]: ۷۲٬۰۰۰٬۰۰۰
+                - generic [ref=f13e532]: تومان
+          - link "ساعت هوشمند اپل Watch Series 9 ٪۵ ساعت هوشمند اپل Watch Series 9 ۴.۱ ۳۳٬۶۸۴٬۰۰۰ ۳۲٬۰۰۰٬۰۰۰ تومان" [ref=f13e533] [cursor=pointer]:
+            - /url: /digikala-clone/product/mock-930014
+            - generic [ref=f13e534]:
+              - img "ساعت هوشمند اپل Watch Series 9" [ref=f13e535]
+              - generic [ref=f13e536]: ٪۵
+            - heading "ساعت هوشمند اپل Watch Series 9" [level=3] [ref=f13e537]
+            - generic [ref=f13e538]:
+              - img [ref=f13e539]
+              - generic [ref=f13e541]: ۴.۱
+            - generic [ref=f13e542]:
+              - generic [ref=f13e543]: ۳۳٬۶۸۴٬۰۰۰
+              - generic [ref=f13e544]:
+                - generic [ref=f13e545]: ۳۲٬۰۰۰٬۰۰۰
+                - generic [ref=f13e546]: تومان
+  - contentinfo [ref=f13e547]:
+    - generic [ref=f13e548]:
+      - generic [ref=f13e549]:
+        - generic [ref=f13e550]:
+          - generic [ref=f13e551]: د
+          - generic [ref=f13e552]: دیجی‌کالا
+        - paragraph [ref=f13e553]: بزرگ‌ترین فروشگاه اینترنتی — این یک نسخهٔ نمایشی آموزشی است.
+      - generic [ref=f13e554]:
+        - heading "با دیجی‌کالا" [level=4] [ref=f13e555]
+        - list [ref=f13e556]:
+          - listitem [ref=f13e557]: اتاق خبر
+          - listitem [ref=f13e558]: فرصت‌های شغلی
+          - listitem [ref=f13e559]: تماس با ما
+          - listitem [ref=f13e560]: درباره ما
+      - generic [ref=f13e561]:
+        - heading "خدمات مشتریان" [level=4] [ref=f13e562]
+        - list [ref=f13e563]:
+          - listitem [ref=f13e564]: پاسخ به پرسش‌ها
+          - listitem [ref=f13e565]: رویه بازگرداندن کالا
+          - listitem [ref=f13e566]: شرایط استفاده
+          - listitem [ref=f13e567]: حریم خصوصی
+      - generic [ref=f13e568]:
+        - heading "راهنمای خرید" [level=4] [ref=f13e569]
+        - list [ref=f13e570]:
+          - listitem [ref=f13e571]: نحوه ثبت سفارش
+          - listitem [ref=f13e572]: رویه ارسال سفارش
+          - listitem [ref=f13e573]: شیوه‌های پرداخت
+    - generic [ref=f13e574]: ساخته‌شده برای تمرین — Digikala clone · Nuxt 3 + Go + PostgreSQL
