@@ -61,7 +61,7 @@ func (o *Oracle) Run(ctx context.Context, task Task) (Result, error) {
 			fmt.Printf("  ✗ %-30s fetch: %v\n", cand.Host, err)
 			continue
 		}
-		lead, err := o.extract(niche, cand, page)
+		lead, err := o.extract(ctx, niche, cand, page)
 		if err != nil {
 			fmt.Printf("  ✗ %-30s extract: %v\n", cand.Host, err)
 			continue
@@ -245,11 +245,15 @@ Rules:
 
 Searched niche: %s
 Website URL: %s
-Page text:
+%sPage text:
 %s`
 
-func (o *Oracle) extract(niche string, cand candidate, page string) (*leadExtract, error) {
-	prompt := fmt.Sprintf(extractLeadPrompt, niche, cand.URL, page)
+func (o *Oracle) extract(ctx context.Context, niche string, cand candidate, page string) (*leadExtract, error) {
+	lessonsBlock := ""
+	if lessons, _ := RecentLessons(ctx, o.DB, "oracle", 3); len(lessons) > 0 {
+		lessonsBlock = "Problems seen at similar companies before (for context):\n- " + strings.Join(lessons, "\n- ") + "\n"
+	}
+	prompt := fmt.Sprintf(extractLeadPrompt, niche, cand.URL, lessonsBlock, page)
 	out, err := o.Brain.Chat([]Message{{Role: "user", Content: prompt}}, nil)
 	if err != nil {
 		return nil, err

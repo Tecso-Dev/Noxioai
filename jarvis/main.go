@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -18,6 +19,19 @@ eventually be read aloud. If asked to do something you cannot do yet, say so
 plainly and suggest what you could do instead.`
 
 func main() {
+	loadDotEnv()
+
+	if len(os.Args) > 1 && os.Args[1] == "brief" {
+		db := mustDB()
+		defer db.Close()
+		if err := RunBrief(context.Background(), db, NewBrainFromEnv()); err != nil {
+			fmt.Fprintln(os.Stderr, "✗ brief:", err)
+			os.Exit(1)
+		}
+		fmt.Println("✓ briefing delivered to Telegram")
+		return
+	}
+
 	if len(os.Args) > 2 && os.Args[1] == "db" && os.Args[2] == "init" {
 		db, err := OpenDB()
 		if err != nil {
@@ -33,20 +47,64 @@ func main() {
 		return
 	}
 
-	if len(os.Args) > 2 && os.Args[1] == "oracle" {
-		db, err := OpenDB()
-		if err != nil {
-			fmt.Fprintln(os.Stderr, "✗ cannot reach Postgres (docker compose up -d):", err)
-			os.Exit(1)
-		}
+	if len(os.Args) > 2 && (os.Args[1] == "oracle" || os.Args[1] == "atlas") {
+		db := mustDB()
 		defer db.Close()
-		o := &Oracle{Brain: NewBrainFromEnv(), DB: db}
-		res, err := o.Run(context.Background(), Task{Agent: "oracle", Input: strings.Join(os.Args[2:], " ")})
+		var agent Agent
+		if os.Args[1] == "oracle" {
+			agent = &Oracle{Brain: NewBrainFromEnv(), DB: db}
+		} else {
+			agent = &Atlas{Brain: NewBrainFromEnv(), DB: db}
+		}
+		res, err := agent.Run(context.Background(), Task{Agent: os.Args[1], Input: strings.Join(os.Args[2:], " ")})
 		if err != nil {
-			fmt.Fprintln(os.Stderr, "✗ oracle:", err)
+			fmt.Fprintf(os.Stderr, "✗ %s: %v\n", os.Args[1], err)
 			os.Exit(1)
 		}
 		fmt.Println("⚡", res.Output)
+		return
+	}
+
+	if len(os.Args) > 1 && os.Args[1] == "leads" {
+		db := mustDB()
+		defer db.Close()
+		if err := PrintLeads(context.Background(), db); err != nil {
+			fmt.Fprintln(os.Stderr, "✗ leads:", err)
+			os.Exit(1)
+		}
+		return
+	}
+
+	if len(os.Args) > 2 && os.Args[1] == "approve" {
+		db := mustDB()
+		defer db.Close()
+		id, err := strconv.ParseInt(os.Args[2], 10, 64)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "usage: jarvis approve <outreach-id>")
+			os.Exit(1)
+		}
+		draft, err := ApproveOutreach(context.Background(), db, id)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "✗ approve:", err)
+			os.Exit(1)
+		}
+		fmt.Printf("✓ outreach #%d APPROVED — copy & send, then record with `jarvis outcome %d <sent|replied|meeting|won|lost>`\n\n%s\n", id, id, draft)
+		return
+	}
+
+	if len(os.Args) > 3 && os.Args[1] == "outcome" {
+		db := mustDB()
+		defer db.Close()
+		id, err := strconv.ParseInt(os.Args[2], 10, 64)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "usage: jarvis outcome <outreach-id> <sent|no_reply|replied|meeting|won|lost>")
+			os.Exit(1)
+		}
+		if err := SetOutcome(context.Background(), db, id, os.Args[3]); err != nil {
+			fmt.Fprintln(os.Stderr, "✗ outcome:", err)
+			os.Exit(1)
+		}
+		fmt.Printf("✓ outcome %q recorded for outreach #%d\n", os.Args[3], id)
 		return
 	}
 
