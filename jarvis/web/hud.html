@@ -640,7 +640,8 @@ function toggleMic(){
   $('talkwave').classList.toggle('off',!micOn);$('talkwave2').classList.toggle('off',!micOn);
   $('talkstate').textContent=micOn?'I AM LISTENING…':'TAP TO START LISTENING';
   setAvatar(micOn?'listening':'idle');
-  if(micOn){startRec();startMeter()}else{if(rec)rec.stop();stopMeter()}
+  if(micOn){startRec();setTimeout(()=>{if(micOn)startMeter()},900)} // meter waits for SR — avoids capture conflict
+  else{if(rec)rec.stop();stopMeter()}
 }
 /* real voice amplitude → entity reacts to YOUR voice while listening */
 let meterCtx=null,meterAnalyser=null,meterStream=null,meterData=null;
@@ -666,20 +667,38 @@ function stopMeter(){
   meterAnalyser=null;
 }
 function startRec(){
-  rec=new SR();rec.lang=$('lang').value;rec.continuous=true;rec.interimResults=false;
+  rec=new SR();rec.lang=$('lang').value;rec.continuous=true;rec.interimResults=true;
+  rec.onaudiostart=()=>{$('talkstate').textContent='I AM LISTENING…'};
   rec.onresult=e=>{
-    const t=e.results[e.results.length-1][0].transcript.trim();
+    if(speechSynthesis.speaking)return; // never react to JARVIS's own voice
+    const res=e.results[e.results.length-1],txt=res[0].transcript.trim();
+    if(!res.isFinal){ // live feedback: you SEE what he hears while you speak
+      $('talkstate').textContent='HEARD: '+txt.slice(-44);
+      return;
+    }
+    $('talkstate').textContent='I AM LISTENING…';
     if($('wake').checked){
-      const m=t.match(/^(hey |ok )?jarvis[,.!]?\s*(.*)$/i);
-      if(!m)return;
+      const m=txt.match(/^(hey |ok )?jarvis[,.!]?\s*(.*)$/i);
+      if(!m){$('talkstate').textContent='HEARD “'+txt.slice(0,30)+'” — start with “Jarvis …”';return}
       if(!m[2]){speak('Yes, Sir?');return}
       send(m[2]);
-    }else send(t);
+    }else send(txt);
   };
-  rec.onend=()=>{if(micOn)try{rec.start()}catch{}};
-  rec.onerror=ev=>{if(ev.error==='not-allowed'){micOn=false;$('talkbar').classList.remove('on');
-    $('talkstate').textContent='MIC BLOCKED — allow microphone for this site'}};
-  try{rec.start()}catch{}
+  rec.onerror=ev=>{ // every failure gets a visible reason — no more silent death
+    const msgs={
+      'not-allowed':'MIC BLOCKED — click the 🔒 icon in the address bar → allow Microphone',
+      'service-not-allowed':'SPEECH SERVICE BLOCKED by the browser',
+      'audio-capture':'NO MICROPHONE FOUND — check macOS Settings → Privacy → Microphone → Chrome',
+      'network':'SPEECH SERVICE NEEDS INTERNET — retrying…',
+      'no-speech':'HEARD NOTHING — still listening…',
+      'aborted':'MIC INTERRUPTED — restarting…'};
+    $('talkstate').textContent=msgs[ev.error]||('MIC ERROR: '+ev.error);
+    if(['not-allowed','service-not-allowed','audio-capture'].includes(ev.error)){
+      micOn=false;$('talkbar').classList.remove('on');setAvatar('idle');stopMeter();
+    }
+  };
+  rec.onend=()=>{if(micOn)setTimeout(()=>{try{rec.start()}catch{}},250)};
+  try{rec.start()}catch(e){$('talkstate').textContent='MIC START FAILED: '+e.message}
 }
 
 /* ---------- status polling ---------- */
