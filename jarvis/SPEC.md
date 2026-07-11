@@ -1,6 +1,6 @@
 # JARVIS — Specification (source of truth)
 
-**Version 1.0 — 2026-07-11 — Status: Phase 1 ✅ done (2026-07-11) · Phase 2 ORACLE next**
+**Version 1.0 — 2026-07-11 — Status: Phase 1 ✅ · Phase 2 ✅ (12 Warsaw leads, DoD verified) · Phase 3 ✅ code + first drafts (DoD needs 5 human approvals) · Phase 4 ✅ (Telegram brief live, launchd 08:00)**
 
 Every implementation session starts by reading this file. If code and spec
 disagree, fix one of them in the same session — never let them drift.
