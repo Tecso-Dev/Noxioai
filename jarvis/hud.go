@@ -14,6 +14,9 @@ import (
 //go:embed web/hud.html
 var hudHTML []byte
 
+//go:embed web/three.min.js
+var threeJS []byte
+
 // activity is the HUD's in-memory event feed (last 50 lines, lost on restart —
 // the durable record lives in the experiences table).
 type activity struct {
@@ -41,6 +44,13 @@ func (a *activity) snapshot() []string {
 func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.DB) {
 	act := &activity{}
 	act.add("JARVIS HUD online — brain %s", brain.Model)
+	started := time.Now()
+
+	mux.HandleFunc("GET /three.min.js", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/javascript")
+		w.Header().Set("Cache-Control", "public, max-age=86400")
+		w.Write(threeJS)
+	})
 
 	mux.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path != "/" {
@@ -57,6 +67,7 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 			"model":   brain.Model,
 			"facts":   len(memory.Facts),
 			"balance": deepseekBalance(),
+			"uptime":  time.Since(started).Round(time.Minute).String(),
 			"db":      "offline",
 			"agents": []map[string]string{
 				{"name": "ORACLE", "role": "Market intelligence", "status": "ready"},
@@ -70,10 +81,13 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 		}
 		if db != nil && db.PingContext(ctx) == nil {
 			resp["db"] = "online"
-			var leadCount, pendingCount int
+			var leadCount, pendingCount, approvedCount, expCount int
 			db.QueryRowContext(ctx, `SELECT count(*) FROM leads`).Scan(&leadCount)
 			db.QueryRowContext(ctx, `SELECT count(*) FROM outreach WHERE NOT approved AND outcome IS NULL`).Scan(&pendingCount)
+			db.QueryRowContext(ctx, `SELECT count(*) FROM outreach WHERE approved`).Scan(&approvedCount)
+			db.QueryRowContext(ctx, `SELECT count(*) FROM experiences`).Scan(&expCount)
 			resp["lead_count"], resp["pending_count"] = leadCount, pendingCount
+			resp["approved_count"], resp["exp_count"] = approvedCount, expCount
 
 			leads := []map[string]any{}
 			if rows, err := db.QueryContext(ctx, `
