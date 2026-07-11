@@ -33,6 +33,23 @@ func main() {
 		return
 	}
 
+	if len(os.Args) > 2 && os.Args[1] == "oracle" {
+		db, err := OpenDB()
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "✗ cannot reach Postgres (docker compose up -d):", err)
+			os.Exit(1)
+		}
+		defer db.Close()
+		o := &Oracle{Brain: NewBrainFromEnv(), DB: db}
+		res, err := o.Run(context.Background(), Task{Agent: "oracle", Input: strings.Join(os.Args[2:], " ")})
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "✗ oracle:", err)
+			os.Exit(1)
+		}
+		fmt.Println("⚡", res.Output)
+		return
+	}
+
 	brain := NewBrainFromEnv()
 	memory := LoadMemory()
 	fmt.Printf("⚡ JARVIS v0.2 — brain: %s (%s) — memory: %d facts\n", brain.Model, brain.BaseURL, len(memory.Facts))
