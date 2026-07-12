@@ -71,7 +71,7 @@ func RunBrief(ctx context.Context, db *sql.DB, brain *Brain) error {
 	outcomes, err := db.QueryContext(ctx, `
 		SELECT COALESCE(o.outcome,''), c.name
 		FROM outreach o JOIN leads l ON l.id = o.lead_id JOIN companies c ON c.id = l.company_id
-		WHERE o.sent_at > now() - interval '24 hours' AND o.outcome IS NOT NULL`)
+		WHERE l.updated_at > now() - interval '24 hours' AND o.outcome IS NOT NULL`)
 	if err != nil {
 		return err
 	}

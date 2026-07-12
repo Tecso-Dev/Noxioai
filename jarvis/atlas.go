@@ -111,9 +111,12 @@ func parseDraftJSON(out, company string) (*draft, error) {
 		return nil, fmt.Errorf("draft too thin (need subject, email ≥100 chars, linkedin ≥40 chars)")
 	}
 	// Principle 3 floor: the company must be named in the copy.
-	token := strings.ToLower(strings.Fields(company)[0])
-	if len(token) >= 3 && !strings.Contains(strings.ToLower(d.Email.Body+d.Linkedin), token) {
-		return nil, fmt.Errorf("draft does not mention the company %q", company)
+	fields := strings.Fields(company)
+	if len(fields) > 0 {
+		token := strings.ToLower(fields[0])
+		if len(token) >= 3 && !strings.Contains(strings.ToLower(d.Email.Body+d.Linkedin), token) {
+			return nil, fmt.Errorf("draft does not mention the company %q", company)
+		}
 	}
 	return &d, nil
 }

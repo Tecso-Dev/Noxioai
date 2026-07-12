@@ -26,4 +26,8 @@ func TestParseDraftJSON(t *testing.T) {
 	if _, err := parseDraftJSON(generic, "homfi Warsaw"); err == nil {
 		t.Error("draft that never names the company must be rejected (Principle 3)")
 	}
+
+	if _, err := parseDraftJSON(good, " \t"); err != nil {
+		t.Fatalf("draft with a blank company rejected: %v", err)
+	}
 }
