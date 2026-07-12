@@ -18,7 +18,9 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": [
         "run",
-        "dev"
+        "dev",
+        "--",
+        "--no-fork"
       ],
       "port": 3000
     }
