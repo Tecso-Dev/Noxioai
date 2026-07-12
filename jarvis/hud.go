@@ -172,14 +172,16 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 
 			leads := []map[string]any{}
 			if rows, err := db.QueryContext(ctx, `
-				SELECT l.id, COALESCE(l.score,0), COALESCE(l.tier,''), l.status, c.name
+				SELECT l.id, COALESCE(l.score,0), COALESCE(l.tier,''), l.status, c.name,
+				       EXISTS(SELECT 1 FROM contacts ct WHERE ct.company_id=c.id AND COALESCE(ct.email,'')<>'') AS has_email
 				FROM leads l JOIN companies c ON c.id=l.company_id ORDER BY l.score DESC LIMIT 20`); err == nil {
 				for rows.Next() {
 					var id int64
 					var score int
 					var tier, status, name string
-					if rows.Scan(&id, &score, &tier, &status, &name) == nil {
-						leads = append(leads, map[string]any{"id": id, "score": score, "tier": tier, "status": status, "name": name})
+					var hasEmail bool
+					if rows.Scan(&id, &score, &tier, &status, &name, &hasEmail) == nil {
+						leads = append(leads, map[string]any{"id": id, "score": score, "tier": tier, "status": status, "name": name, "has_email": hasEmail})
 					}
 				}
 				rows.Close()
@@ -265,6 +267,25 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 			return
 		}
 		runAgent(&Atlas{Brain: brain, DB: db}, fmt.Sprint(req.Lead), fmt.Sprintf("✍️ ATLAS drafting for lead %d", req.Lead))
+		w.WriteHeader(http.StatusAccepted)
+	})
+
+	mux.HandleFunc("POST /api/inbox", func(w http.ResponseWriter, r *http.Request) {
+		if db == nil {
+			http.Error(w, "CRM offline", http.StatusServiceUnavailable)
+			return
+		}
+		act.add("📬 HERALD checking inbox for replies")
+		busy.set("HERALD", true)
+		go func() {
+			defer busy.set("HERALD", false)
+			n, err := CheckInbox(context.Background(), db)
+			if err != nil {
+				act.add("✗ inbox: %v", err)
+				return
+			}
+			act.add("✓ inbox: %d replies processed", n)
+		}()
 		w.WriteHeader(http.StatusAccepted)
 	})
 
