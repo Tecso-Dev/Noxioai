@@ -120,7 +120,8 @@ header .sub b{color:var(--cyan-dim)}
   background-size:100% 240px;animation:scan 7s linear infinite;pointer-events:none}
 @keyframes scan{to{background-position:0 240px}}
 /* ---------- console ---------- */
-#log{height:186px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:4px}
+.console-panel{display:flex;flex-direction:column}
+#log{flex:1;min-height:160px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:4px}
 .msg{max-width:88%;padding:8px 12px;border-radius:9px;font-size:13px;white-space:pre-wrap;animation:msgin .35s cubic-bezier(.2,.8,.2,1)}
 @keyframes msgin{from{opacity:0;transform:translateY(8px)}}
 .msg.you{align-self:flex-end;background:#0e3a51;border:1px solid var(--line-hi)}
@@ -353,7 +354,7 @@ body.modal-open{overflow:hidden}
         <div class="small">STATE&nbsp;<b id="voiceline">STANDBY</b>&nbsp;·&nbsp;MOOD&nbsp;<b id="moodline">CALM</b>&nbsp;·&nbsp;AI CORE v1.0&nbsp;·&nbsp;PROPERTY OF SOBHAN AZIMZADEH</div>
       </div>
     </div>
-    <div class="panel reveal" style="--d:.2s;flex:1">
+    <div class="panel reveal console-panel" style="--d:.2s;flex:1">
       <h2 class="consolehead">Console
         <button onclick="clearConsole()" aria-label="Clear conversation" title="Clear conversation">CLEAR</button>
       </h2>
