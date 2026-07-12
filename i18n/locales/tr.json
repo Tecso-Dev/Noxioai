@@ -155,5 +155,40 @@
         "f4": "Özel destek"
       }
     }
+  },
+  "auth": {
+    "login": {
+      "title": "Tekrar hoş geldiniz",
+      "email": "E-posta",
+      "password": "Şifre",
+      "submit": "Giriş yap",
+      "noAccount": "Hesabınız yok mu?",
+      "signupLink": "Oluşturun"
+    },
+    "signup": {
+      "title": "Hesabınızı oluşturun",
+      "name": "Ad",
+      "email": "E-posta",
+      "password": "Şifre",
+      "submit": "Kayıt ol",
+      "haveAccount": "Zaten hesabınız var mı?",
+      "loginLink": "Giriş yap"
+    },
+    "account": {
+      "title": "Hesap",
+      "email": "E-posta",
+      "name": "Ad",
+      "locale": "Dil",
+      "logout": "Çıkış yap"
+    },
+    "app": {
+      "greeting": "Tekrar hoş geldiniz",
+      "subtitle": "NOXIOAI komuta merkeziniz",
+      "leads": "Müşteri adaylarınız",
+      "outreach": "İletişim",
+      "billing": "Faturalandırma",
+      "soon": "Çok yakında"
+    },
+    "error": "Bir şeyler ters gitti. Lütfen tekrar deneyin."
   }
 }

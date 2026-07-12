@@ -155,5 +155,40 @@
         "f4": "Dedicated support"
       }
     }
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Log in",
+      "noAccount": "No account yet?",
+      "signupLink": "Create one"
+    },
+    "signup": {
+      "title": "Create your account",
+      "name": "Name",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign up",
+      "haveAccount": "Already have an account?",
+      "loginLink": "Log in"
+    },
+    "account": {
+      "title": "Account",
+      "email": "Email",
+      "name": "Name",
+      "locale": "Language",
+      "logout": "Log out"
+    },
+    "app": {
+      "greeting": "Welcome back",
+      "subtitle": "Your NOXIOAI command center",
+      "leads": "Your leads",
+      "outreach": "Outreach",
+      "billing": "Billing",
+      "soon": "Coming soon"
+    },
+    "error": "Something went wrong. Please try again."
   }
 }

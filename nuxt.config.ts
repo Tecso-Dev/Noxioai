@@ -7,7 +7,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       // set NUXT_PUBLIC_WEB3FORMS_KEY in the deploy environment; empty = form shows email fallback
-      web3formsKey: ''
+      web3formsKey: '',
+      // JARVIS Go API base. '' = same-origin (prod). Dev: NUXT_PUBLIC_API_BASE=http://127.0.0.1:7700
+      apiBase: ''
     }
   },
 
