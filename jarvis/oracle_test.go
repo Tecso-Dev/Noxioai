@@ -21,6 +21,26 @@ func TestParseSearchResults(t *testing.T) {
 	}
 }
 
+func TestNormalizeHost(t *testing.T) {
+	tests := []struct {
+		host string
+		want string
+	}{
+		{"www.maxon.pl", "maxon.pl"},
+		{"en.maxon.pl", "maxon.pl"},
+		{"maxon.pl", "maxon.pl"},
+		{"WWW.Foo.COM", "foo.com"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.host, func(t *testing.T) {
+			if got := normalizeHost(tt.host); got != tt.want {
+				t.Errorf("normalizeHost(%q) = %q, want %q", tt.host, got, tt.want)
+			}
+		})
+	}
+}
+
 func TestParseLeadJSON(t *testing.T) {
 	decorated := "Sure! Here is the JSON:\n```json\n{\"name\":\"Acme\",\"score\":150,\"reasoning\":\"old site\"}\n```"
 	l, err := parseLeadJSON(decorated)

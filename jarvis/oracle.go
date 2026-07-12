@@ -87,6 +87,17 @@ type candidate struct {
 	Host string
 }
 
+func normalizeHost(host string) string {
+	host = strings.ToLower(host)
+	host = strings.TrimPrefix(host, "www.")
+	for _, prefix := range []string{"en.", "de.", "pl.", "fr."} {
+		if strings.HasPrefix(host, prefix) {
+			return strings.TrimPrefix(host, prefix)
+		}
+	}
+	return host
+}
+
 // searchQueries asks the brain for query variants (one in the local language
 // of the niche's location) so one run covers more ground than one DDG page.
 func (o *Oracle) searchQueries(niche string) []string {
@@ -315,7 +326,7 @@ func tier(score int) string {
 // --- persistence ---
 
 func (o *Oracle) store(ctx context.Context, cand candidate, l *leadExtract, niche string) error {
-	website := "https://" + cand.Host // canonical per-company key
+	website := "https://" + normalizeHost(cand.Host) // canonical per-company key
 	companyID, err := UpsertCompany(ctx, o.DB, l.Name, website, l.Industry, l.Country, l.Notes)
 	if err != nil {
 		return err
