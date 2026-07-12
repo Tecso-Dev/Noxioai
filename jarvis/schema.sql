@@ -54,3 +54,40 @@ CREATE TABLE IF NOT EXISTS experiences (
   lesson     TEXT,
   created_at TIMESTAMPTZ DEFAULT now()
 );
+
+-- ── NOXIOAI platform tables (PLATFORM-SPEC §5) ──────────────────────────────
+CREATE TABLE IF NOT EXISTS users (
+  id            BIGSERIAL PRIMARY KEY,
+  email         TEXT UNIQUE NOT NULL,
+  password_hash TEXT NOT NULL,            -- argon2id; NEVER plaintext
+  name          TEXT,
+  locale        TEXT DEFAULT 'en',
+  is_admin      BOOLEAN DEFAULT FALSE,
+  stripe_customer_id TEXT,
+  created_at    TIMESTAMPTZ DEFAULT now()
+);
+CREATE TABLE IF NOT EXISTS sessions (
+  token      TEXT PRIMARY KEY,
+  user_id    BIGINT REFERENCES users(id),
+  expires_at TIMESTAMPTZ NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+CREATE TABLE IF NOT EXISTS subscriptions (
+  id            BIGSERIAL PRIMARY KEY,
+  user_id       BIGINT REFERENCES users(id),
+  stripe_sub_id TEXT UNIQUE,
+  plan          TEXT,
+  status        TEXT,
+  current_period_end TIMESTAMPTZ,
+  updated_at    TIMESTAMPTZ DEFAULT now()
+);
+CREATE TABLE IF NOT EXISTS invoices (
+  id             BIGSERIAL PRIMARY KEY,
+  user_id        BIGINT REFERENCES users(id),
+  stripe_invoice_id TEXT UNIQUE,
+  amount_cents   INT,
+  currency       TEXT,
+  status         TEXT,
+  hosted_url     TEXT,
+  created_at     TIMESTAMPTZ DEFAULT now()
+);
