@@ -3,8 +3,8 @@ const items = ['one', 'two', 'three', 'four']
 </script>
 
 <template>
-  <section class="mx-auto max-w-3xl px-6 py-16">
-    <h2 class="text-center text-3xl sm:text-4xl font-extrabold">{{ $t('faq.heading') }}</h2>
+  <section class="faq-section landing-section mx-auto max-w-3xl px-6 py-20">
+    <h2 class="section-title text-center text-3xl sm:text-4xl font-extrabold">{{ $t('faq.heading') }}</h2>
     <div class="mt-10 space-y-3">
       <details
         v-for="(key, i) in items"
@@ -12,7 +12,7 @@ const items = ['one', 'two', 'three', 'four']
         v-motion
         :initial="{ opacity: 0, y: 24 }"
         :visible-once="{ opacity: 1, y: 0, transition: { duration: 450, delay: i * 90 } }"
-        class="faq-item group rounded-2xl border border-line bg-panel px-6 py-4"
+        class="faq-item faq-panel group rounded-2xl glass-card px-6 py-4"
       >
         <summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 font-bold">
           {{ $t(`faq.items.${key}.q`) }}

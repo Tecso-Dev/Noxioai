@@ -30,9 +30,9 @@ async function submit() {
 </script>
 
 <template>
-  <section id="waitlist" class="relative overflow-hidden py-20">
+  <section id="waitlist" class="waitlist-section relative overflow-hidden py-24">
     <div class="glow absolute inset-x-0 top-0 h-72 pointer-events-none" />
-    <div class="relative z-10 mx-auto max-w-xl px-6 text-center">
+    <div class="waitlist-panel glass-card rounded-3xl relative z-10 mx-auto max-w-xl px-6 py-10 text-center">
       <h2 class="text-3xl sm:text-4xl font-extrabold">{{ $t('waitlist.heading') }}</h2>
       <p class="mt-3 text-dim">{{ $t('waitlist.sub') }}</p>
 
@@ -43,13 +43,13 @@ async function submit() {
           type="email"
           required
           :placeholder="$t('waitlist.placeholder')"
-          class="flex-1 rounded-full border border-line bg-panel px-5 py-3 outline-none focus:border-brand2 transition"
+          class="waitlist-input flex-1 rounded-full border border-line bg-panel px-5 py-3 outline-none focus:border-brand2 transition"
           dir="ltr"
         />
         <button
           type="submit"
           :disabled="state === 'sending'"
-          class="rounded-full bg-brand px-6 py-3 font-bold hover:opacity-90 transition disabled:opacity-50"
+          class="waitlist-submit rounded-full bg-brand px-6 py-3 font-bold disabled:opacity-50"
         >
           {{ state === 'sending' ? $t('waitlist.sending') : $t('waitlist.button') }}
         </button>

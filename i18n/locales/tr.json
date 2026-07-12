@@ -10,7 +10,7 @@
     "badge": "Çok yakında — v1",
     "title1": "Yapay zeka çalışanları",
     "title2": "işletmeniz için",
-    "subtitle": "NOXIOAI görsel bir çevrimiçi ofistir: gerçek kişiliklere sahip, isimli yapay zeka çalışanları pazarlamanızı, sosyal medyanızı, müşteri desteğinizi ve web/uygulama geliştirmenizi üstlenir.",
+    "subtitle": "NOXIOAI görsel bir çevrimiçi ofistir: gerçek kişiliklere sahip, isimli yapay zeka çalışanları pazarlamanızı, sosyal medyanızı, müşteri desteğinizi ve web/uygulama geliştirmenizi üstlenir — dünyanın her yerindeki işletmeler için.",
     "cta": "Bekleme listesine katıl",
     "secondary": "Ekiple tanış",
     "system": "NOXIOAI / SİSTEM ÇEVRİMİÇİ",
@@ -54,8 +54,8 @@
         "desc": "İşletmenizi bir kez anlatın; her çalışan bilir ve sizin tonunuzda çalışır."
       },
       "persian": {
-        "title": "Gerçekten yerel",
-        "desc": "Makine çevirisi değil — doğal dil ve pazarınızın gerçek anlayışı."
+        "title": "Gerçekten çok dilli",
+        "desc": "İngilizce, Farsça, Türkçe ve Arapça'da doğal dil — tam sağdan sola desteğiyle, makine çevirisi değil."
       },
       "channels": {
         "title": "Instagram ve Telegram",
@@ -94,7 +94,7 @@
       },
       "two": {
         "q": "Metinler gerçekten doğal mı, yoksa makine çevirisi mi?",
-        "a": "NOXIOAI temelden çok dilli olarak geliştirildi: doğal ton ve pazarınızın gerçek anlayışı. Dil, sonradan çevrilmiş değil, ürünün ilk dilidir."
+        "a": "NOXIOAI temelden çok dilli olarak geliştirildi — İngilizce, Farsça, Türkçe ve Arapça, doğru sağdan sola gösterimle. Her dilde doğal ton, sonradan çeviri değil."
       },
       "three": {
         "q": "Ne zaman kullanabilirim?",
@@ -102,7 +102,7 @@
       },
       "four": {
         "q": "Fiyatlandırma nasıl?",
-        "a": "Fiyatlandırma henüz kesinleşmedi, ancak bekleme listesi üyeleri lansman indirimi alır."
+        "a": "Fiyatlar EUR cinsinden ve küçük işletmelere göredir. Kurucu Üyeler ömür boyu %50 indirim alır."
       }
     }
   },

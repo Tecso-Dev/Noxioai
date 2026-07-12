@@ -3,18 +3,18 @@ const items = ['office', 'brain', 'persian', 'channels'] as const
 </script>
 
 <template>
-  <section class="mx-auto max-w-5xl px-6 py-16">
-    <h2 class="text-center text-3xl sm:text-4xl font-extrabold">{{ $t('features.heading') }}</h2>
-    <div class="mt-12 grid gap-5 sm:grid-cols-2">
+  <section class="feature-section landing-section mx-auto max-w-5xl px-6 py-20">
+    <h2 class="section-title text-center text-3xl sm:text-4xl font-extrabold">{{ $t('features.heading') }}</h2>
+    <div class="feature-grid mt-12 grid gap-5 sm:grid-cols-2">
       <div
         v-for="(key, i) in items"
         :key="key"
         v-motion
         :initial="{ opacity: 0, y: 32 }"
         :visible-once="{ opacity: 1, y: 0, transition: { duration: 500, delay: i * 100 } }"
-        class="card3d rounded-2xl border border-line bg-panel p-6 flex gap-4 items-start"
+        class="feature-card card3d rounded-2xl glass-card p-6 flex gap-4 items-start"
       >
-        <span class="mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand/20 text-brand2">
+        <span class="feature-icon mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand/20 text-brand2">
           <!-- SVG icons (no emoji) — stroke style, one family -->
           <svg v-if="key === 'office'" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M6 22V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v18" /><path d="M2 22h20" />

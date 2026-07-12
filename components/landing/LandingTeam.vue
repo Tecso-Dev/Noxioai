@@ -8,18 +8,18 @@ const members = [
 </script>
 
 <template>
-  <section id="team" class="mx-auto max-w-5xl px-6 py-20">
-    <h2 class="text-center text-3xl sm:text-4xl font-extrabold">{{ $t('team.heading') }}</h2>
-    <p class="mt-3 text-center text-dim max-w-xl mx-auto">{{ $t('team.sub') }}</p>
+  <section id="team" class="team-section landing-section mx-auto max-w-5xl px-6 py-24">
+    <h2 class="section-title text-center text-3xl sm:text-4xl font-extrabold">{{ $t('team.heading') }}</h2>
+    <p class="section-sub mt-3 text-center text-dim max-w-xl mx-auto">{{ $t('team.sub') }}</p>
 
-    <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="team-grid mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
       <div
         v-for="(m, i) in members"
         :key="m.key"
         v-motion
         :initial="{ opacity: 0, y: 32 }"
         :visible-once="{ opacity: 1, y: 0, transition: { duration: 500, delay: i * 120 } }"
-        class="card3d rounded-2xl border border-line bg-panel p-6 text-center hover:border-brand2"
+        class="team-card card3d rounded-2xl glass-card p-6 text-center hover:border-brand2"
       >
         <div class="flex justify-center">
           <PixelPerson :hair="m.hair" :shirt="m.shirt" :scale="5" :style="{ animationDelay: i * 0.3 + 's' }" />
