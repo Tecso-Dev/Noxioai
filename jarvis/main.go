@@ -119,6 +119,23 @@ func main() {
 		return
 	}
 
+	if len(os.Args) > 2 && os.Args[1] == "pixel" {
+		db := mustDB()
+		defer db.Close()
+		id, err := strconv.ParseInt(os.Args[2], 10, 64)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "usage: jarvis pixel <lead-id>")
+			os.Exit(1)
+		}
+		critique, err := RunPixel(context.Background(), db, NewBrainFromEnv(), id)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "✗ pixel:", err)
+			os.Exit(1)
+		}
+		fmt.Println("🎨 PIXEL — design critique:\n\n" + critique)
+		return
+	}
+
 	if len(os.Args) > 2 && os.Args[1] == "send" {
 		db := mustDB()
 		defer db.Close()
