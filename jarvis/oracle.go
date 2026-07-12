@@ -195,7 +195,12 @@ func extractEmails(rawHTML string) []string {
 	seen := map[string]bool{}
 	for _, email := range emailRE.FindAllString(rawHTML, -1) {
 		email = strings.ToLower(strings.TrimSpace(email))
+		email = strings.TrimPrefix(email, "%20") // URL-encoded leading space from mailto: hrefs
 		if len(email) > 100 || seen[email] {
+			continue
+		}
+		// encoding artifacts / obfuscation placeholders are not real addresses
+		if strings.ContainsAny(email, " %<>()[]") {
 			continue
 		}
 		local, domain, ok := strings.Cut(email, "@")
@@ -208,7 +213,7 @@ func extractEmails(rawHTML string) []string {
 			continue
 		}
 		junk := false
-		for _, s := range []string{"noreply", "no-reply", "example", "sentry", "wixpress", "wix.com", "godaddy", "cloudflare", "schema.org", "w3.org", "googleapis", "gstatic", "jquery"} {
+		for _, s := range []string{"noreply", "no-reply", "example", "sentry", "wixpress", "wix.com", "godaddy", "cloudflare", "protected", "schema.org", "w3.org", "googleapis", "gstatic", "jquery"} {
 			if strings.Contains(local, s) || strings.Contains(domain, s) {
 				junk = true
 				break

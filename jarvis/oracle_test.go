@@ -86,6 +86,11 @@ func TestExtractEmails(t *testing.T) {
 			raw:  `<a href="mailto:info@acme.pl">Email us</a><p>contact@acme.pl</p><img src="logo@2x.png">noreply@acme.pl`,
 			want: []string{"info@acme.pl", "contact@acme.pl"},
 		},
+		{
+			name: "strips %20 prefix and drops obfuscation placeholders",
+			raw:  `mailto:%20biuro@acme.pl  cloudflare-protected@acme.pl  real@acme.pl`,
+			want: []string{"biuro@acme.pl", "real@acme.pl"},
+		},
 	}
 
 	for _, tt := range tests {
