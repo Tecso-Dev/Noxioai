@@ -126,6 +126,33 @@ header .sub b{color:var(--cyan-dim)}
 .msg.you{align-self:flex-end;background:#0e3a51;border:1px solid var(--line-hi)}
 .msg.jarvis{align-self:flex-start;background:#06131f;border:1px solid var(--cyan-dim);box-shadow:0 0 10px rgba(62,225,255,.12)}
 .msg.jarvis::before{content:"J.A.R.V.I.S";display:block;font-size:8px;letter-spacing:.3em;color:var(--cyan-dim);margin-bottom:3px}
+.msg.grouped{margin-top:-4px}
+.msg.grouped::before{display:none}
+.msg time{display:block;font-size:8px;color:var(--muted);letter-spacing:.06em;margin-top:4px;text-align:right;font-variant-numeric:tabular-nums}
+.msg .copybtn{position:absolute;top:5px;right:5px;padding:2px 7px;font-size:9px;opacity:0;transition:.18s;border-radius:5px}
+.msg{position:relative}
+.msg.jarvis:hover .copybtn,.msg.jarvis:focus-within .copybtn{opacity:.85}
+/* typing indicator — shown until the first token streams in */
+.typing{display:flex;gap:5px;padding:6px 2px;align-items:center}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--cyan);opacity:.35;animation:tydot 1.1s ease-in-out infinite}
+.typing i:nth-child(2){animation-delay:.18s}.typing i:nth-child(3){animation-delay:.36s}
+@keyframes tydot{40%{opacity:1;transform:translateY(-3px)}}
+/* empty state + quick suggestion chips */
+#emptystate{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  height:100%;color:var(--muted);font-size:11px;letter-spacing:.14em;text-align:center}
+#emptystate b{color:var(--cyan-dim);font-size:12px;letter-spacing:.24em}
+#suggest{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.chip{border:1px solid var(--line);border-radius:16px;padding:7px 13px;font-size:11px;min-height:32px;
+  color:var(--cyan-soft);cursor:pointer;background:#06131f;transition:.18s;letter-spacing:.04em}
+.chip:hover,.chip:focus-visible{border-color:var(--cyan);box-shadow:var(--glow);transform:translateY(-1px)}
+/* jump-to-latest pill — appears when a reply lands while you're scrolled up */
+#jumpnew{display:none;position:absolute;right:16px;bottom:74px;z-index:2;padding:6px 14px;font-size:10px;
+  letter-spacing:.14em;border-radius:16px;background:#0b2f42;border:1px solid var(--cyan-dim);animation:msgin .25s}
+.consolehead{display:flex;align-items:center;justify-content:space-between}
+.consolehead button{padding:2px 9px;font-size:9px;letter-spacing:.14em;border-radius:5px;color:var(--muted)}
+.consolehead button:hover{color:var(--cyan)}
+#say{min-height:44px}
+button.hot:disabled{opacity:.4;cursor:not-allowed;box-shadow:none;transform:none}
 .inrow{display:flex;gap:8px;margin-top:10px}
 input,select,button{background:#06131f;border:1px solid var(--line);color:var(--text);
   border-radius:8px;padding:9px 12px;font:inherit;outline:none}
@@ -327,11 +354,18 @@ body.modal-open{overflow:hidden}
       </div>
     </div>
     <div class="panel reveal" style="--d:.2s;flex:1">
-      <h2>Console</h2>
-      <div id="log"></div>
+      <h2 class="consolehead">Console
+        <button onclick="clearConsole()" aria-label="Clear conversation" title="Clear conversation">CLEAR</button>
+      </h2>
+      <div id="log" role="log" aria-live="polite">
+        <div id="emptystate"><b>CONSOLE READY</b>Speak, type, or pick a mission below, Sir.</div>
+      </div>
+      <button id="jumpnew" onclick="jumpToLatest()">▼ NEW REPLY</button>
+      <div id="suggest" role="group" aria-label="Quick prompts"></div>
       <div class="inrow">
-        <input id="say" placeholder="Speak or type to JARVIS…" onkeydown="if(event.key==='Enter')sendText()">
-        <button class="hot" onclick="sendText()">SEND</button>
+        <input id="say" placeholder="Speak or type to JARVIS…" aria-label="Message to JARVIS"
+          autocomplete="off" onkeydown="if(event.key==='Enter')sendText()">
+        <button class="hot" id="sendbtn" onclick="sendText()" disabled aria-label="Send message">SEND</button>
       </div>
     </div>
   </div>
@@ -892,13 +926,42 @@ function setGauge(id,vid,frac,label){const C=226;
   $(id).style.strokeDashoffset=C-C*Math.max(0,Math.min(1,frac));$(vid).textContent=label}
 
 /* ---------- chat ---------- */
-let messages=[];
-function addMsg(cls,text){const d=document.createElement('div');d.className='msg '+cls;d.textContent=text;
-  $('log').appendChild(d);$('log').scrollTop=1e9;return d}
+let messages=[],lastMsgMeta={cls:null,at:0};
+const nearBottom=()=>{const l=$('log');return l.scrollHeight-l.scrollTop-l.clientHeight<48};
+function scrollLog(force){const l=$('log');
+  if(force||nearBottom()){l.scrollTop=l.scrollHeight;$('jumpnew').style.display='none'}
+  else $('jumpnew').style.display='block'} // reply landed while reading history — offer a jump, don't yank
+function jumpToLatest(){scrollLog(true)}
+$('log').addEventListener('scroll',()=>{if(nearBottom())$('jumpnew').style.display='none'});
+function stamp(){return new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}
+function addMsg(cls,text){
+  $('emptystate')?.remove();
+  const wasNear=nearBottom();
+  const d=document.createElement('div');d.className='msg '+cls;
+  if(cls===lastMsgMeta.cls&&Date.now()-lastMsgMeta.at<90000)d.classList.add('grouped');
+  lastMsgMeta={cls,at:Date.now()};
+  const body=document.createElement('span');body.textContent=text;d.appendChild(body);
+  const t=document.createElement('time');t.textContent=stamp();d.appendChild(t);
+  if(cls==='jarvis'){
+    const c=document.createElement('button');c.className='copybtn';c.textContent='COPY';
+    c.setAttribute('aria-label','Copy reply');
+    c.onclick=()=>{navigator.clipboard.writeText(body.textContent);c.textContent='✓';setTimeout(()=>c.textContent='COPY',1200)};
+    d.appendChild(c);
+  }
+  $('log').appendChild(d);
+  scrollLog(wasNear);
+  return body; // callers stream text into the body span
+}
+function typingMsg(){ // three pulsing dots until the first token arrives
+  const body=addMsg('jarvis','');
+  body.innerHTML='<span class="typing"><i></i><i></i><i></i></span>';
+  return body;
+}
 async function send(text){
   if(!text.trim())return;
+  $('suggest').style.display='none'; // chips are for getting started
   addMsg('you',text);messages.push({role:'user',content:text});
-  const el=addMsg('jarvis','…');setAvatar('thinking');setMood('thinking');
+  const el=typingMsg();setAvatar('thinking');setMood('thinking');
   let reply='';
   try{
     const r=await fetch('/chat',{method:'POST',headers:{'Content-Type':'application/json'},
@@ -907,19 +970,31 @@ async function send(text){
     for(;;){const{done,value}=await rd.read();if(done)break;buf+=dec.decode(value,{stream:true});
       const parts=buf.split('\n\n');buf=parts.pop();
       for(const p of parts){const line=p.replace(/^data: /,'');if(line==='[DONE]')continue;
-        try{const j=JSON.parse(line);if(j.token){reply+=j.token;el.textContent=reply;$('log').scrollTop=1e9}}catch{}}}
-  }catch(e){reply='(connection lost, Sir)';el.textContent=reply}
+        try{const j=JSON.parse(line);if(j.token){reply+=j.token;el.textContent=reply;scrollLog(false)}}catch{}}}
+  }catch(e){reply='(connection lost, Sir — check that jarvis serve is running)';el.textContent=reply}
+  if(!reply)el.textContent=reply='(no response — brain unreachable, Sir)';
+  scrollLog(false);
   messages.push({role:'assistant',content:reply});
   if(messages.length>24)messages=messages.slice(-24);
   setMood(moodFromText(reply));
   if($('tts').checked)speak(reply);else setAvatar(micOn?'listening':'idle');
 }
+/* quick prompts — one tap to put JARVIS to work */
+const SUGGESTIONS=['Pipeline status report','Who are my top 3 leads?','What should I focus on today?','Explain your agents'];
+$('suggest').innerHTML=SUGGESTIONS.map(s=>`<button class="chip" onclick="send('${s.replace(/'/g,"\\'")}')">${s}</button>`).join('');
+function clearConsole(){
+  messages=[];lastMsgMeta={cls:null,at:0};
+  $('log').innerHTML='<div id="emptystate"><b>CONSOLE READY</b>Speak, type, or pick a mission below, Sir.</div>';
+  $('suggest').style.display='flex';$('jumpnew').style.display='none';
+}
+/* SEND enabled only when there is something to send */
+$('say').addEventListener('input',()=>{$('sendbtn').disabled=!$('say').value.trim()});
 // mood from tone of speech — drives the color math
 function moodFromText(s){s=s.toLowerCase();
   if(/error|fail|warning|offline|problem|cannot|alert|down|refused/.test(s))return 'alert';
   if(/excellent|great|done|success|congratulat|wonderful|perfect|ready|delighted/.test(s))return 'happy';
   return 'calm'}
-function sendText(){const v=$('say').value;$('say').value='';send(v)}
+function sendText(){const v=$('say').value;$('say').value='';$('sendbtn').disabled=true;send(v)}
 
 /* ---------- voice out (closest legal butler voice: en-GB, tuned) ---------- */
 let voice=null;

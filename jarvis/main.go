@@ -224,7 +224,11 @@ func serveHTTP(brain *Brain, memory *MemoryStore) {
 			http.Error(w, "bad request", http.StatusBadRequest)
 			return
 		}
-		history := append([]Message{{Role: "system", Content: systemPrompt + memory.SystemContext()}}, req.Messages...)
+		system := systemPrompt + memory.SystemContext()
+		if db != nil { // ground the chat in REAL numbers so it never invents pipeline status
+			system += "\n\n## Live business data (real, current — answer from THIS, never invent)\n" + crmSnapshot(r.Context(), db)
+		}
+		history := append([]Message{{Role: "system", Content: system}}, req.Messages...)
 
 		w.Header().Set("Content-Type", "text/event-stream")
 		w.Header().Set("Cache-Control", "no-cache")
