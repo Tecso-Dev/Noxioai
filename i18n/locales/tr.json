@@ -1,0 +1,82 @@
+{
+  "meta": {
+    "title": "NOXIOAI — İşletmeniz için yapay zeka çalışanları",
+    "description": "NOXIOAI, yapay zeka çalışanlarından oluşan görsel bir çevrimiçi ofistir: pazarlama, sosyal medya, müşteri desteği ve geliştirme — işletmenizi tek ekrandan yönetin. Çok yakında; bekleme listesine katılın."
+  },
+  "nav": { "waitlist": "Bekleme listesi" },
+  "hero": {
+    "badge": "Çok yakında — v1",
+    "title1": "Yapay zeka çalışanları",
+    "title2": "işletmeniz için",
+    "subtitle": "NOXIOAI görsel bir çevrimiçi ofistir: gerçek kişiliklere sahip, isimli yapay zeka çalışanları pazarlamanızı, sosyal medyanızı, müşteri desteğinizi ve web/uygulama geliştirmenizi üstlenir.",
+    "cta": "Bekleme listesine katıl",
+    "secondary": "Ekiple tanış"
+  },
+  "team": {
+    "heading": "Ekibinizle tanışın",
+    "sub": "Her çalışan kendi kişiliğine sahip bir uzmandır — hepsi ofisinizdeki masalarında.",
+    "members": {
+      "nika": { "name": "Nika", "role": "Pazarlama müdürü", "desc": "Kampanyalar, metinler ve SEO içeriği — Nika markanızı inşa eder." },
+      "dara": { "name": "Dara", "role": "Geliştirici", "desc": "Fikirden koda kadar siteniz ve uygulamanız için teknik rehberlik — Dara yanınızda." },
+      "sara": { "name": "Sara", "role": "Müşteri desteği", "desc": "Kusursuz, profesyonel bir tonda gönderime hazır yanıtlar — müşteriler geri gelir." },
+      "avisa": { "name": "Avisa", "role": "Sosyal medya", "desc": "Instagram ve Telegram gönderileri, açıklamalar ve içerik takvimleri — her zaman zamanında." }
+    }
+  },
+  "features": {
+    "heading": "Neden NOXIOAI?",
+    "items": {
+      "office": { "title": "Görsel bir ofis", "desc": "Çalışanlarınızı yaşayan bir ofiste görün — her masa bir uzman." },
+      "brain": { "title": "İş Beyni", "desc": "İşletmenizi bir kez anlatın; her çalışan bilir ve sizin tonunuzda çalışır." },
+      "persian": { "title": "Gerçekten yerel", "desc": "Makine çevirisi değil — doğal dil ve pazarınızın gerçek anlayışı." },
+      "channels": { "title": "Instagram ve Telegram", "desc": "İşletmelerin gerçekten kullandığı kanallar için tasarlandı." }
+    }
+  },
+  "how": {
+    "heading": "Nasıl çalışır",
+    "steps": {
+      "one": { "title": "İşletmenizi tanıtın", "desc": "Ne yaptığınız hakkında birkaç dakika — bu, ekibinizin Beyni olur." },
+      "two": { "title": "Çalışanlarınızı seçin", "desc": "Nika, Dara, Sara ve daha fazlası — ihtiyacınız olanı masaya oturtun." },
+      "three": { "title": "İşi devredin", "desc": "İçerik, müşteri yanıtları, teknik rehberlik — tek ekrandan." }
+    }
+  },
+  "chips": {
+    "nika": "Nika: Instagram gönderisi hazır ✓",
+    "sara": "Sara: 12 müşteri yanıtı taslağı ✓",
+    "dara": "Dara: site hatası düzeltildi ✓"
+  },
+  "faq": {
+    "heading": "Sıkça sorulan sorular",
+    "items": {
+      "one": {
+        "q": "Yapay zeka çalışanları tam olarak ne yapar?",
+        "a": "Her çalışanın bir uzmanlığı vardır: Nika pazarlama içeriği ve kampanyalar oluşturur, Sara müşteri yanıtları hazırlar, Dara siteniz ve uygulamanız için teknik rehberlik verir, Avisa Instagram ve Telegram içeriğini planlar. Son onayı siz verirsiniz — kontrol her zaman sizde."
+      },
+      "two": {
+        "q": "Metinler gerçekten doğal mı, yoksa makine çevirisi mi?",
+        "a": "NOXIOAI temelden çok dilli olarak geliştirildi: doğal ton ve pazarınızın gerçek anlayışı. Dil, sonradan çevrilmiş değil, ürünün ilk dilidir."
+      },
+      "three": {
+        "q": "Ne zaman kullanabilirim?",
+        "a": "V1 aktif geliştirme aşamasında. Bekleme listesi üyeleri önce davet edilir — yerinizi ayırtmak için e-postanızı bırakın."
+      },
+      "four": {
+        "q": "Fiyatlandırma nasıl?",
+        "a": "Fiyatlandırma henüz kesinleşmedi, ancak bekleme listesi üyeleri lansman indirimi alır."
+      }
+    }
+  },
+  "waitlist": {
+    "heading": "Herkesten önce katılın",
+    "sub": "V1 yolda. İlk siz haberdar olun diye e-postanızı bırakın — asla spam yok.",
+    "placeholder": "E-postanız",
+    "button": "Bekleme listesine katıl",
+    "sending": "Gönderiliyor…",
+    "success": "Katıldınız! Güzel haberler yakında. 🎉",
+    "error": "Bir şeyler ters gitti — lütfen tekrar deneyin.",
+    "fallback": "Form henüz aktif değil; bize e-posta gönderin:"
+  },
+  "footer": {
+    "made": "TECSO ekibi tarafından geliştirildi",
+    "soon": "Çok yakında…"
+  }
+}

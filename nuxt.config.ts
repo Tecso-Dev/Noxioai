@@ -14,7 +14,9 @@ export default defineNuxtConfig({
   i18n: {
     locales: [
       { code: 'fa', language: 'fa-IR', name: 'فارسی', dir: 'rtl', file: 'fa.json' },
-      { code: 'en', language: 'en-US', name: 'English', dir: 'ltr', file: 'en.json' }
+      { code: 'en', language: 'en-US', name: 'English', dir: 'ltr', file: 'en.json' },
+      { code: 'tr', language: 'tr-TR', name: 'Türkçe', dir: 'ltr', file: 'tr.json' },
+      { code: 'ar', language: 'ar', name: 'العربية', dir: 'rtl', file: 'ar.json' }
     ],
     defaultLocale: 'fa',
     strategy: 'prefix_except_default',
