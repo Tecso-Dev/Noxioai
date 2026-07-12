@@ -119,6 +119,18 @@ func main() {
 		return
 	}
 
+	if len(os.Args) > 1 && os.Args[1] == "followup" {
+		db := mustDB()
+		defer db.Close()
+		drafted, err := RunFollowup(context.Background(), db, NewBrainFromEnv())
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "✗ followup:", err)
+			os.Exit(1)
+		}
+		fmt.Printf("✍️ %d follow-ups drafted (unapproved)\n", drafted)
+		return
+	}
+
 	if len(os.Args) > 2 && os.Args[1] == "pixel" {
 		db := mustDB()
 		defer db.Close()
