@@ -35,6 +35,18 @@ func main() {
 		return
 	}
 
+	if len(os.Args) > 1 && os.Args[1] == "inbox" {
+		db := mustDB()
+		defer db.Close()
+		replies, err := CheckInbox(context.Background(), db)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "✗ inbox:", err)
+			os.Exit(1)
+		}
+		fmt.Printf("📬 %d replies processed\n", replies)
+		return
+	}
+
 	if len(os.Args) > 2 && os.Args[1] == "db" && os.Args[2] == "init" {
 		db, err := OpenDB()
 		if err != nil {

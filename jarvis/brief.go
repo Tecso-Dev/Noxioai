@@ -14,6 +14,10 @@ import (
 // FRIDAY morning briefing (SPEC Phase 4). Not an agent — one function on a
 // timer (launchd, 08:00). Reads the CRM, composes the day, pings Telegram.
 func RunBrief(ctx context.Context, db *sql.DB, brain *Brain) error {
+	if _, err := CheckInbox(ctx, db); err != nil {
+		// Inbox replies are supplemental; the brief must still be delivered.
+	}
+
 	var b strings.Builder
 	fmt.Fprintf(&b, "⚡ JARVIS morning brief — %s\n", time.Now().Format("Mon 2 Jan, 15:04"))
 
