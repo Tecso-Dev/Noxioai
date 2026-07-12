@@ -4,7 +4,7 @@ const switchLocalePath = useSwitchLocalePath()
 </script>
 
 <template>
-  <div class="flex items-center gap-1 rounded-full border border-line bg-panel p-1 text-sm">
+  <div class="language-switcher flex items-center gap-1 rounded-full border border-line bg-panel p-1 text-sm">
     <NuxtLink
       v-for="l in locales"
       :key="l.code"

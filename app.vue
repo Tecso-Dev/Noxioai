@@ -12,7 +12,7 @@ const head = useLocaleHead({ dir: true, lang: true, seo: true })
         <Meta :property="meta.property" :content="meta.content" />
       </template>
     </Head>
-    <Body class="bg-night text-snow antialiased">
+    <Body class="noxio-shell bg-night text-snow antialiased">
       <NuxtPage />
     </Body>
   </Html>
