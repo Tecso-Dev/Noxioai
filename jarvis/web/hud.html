@@ -441,6 +441,16 @@ body.modal-open{overflow:hidden}
     </div>
   </div>
 </div>
+<div id="pixelview" onclick="if(event.target===this)this.style.display='none'">
+  <div class="panel box">
+    <h2 id="pixelhead">🎨 PIXEL — design critique</h2>
+    <div id="pixeltext" style="white-space:pre-wrap;line-height:1.6;font-size:13px"></div>
+    <div class="inrow">
+      <button class="hot" onclick="navigator.clipboard.writeText(document.getElementById('pixeltext').textContent);this.textContent='✓ COPIED'">COPY</button>
+      <button onclick="document.getElementById('pixelview').style.display='none'">CLOSE</button>
+    </div>
+  </div>
+</div>
 
 <div id="agentview" onclick="if(event.target===this)closeAgentDossier()">
   <section class="panel box dossier" role="dialog" aria-modal="true" aria-labelledby="dossier-name" tabindex="-1">
@@ -1113,7 +1123,7 @@ async function poll(){
       `<tr><td>${l.id}</td><td>${l.score}</td><td class="tier-${l.tier}">${l.tier}</td>
        <td>${l.name} ${l.has_email?'<span title="contact email on file" style="color:var(--green)">📧</span>':'<span title="no contact email — HERALD cannot send" style="opacity:.35">✉</span>'}</td>
        <td>${l.status}</td>
-       <td><button onclick="runAtlas(${l.id})">ATLAS</button></td></tr>`).join('');
+       <td><button onclick="runAtlas(${l.id})">ATLAS</button> <button onclick="runPixel(${l.id})" title="PIXEL design critique">🎨</button></td></tr>`).join('');
     $('drafts').tBodies[0].innerHTML=(s.drafts||[]).map(d=>
       `<tr><td>${d.id}</td><td>${d.channel}</td><td>${d.company}</td>
        <td><button class="hot" onclick="approve(${d.id})">APPROVE</button></td></tr>`).join('');
@@ -1131,6 +1141,13 @@ async function runAtlas(id){await fetch('/api/atlas',{method:'POST',headers:{'Co
   speak('ATLAS is drafting outreach for lead '+id);poll()}
 async function briefNow(){await fetch('/api/brief',{method:'POST'});speak('Executive briefing dispatched to Telegram, Sir.');poll()}
 async function checkInbox(){await fetch('/api/inbox',{method:'POST'});speak('Checking your inbox for replies, Sir.');poll()}
+async function runPixel(id){
+  $('pixelhead').textContent='🎨 PIXEL — reviewing…';$('pixeltext').textContent='Analyzing the design, Sir…';
+  $('pixelview').style.display='flex';
+  const r=await fetch('/api/pixel',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lead:id})});
+  if(r.ok){const j=await r.json();$('pixelhead').textContent='🎨 PIXEL — design critique';$('pixeltext').textContent=j.critique;poll()}
+  else{$('pixeltext').textContent='PIXEL failed: '+await r.text()}
+}
 let lastApprovedId=0;
 async function approve(id){
   const r=await(await fetch('/api/approve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id})})).json();

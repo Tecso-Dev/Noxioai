@@ -270,6 +270,26 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 		w.WriteHeader(http.StatusAccepted)
 	})
 
+	mux.HandleFunc("POST /api/pixel", func(w http.ResponseWriter, r *http.Request) {
+		var req struct{ Lead int64 `json:"lead"` }
+		if json.NewDecoder(r.Body).Decode(&req) != nil || req.Lead == 0 || db == nil {
+			http.Error(w, "need {lead} and a live CRM", http.StatusBadRequest)
+			return
+		}
+		act.add("🎨 PIXEL reviewing lead %d", req.Lead)
+		busy.set("PIXEL", true)
+		critique, err := RunPixel(r.Context(), db, brain, req.Lead)
+		busy.set("PIXEL", false)
+		if err != nil {
+			act.add("✗ PIXEL: %v", err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		act.add("✓ PIXEL: design critique for lead %d", req.Lead)
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(map[string]string{"critique": critique})
+	})
+
 	mux.HandleFunc("POST /api/inbox", func(w http.ResponseWriter, r *http.Request) {
 		if db == nil {
 			http.Error(w, "CRM offline", http.StatusServiceUnavailable)
