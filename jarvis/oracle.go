@@ -56,7 +56,7 @@ func (o *Oracle) Run(ctx context.Context, task Task) (Result, error) {
 		if stored >= oracleTarget {
 			break
 		}
-		page, err := fetchText(ctx, cand.URL)
+		page, emails, err := fetchText(ctx, cand.URL)
 		if err != nil {
 			fmt.Printf("  ✗ %-30s fetch: %v\n", cand.Host, err)
 			continue
@@ -70,7 +70,7 @@ func (o *Oracle) Run(ctx context.Context, task Task) (Result, error) {
 			fmt.Printf("  – %-30s not a single company's site\n", cand.Host)
 			continue
 		}
-		if err := o.store(ctx, cand, lead, niche); err != nil {
+		if err := o.store(ctx, cand, lead, niche, emails); err != nil {
 			fmt.Printf("  ✗ %-30s store: %v\n", cand.Host, err)
 			continue
 		}
@@ -187,7 +187,44 @@ var (
 	reStyle  = regexp.MustCompile(`(?is)<style[^>]*>.*?</style>`)
 	reTag    = regexp.MustCompile(`(?s)<[^>]*>`)
 	reSpace  = regexp.MustCompile(`\s+`)
+	emailRE  = regexp.MustCompile(`(?i)[a-z0-9._%+\-]+@[a-z0-9.-]+\.[a-z]{2,}`)
 )
+
+func extractEmails(rawHTML string) []string {
+	var emails []string
+	seen := map[string]bool{}
+	for _, email := range emailRE.FindAllString(rawHTML, -1) {
+		email = strings.ToLower(strings.TrimSpace(email))
+		if len(email) > 100 || seen[email] {
+			continue
+		}
+		local, domain, ok := strings.Cut(email, "@")
+		if !ok {
+			continue
+		}
+		if strings.HasSuffix(email, ".png") || strings.HasSuffix(email, ".jpg") ||
+			strings.HasSuffix(email, ".jpeg") || strings.HasSuffix(email, ".gif") ||
+			strings.HasSuffix(email, ".svg") || strings.HasSuffix(email, ".webp") {
+			continue
+		}
+		junk := false
+		for _, s := range []string{"noreply", "no-reply", "example", "sentry", "wixpress", "wix.com", "godaddy", "cloudflare", "schema.org", "w3.org", "googleapis", "gstatic", "jquery"} {
+			if strings.Contains(local, s) || strings.Contains(domain, s) {
+				junk = true
+				break
+			}
+		}
+		if junk {
+			continue
+		}
+		seen[email] = true
+		emails = append(emails, email)
+		if len(emails) == 5 {
+			break
+		}
+	}
+	return emails
+}
 
 func stripHTML(s string) string {
 	s = reScript.ReplaceAllString(s, " ")
@@ -197,31 +234,33 @@ func stripHTML(s string) string {
 	return strings.TrimSpace(reSpace.ReplaceAllString(s, " "))
 }
 
-func fetchText(ctx context.Context, pageURL string) (string, error) {
+func fetchText(ctx context.Context, pageURL string) (text string, emails []string, err error) {
 	ctx, cancel := context.WithTimeout(ctx, 20*time.Second)
 	defer cancel()
 	req, err := http.NewRequestWithContext(ctx, "GET", pageURL, nil)
 	if err != nil {
-		return "", err
+		return "", nil, err
 	}
 	req.Header.Set("User-Agent", browserUA)
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return "", err
+		return "", nil, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("HTTP %d", resp.StatusCode)
+		return "", nil, fmt.Errorf("HTTP %d", resp.StatusCode)
 	}
 	b, err := io.ReadAll(io.LimitReader(resp.Body, 500<<10))
 	if err != nil {
-		return "", err
+		return "", nil, err
 	}
-	text := oneLine(stripHTML(string(b)), 4500)
+	raw := string(b)
+	emails = extractEmails(raw)
+	text = oneLine(stripHTML(raw), 4500)
 	if len(text) < 200 {
-		return "", fmt.Errorf("no readable text (likely JS-only site — Playwright upgrade path)")
+		return "", nil, fmt.Errorf("no readable text (likely JS-only site — Playwright upgrade path)")
 	}
-	return text, nil
+	return text, emails, nil
 }
 
 // --- LLM extraction & scoring ---
@@ -325,7 +364,7 @@ func tier(score int) string {
 
 // --- persistence ---
 
-func (o *Oracle) store(ctx context.Context, cand candidate, l *leadExtract, niche string) error {
+func (o *Oracle) store(ctx context.Context, cand candidate, l *leadExtract, niche string, emails []string) error {
 	website := "https://" + normalizeHost(cand.Host) // canonical per-company key
 	companyID, err := UpsertCompany(ctx, o.DB, l.Name, website, l.Industry, l.Country, l.Notes)
 	if err != nil {
@@ -339,6 +378,14 @@ func (o *Oracle) store(ctx context.Context, cand candidate, l *leadExtract, nich
 			continue
 		}
 		if err := AddContact(ctx, o.DB, companyID, c.Name, c.Role, c.Email, c.Linkedin); err != nil {
+			return err
+		}
+	}
+	for _, email := range emails {
+		if email == "" {
+			continue
+		}
+		if err := AddContact(ctx, o.DB, companyID, "", "", email, ""); err != nil {
 			return err
 		}
 	}

@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 const ddgFixture = `
 <a rel="nofollow" class="result__a" href="//duckduckgo.com/l/?uddg=https%3A%2F%2Fwarsaw%2Dhomes.pl%2F&amp;rut=abc">Warsaw Homes</a>
@@ -69,5 +72,27 @@ func TestTier(t *testing.T) {
 		if got := tier(score); got != want {
 			t.Errorf("tier(%d) = %s, want %s", score, got, want)
 		}
+	}
+}
+
+func TestExtractEmails(t *testing.T) {
+	tests := []struct {
+		name string
+		raw  string
+		want []string
+	}{
+		{
+			name: "keeps mailto and bare addresses while filtering junk",
+			raw:  `<a href="mailto:info@acme.pl">Email us</a><p>contact@acme.pl</p><img src="logo@2x.png">noreply@acme.pl`,
+			want: []string{"info@acme.pl", "contact@acme.pl"},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := extractEmails(tt.raw); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("extractEmails(%q) = %q, want %q", tt.raw, got, tt.want)
+			}
+		})
 	}
 }
