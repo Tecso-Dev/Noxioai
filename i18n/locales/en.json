@@ -3,40 +3,81 @@
     "title": "NOXIOAI — AI employees for your business",
     "description": "NOXIOAI is a visual online office of AI employees: marketing, social media, customer support and development — run your business from one screen. Coming soon; join the waitlist."
   },
-  "nav": { "waitlist": "Waitlist" },
+  "nav": {
+    "waitlist": "Waitlist"
+  },
   "hero": {
     "badge": "Coming soon — v1",
     "title1": "AI employees",
     "title2": "for your business",
     "subtitle": "NOXIOAI is a visual online office: named AI employees with real personalities who handle your marketing, social media, customer support and web/app development — Persian-native, built for the Iranian market.",
     "cta": "Join the waitlist",
-    "secondary": "Meet the team"
+    "secondary": "Meet the team",
+    "system": "NOXIOAI / SYSTEM ONLINE",
+    "live": "LIVE"
   },
   "team": {
     "heading": "Meet your team",
     "sub": "Every employee is a specialist with their own personality — all at desks in your office.",
     "members": {
-      "nika": { "name": "Nika", "role": "Marketing manager", "desc": "Campaigns, copy and SEO content — Nika builds your brand." },
-      "dara": { "name": "Dara", "role": "Developer", "desc": "Technical guidance for your site and app, from idea to code — Dara has your back." },
-      "sara": { "name": "Sara", "role": "Customer support", "desc": "Ready-to-send replies in a perfect professional tone — customers keep coming back." },
-      "avisa": { "name": "Avisa", "role": "Social media", "desc": "Instagram & Telegram posts, captions and content calendars — always on time." }
+      "nika": {
+        "name": "Nika",
+        "role": "Marketing manager",
+        "desc": "Campaigns, copy and SEO content — Nika builds your brand."
+      },
+      "dara": {
+        "name": "Dara",
+        "role": "Developer",
+        "desc": "Technical guidance for your site and app, from idea to code — Dara has your back."
+      },
+      "sara": {
+        "name": "Sara",
+        "role": "Customer support",
+        "desc": "Ready-to-send replies in a perfect professional tone — customers keep coming back."
+      },
+      "avisa": {
+        "name": "Avisa",
+        "role": "Social media",
+        "desc": "Instagram & Telegram posts, captions and content calendars — always on time."
+      }
     }
   },
   "features": {
     "heading": "Why NOXIOAI?",
     "items": {
-      "office": { "title": "A visual office", "desc": "See your employees in a living pixel office — every desk is a specialist." },
-      "brain": { "title": "Business Brain", "desc": "Describe your business once; every employee knows it and works in your tone." },
-      "persian": { "title": "Truly Persian", "desc": "Not machine translation — natural Persian, Jalali calendar, real understanding of the Iranian market." },
-      "channels": { "title": "Instagram & Telegram", "desc": "Built for the channels Iranian businesses actually use." }
+      "office": {
+        "title": "A visual office",
+        "desc": "See your employees in a living pixel office — every desk is a specialist."
+      },
+      "brain": {
+        "title": "Business Brain",
+        "desc": "Describe your business once; every employee knows it and works in your tone."
+      },
+      "persian": {
+        "title": "Truly Persian",
+        "desc": "Not machine translation — natural Persian, Jalali calendar, real understanding of the Iranian market."
+      },
+      "channels": {
+        "title": "Instagram & Telegram",
+        "desc": "Built for the channels Iranian businesses actually use."
+      }
     }
   },
   "how": {
     "heading": "How it works",
     "steps": {
-      "one": { "title": "Introduce your business", "desc": "A few minutes about what you do — this becomes your team's Brain." },
-      "two": { "title": "Pick your employees", "desc": "Nika, Dara, Sara and more — seat whoever you need at a desk." },
-      "three": { "title": "Delegate the work", "desc": "Content, customer replies, technical guidance — from one screen." }
+      "one": {
+        "title": "Introduce your business",
+        "desc": "A few minutes about what you do — this becomes your team's Brain."
+      },
+      "two": {
+        "title": "Pick your employees",
+        "desc": "Nika, Dara, Sara and more — seat whoever you need at a desk."
+      },
+      "three": {
+        "title": "Delegate the work",
+        "desc": "Content, customer replies, technical guidance — from one screen."
+      }
     }
   },
   "chips": {
@@ -78,5 +119,41 @@
   "footer": {
     "made": "Built by the TECSO team",
     "soon": "Coming soon…"
+  },
+  "pricing": {
+    "spots": "Only 10 founding spots",
+    "heading": "Founding Members",
+    "sub": "The first 10 customers get 50% off — for life — plus personal onboarding. When the spots are gone, they're gone.",
+    "popular": "Most popular",
+    "perMonth": "/mo",
+    "founder": "Founder price · locked for life",
+    "cta": "Claim your spot",
+    "note": "Prices in EUR. Your founder rate stays locked as long as you're subscribed.",
+    "plans": {
+      "starter": {
+        "name": "Starter",
+        "tagline": "Solo founders & freelancers",
+        "f1": "Lead discovery in your niche",
+        "f2": "Personalized outreach drafts",
+        "f3": "Daily briefing",
+        "f4": "Email support"
+      },
+      "pro": {
+        "name": "Pro",
+        "tagline": "Growing businesses",
+        "f1": "Everything in Starter",
+        "f2": "Full agent suite (ORACLE · ATLAS · CALEB)",
+        "f3": "Reply detection & follow-ups",
+        "f4": "Priority support"
+      },
+      "agency": {
+        "name": "Agency",
+        "tagline": "Teams & agencies",
+        "f1": "Everything in Pro",
+        "f2": "Multiple seats",
+        "f3": "White-label option",
+        "f4": "Dedicated support"
+      }
+    }
   }
 }

@@ -3,7 +3,9 @@
     "title": "NOXIOAI — İşletmeniz için yapay zeka çalışanları",
     "description": "NOXIOAI, yapay zeka çalışanlarından oluşan görsel bir çevrimiçi ofistir: pazarlama, sosyal medya, müşteri desteği ve geliştirme — işletmenizi tek ekrandan yönetin. Çok yakında; bekleme listesine katılın."
   },
-  "nav": { "waitlist": "Bekleme listesi" },
+  "nav": {
+    "waitlist": "Bekleme listesi"
+  },
   "hero": {
     "badge": "Çok yakında — v1",
     "title1": "Yapay zeka çalışanları",
@@ -18,27 +20,64 @@
     "heading": "Ekibinizle tanışın",
     "sub": "Her çalışan kendi kişiliğine sahip bir uzmandır — hepsi ofisinizdeki masalarında.",
     "members": {
-      "nika": { "name": "Nika", "role": "Pazarlama müdürü", "desc": "Kampanyalar, metinler ve SEO içeriği — Nika markanızı inşa eder." },
-      "dara": { "name": "Dara", "role": "Geliştirici", "desc": "Fikirden koda kadar siteniz ve uygulamanız için teknik rehberlik — Dara yanınızda." },
-      "sara": { "name": "Sara", "role": "Müşteri desteği", "desc": "Kusursuz, profesyonel bir tonda gönderime hazır yanıtlar — müşteriler geri gelir." },
-      "avisa": { "name": "Avisa", "role": "Sosyal medya", "desc": "Instagram ve Telegram gönderileri, açıklamalar ve içerik takvimleri — her zaman zamanında." }
+      "nika": {
+        "name": "Nika",
+        "role": "Pazarlama müdürü",
+        "desc": "Kampanyalar, metinler ve SEO içeriği — Nika markanızı inşa eder."
+      },
+      "dara": {
+        "name": "Dara",
+        "role": "Geliştirici",
+        "desc": "Fikirden koda kadar siteniz ve uygulamanız için teknik rehberlik — Dara yanınızda."
+      },
+      "sara": {
+        "name": "Sara",
+        "role": "Müşteri desteği",
+        "desc": "Kusursuz, profesyonel bir tonda gönderime hazır yanıtlar — müşteriler geri gelir."
+      },
+      "avisa": {
+        "name": "Avisa",
+        "role": "Sosyal medya",
+        "desc": "Instagram ve Telegram gönderileri, açıklamalar ve içerik takvimleri — her zaman zamanında."
+      }
     }
   },
   "features": {
     "heading": "Neden NOXIOAI?",
     "items": {
-      "office": { "title": "Görsel bir ofis", "desc": "Çalışanlarınızı yaşayan bir ofiste görün — her masa bir uzman." },
-      "brain": { "title": "İş Beyni", "desc": "İşletmenizi bir kez anlatın; her çalışan bilir ve sizin tonunuzda çalışır." },
-      "persian": { "title": "Gerçekten yerel", "desc": "Makine çevirisi değil — doğal dil ve pazarınızın gerçek anlayışı." },
-      "channels": { "title": "Instagram ve Telegram", "desc": "İşletmelerin gerçekten kullandığı kanallar için tasarlandı." }
+      "office": {
+        "title": "Görsel bir ofis",
+        "desc": "Çalışanlarınızı yaşayan bir ofiste görün — her masa bir uzman."
+      },
+      "brain": {
+        "title": "İş Beyni",
+        "desc": "İşletmenizi bir kez anlatın; her çalışan bilir ve sizin tonunuzda çalışır."
+      },
+      "persian": {
+        "title": "Gerçekten yerel",
+        "desc": "Makine çevirisi değil — doğal dil ve pazarınızın gerçek anlayışı."
+      },
+      "channels": {
+        "title": "Instagram ve Telegram",
+        "desc": "İşletmelerin gerçekten kullandığı kanallar için tasarlandı."
+      }
     }
   },
   "how": {
     "heading": "Nasıl çalışır",
     "steps": {
-      "one": { "title": "İşletmenizi tanıtın", "desc": "Ne yaptığınız hakkında birkaç dakika — bu, ekibinizin Beyni olur." },
-      "two": { "title": "Çalışanlarınızı seçin", "desc": "Nika, Dara, Sara ve daha fazlası — ihtiyacınız olanı masaya oturtun." },
-      "three": { "title": "İşi devredin", "desc": "İçerik, müşteri yanıtları, teknik rehberlik — tek ekrandan." }
+      "one": {
+        "title": "İşletmenizi tanıtın",
+        "desc": "Ne yaptığınız hakkında birkaç dakika — bu, ekibinizin Beyni olur."
+      },
+      "two": {
+        "title": "Çalışanlarınızı seçin",
+        "desc": "Nika, Dara, Sara ve daha fazlası — ihtiyacınız olanı masaya oturtun."
+      },
+      "three": {
+        "title": "İşi devredin",
+        "desc": "İçerik, müşteri yanıtları, teknik rehberlik — tek ekrandan."
+      }
     }
   },
   "chips": {
@@ -80,5 +119,41 @@
   "footer": {
     "made": "TECSO ekibi tarafından geliştirildi",
     "soon": "Çok yakında…"
+  },
+  "pricing": {
+    "spots": "Yalnızca 10 kurucu yeri",
+    "heading": "Kurucu Üyeler",
+    "sub": "İlk 10 müşteri ömür boyu %50 indirim ve kişisel kurulum alır. Yerler dolunca biter.",
+    "popular": "En popüler",
+    "perMonth": "/ay",
+    "founder": "Kurucu fiyatı · ömür boyu sabit",
+    "cta": "Yerini ayır",
+    "note": "Fiyatlar EUR cinsindendir. Kurucu fiyatınız abone kaldığınız sürece sabit kalır.",
+    "plans": {
+      "starter": {
+        "name": "Starter",
+        "tagline": "Bireysel kurucular ve serbest çalışanlar",
+        "f1": "Nişinizde müşteri adayı keşfi",
+        "f2": "Kişiselleştirilmiş mesaj taslakları",
+        "f3": "Günlük özet",
+        "f4": "E-posta desteği"
+      },
+      "pro": {
+        "name": "Pro",
+        "tagline": "Büyüyen işletmeler",
+        "f1": "Starter'daki her şey",
+        "f2": "Tam ajan seti (ORACLE · ATLAS · CALEB)",
+        "f3": "Yanıt algılama ve takip",
+        "f4": "Öncelikli destek"
+      },
+      "agency": {
+        "name": "Agency",
+        "tagline": "Ekipler ve ajanslar",
+        "f1": "Pro'daki her şey",
+        "f2": "Çoklu kullanıcı",
+        "f3": "White-label seçeneği",
+        "f4": "Özel destek"
+      }
+    }
   }
 }
