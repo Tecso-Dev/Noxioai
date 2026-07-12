@@ -50,7 +50,9 @@ const h = computed(() => PATTERN.length * props.scale)
 </script>
 
 <template>
-  <div :class="animated ? 'px-bob' : ''" :style="{ width: w + 'px', height: h + 'px' }" aria-hidden="true">
-    <div :style="{ width: scale + 'px', height: scale + 'px', boxShadow: shadow, marginInlineStart: '-' + scale + 'px', marginBlockStart: '-' + scale + 'px', transform: 'translate(' + scale + 'px,' + scale + 'px)' }" />
+  <!-- dir=ltr: the box-shadow paints pixels with physical left→right offsets,
+       so the origin must stay physical too, or RTL pages shove it off-frame. -->
+  <div :class="animated ? 'px-bob' : ''" dir="ltr" :style="{ width: w + 'px', height: h + 'px' }" aria-hidden="true">
+    <div :style="{ width: scale + 'px', height: scale + 'px', boxShadow: shadow, marginLeft: '-' + scale + 'px', marginTop: '-' + scale + 'px', transform: 'translate(' + scale + 'px,' + scale + 'px)' }" />
   </div>
 </template>
