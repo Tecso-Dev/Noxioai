@@ -40,13 +40,13 @@ The detailed product plan lives in [docs/ROADMAP.md](docs/ROADMAP.md). The appro
 ## Latest activity
 
 <!-- ACTIVITY:START -->
-_Auto-updated 2026-07-13 14:17 UTC_
+_Auto-updated 2026-07-13 17:10 UTC_
 
+- `f76d272` FA locale: Persian-digit prices on pricing cards via parsi-text (dogfooding our own npm package) — 2026-07-13
 - `ed9284d` README: current platform status + self-updating activity block (Action refreshes last-5-commits log on every push to main) — 2026-07-13
 - `083f974` Phase 4 billing frontend: pricing CTAs → Stripe Checkout (anon → signup?plan → auto-checkout at founder price); Nuxt devProxy /api→:7700 so auth+billing work same-origin in dev (was 404). Verified full funnel live: visitor → plan → signup → Stripe checkout €75/mo Pro — 2026-07-13
 - `aafcbcc` Phase 4 billing backend (Codex-implemented, Claude-verified): Stripe Checkout (subscription mode, founder prices), Billing Portal, signature-verified webhook syncing subscriptions/invoices (idempotent upserts); /api/billing/checkout|portal auth-gated, /api/stripe/webhook signature-gated. Verified: logged-in user → real Stripe checkout URL, 401 for anon — 2026-07-13
 - `88002dd` Style hooks (noxio-shell, language-switcher classes) + agent-handoff and pre-sell coordination docs from parallel session — 2026-07-12
-- `296038d` Phase 3 auth pages (Claude-built after Codex file-race): glass login/signup/account + dashboard shell (app.vue), wired to Go /api/auth/* via runtimeConfig apiBase, auth-guard redirects, all 4 languages; verified render + guard live — 2026-07-12
 <!-- ACTIVITY:END -->
 
 ## JARVIS command center
