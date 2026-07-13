@@ -33,7 +33,14 @@ JARVIS is **not** the public customer product or the completion of Phase B. It i
 | C — Business | Automations, social tools, first outside users | ⬜ |
 | D — Commercial | Billing, plans, PWA | ⬜ |
 
+**Platform build** ([PLATFORM-SPEC.md](PLATFORM-SPEC.md)): session auth ✅ · dashboard shell ✅ · Stripe billing — checkout, portal, webhooks ✅ · production deploy 🔨 in progress
+
 The detailed product plan lives in [docs/ROADMAP.md](docs/ROADMAP.md). The approved technology decisions live in [docs/TECH-STACK.md](docs/TECH-STACK.md).
+
+## Latest activity
+
+<!-- ACTIVITY:START -->
+<!-- ACTIVITY:END -->
 
 ## JARVIS command center
 
