@@ -257,6 +257,7 @@ func serveHTTP(brain *Brain, memory *MemoryStore) {
 	}
 	registerHUD(mux, brain, memory, db)
 	registerAuth(mux, db)
+	registerBilling(mux, db)
 
 	mux.HandleFunc("POST /chat", func(w http.ResponseWriter, r *http.Request) {
 		var req struct {

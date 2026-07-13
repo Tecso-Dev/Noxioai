@@ -5,6 +5,7 @@ go 1.25.5
 require (
 	github.com/emersion/go-imap v1.2.1
 	github.com/jackc/pgx/v5 v5.10.0
+	github.com/stripe/stripe-go/v80 v80.2.1
 	golang.org/x/crypto v0.53.0
 )
 

@@ -29,11 +29,12 @@ const (
 
 // User is the authenticated account data shared with future API handlers.
 type User struct {
-	ID      int64
-	Email   string
-	Name    string
-	Locale  string
-	IsAdmin bool
+	ID               int64
+	Email            string
+	Name             string
+	Locale           string
+	IsAdmin          bool
+	StripeCustomerID string
 }
 
 func hashPassword(pw string) (string, error) {
@@ -94,10 +95,10 @@ func currentUser(ctx context.Context, db *sql.DB, r *http.Request) (*User, error
 	}
 	var user User
 	err = db.QueryRowContext(ctx, `
-		SELECT u.id, u.email, COALESCE(u.name,''), COALESCE(u.locale,'en'), COALESCE(u.is_admin,false)
+		SELECT u.id, u.email, COALESCE(u.name,''), COALESCE(u.locale,'en'), COALESCE(u.is_admin,false), COALESCE(u.stripe_customer_id,'')
 		FROM sessions s JOIN users u ON u.id = s.user_id
 		WHERE s.token = $1 AND s.expires_at > now()`, cookie.Value).
-		Scan(&user.ID, &user.Email, &user.Name, &user.Locale, &user.IsAdmin)
+		Scan(&user.ID, &user.Email, &user.Name, &user.Locale, &user.IsAdmin, &user.StripeCustomerID)
 	if errors.Is(err, sql.ErrNoRows) {
 		return nil, nil
 	}
