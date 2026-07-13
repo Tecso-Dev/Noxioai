@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { toPersianDigits } from 'parsi-text'
 // Founding Members — the pre-sell offer (PRE-SELL.md). Founder prices are the
 // 50%-for-life rate, billed via Stripe Checkout (Phase 4). Subscribing needs an
 // account, so an anonymous visitor is routed to signup with the plan remembered.
@@ -9,7 +10,11 @@ const plans = [
 ]
 const api = useRuntimeConfig().public.apiBase
 const localePath = useLocalePath()
+const { locale } = useI18n()
 const busy = ref('')
+
+// Persian visitors expect Persian digits on prices (۷۵ not 75).
+const price = (n: number) => (locale.value === 'fa' ? toPersianDigits(n) : String(n))
 
 async function choosePlan(plan: string) {
   if (busy.value) return
@@ -53,8 +58,8 @@ async function choosePlan(plan: string) {
         <h3 class="text-xl font-bold">{{ $t(`pricing.plans.${p.key}.name`) }}</h3>
         <p class="mt-1 text-sm text-dim">{{ $t(`pricing.plans.${p.key}.tagline`) }}</p>
         <div class="mt-5 flex items-end gap-2">
-          <span class="text-4xl font-extrabold text-snow">€{{ p.now }}</span>
-          <span class="text-dim line-through mb-1">€{{ p.was }}</span>
+          <span class="text-4xl font-extrabold text-snow">€{{ price(p.now) }}</span>
+          <span class="text-dim line-through mb-1">€{{ price(p.was) }}</span>
           <span class="text-dim mb-1 text-sm">{{ $t('pricing.perMonth') }}</span>
         </div>
         <span class="mt-1 inline-block text-xs text-brand2 font-semibold">{{ $t('pricing.founder') }}</span>
