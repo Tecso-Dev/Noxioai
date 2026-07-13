@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
+const route = useRoute()
 const api = useRuntimeConfig().public.apiBase
 useSeoMeta({ title: () => `${t('auth.signup.title')} — NOXIOAI` })
 
@@ -18,6 +19,15 @@ async function submit() {
       method: 'POST', credentials: 'include',
       body: { name: name.value, email: email.value, password: password.value, locale: locale.value }
     })
+    // arrived from a pricing plan → straight to Stripe Checkout, else the dashboard
+    const plan = route.query.plan as string | undefined
+    if (plan) {
+      const { url } = await $fetch<{ url: string }>(`${api}/api/billing/checkout`, {
+        method: 'POST', credentials: 'include', body: { plan }
+      })
+      window.location.href = url
+      return
+    }
     await navigateTo(localePath('/app'))
   } catch (e: any) {
     err.value = e?.data || t('auth.error')

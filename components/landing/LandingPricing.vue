@@ -1,12 +1,32 @@
 <script setup lang="ts">
 // Founding Members — the pre-sell offer (PRE-SELL.md). Founder prices are the
-// 50%-for-life rate; the CTA points at the waitlist until the Stripe Payment
-// Link is live (swap the href then).
+// 50%-for-life rate, billed via Stripe Checkout (Phase 4). Subscribing needs an
+// account, so an anonymous visitor is routed to signup with the plan remembered.
 const plans = [
   { key: 'starter', now: 25, was: 49, featured: false },
   { key: 'pro', now: 75, was: 149, featured: true },
   { key: 'agency', now: 199, was: 399, featured: false }
 ]
+const api = useRuntimeConfig().public.apiBase
+const localePath = useLocalePath()
+const busy = ref('')
+
+async function choosePlan(plan: string) {
+  if (busy.value) return
+  busy.value = plan
+  try {
+    // logged in → straight to Stripe Checkout; otherwise sign up first (plan remembered)
+    await $fetch(`${api}/api/auth/me`, { credentials: 'include' })
+    const { url } = await $fetch<{ url: string }>(`${api}/api/billing/checkout`, {
+      method: 'POST', credentials: 'include', body: { plan }
+    })
+    window.location.href = url
+  } catch {
+    navigateTo(localePath(`/signup?plan=${plan}`))
+  } finally {
+    busy.value = ''
+  }
+}
 </script>
 
 <template>
@@ -44,10 +64,11 @@ const plans = [
             <span class="text-dim">{{ $t(`pricing.plans.${p.key}.f${n}`) }}</span>
           </li>
         </ul>
-        <a href="#waitlist" class="cta mt-7 block rounded-full px-5 py-3 text-center font-bold transition"
+        <button type="button" :disabled="busy === p.key" @click="choosePlan(p.key)"
+          class="cta mt-7 block w-full rounded-full px-5 py-3 text-center font-bold transition disabled:opacity-60"
           :class="p.featured ? 'bg-brand text-night' : 'border border-line bg-panel'">
-          {{ $t('pricing.cta') }}
-        </a>
+          {{ busy === p.key ? '…' : $t('pricing.cta') }}
+        </button>
       </div>
     </div>
     <p class="mt-8 text-center text-sm text-dim">{{ $t('pricing.note') }}</p>

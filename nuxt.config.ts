@@ -4,6 +4,14 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
+  // Dev: proxy /api/* to the Go backend so the site is same-origin (cookies work,
+  // no CORS). Prod: the reverse proxy routes /api/* to the Go binary the same way.
+  nitro: {
+    devProxy: {
+      '/api': { target: 'http://127.0.0.1:7700/api', changeOrigin: true }
+    }
+  },
+
   runtimeConfig: {
     public: {
       // set NUXT_PUBLIC_WEB3FORMS_KEY in the deploy environment; empty = form shows email fallback
