@@ -18,22 +18,40 @@ NOXIOAI is building a Persian-first workspace where named AI employees help a bu
 
 | Surface | Status | What it proves |
 |---|---|---|
-| [Noxioai landing](https://noxioai.com) | Live | Bilingual FA-first landing page and waitlist |
-| [JARVIS](jarvis/README.md) | Internal v1 shipped | Go/Postgres sales operating system used as the proving ground for the future Noxioai engine |
-| Public Noxioai Office | Planned | Auth, shared Brain, and pixel-office workflow for Nika, Dara, and Sara |
+| [Noxioai landing](https://noxioai.com) | 🟢 Live | Bilingual FA-first landing (EN/FA/TR/AR), waitlist, brand identity |
+| [Noxio Autopilot services](https://noxioai.com/services) | 🟢 Live | Fixed-price automation offer, 3 tiers, contact CTA |
+| Signup / login / dashboard | 🟢 Live on Vercel | Session auth, verified end-to-end in production (signup → login → command center) |
+| Transactional email | 🟢 Live | Verification + password-reset from `hi@noxioai.com` via Resend (domain-authenticated, inboxing) |
+| [JARVIS engine](jarvis/README.md) | 🟢 24/7 in production | Go/Postgres sales OS on a dedicated VPS — briefing, inbox, outreach, nightly backups |
+| Public Noxioai Office | ⬜ Planned | Shared Brain and pixel-office workflow |
 
-JARVIS is **not** the public customer product or the completion of Phase B. It is the internal system that validates the useful parts first: research, personalized drafts, approval gates, delivery, daily briefings, and learning from outcomes.
+JARVIS is the internal system that validates the useful parts first: research, personalized drafts, approval gates, delivery, daily briefings, and learning from outcomes. It now runs on the production server, not a laptop.
 
 ## Current product status
 
 | Phase | Goal | Status |
 |---|---|---|
-| A — Launch | Landing and waitlist | 🟢 Live; waitlist metric is running |
-| B — The Office | Public visual office and shared Brain | 🔨 Next product build; JARVIS is the internal proving ground |
-| C — Business | Automations, social tools, first outside users | ⬜ |
-| D — Commercial | Billing, plans, PWA | ⬜ |
+| A — Launch | Landing and waitlist | 🟢 Live |
+| B — The Office | Public visual office and shared Brain | 🔨 In progress — auth, billing, dashboard shell live; office UI next |
+| C — Business | Automations, social tools, first outside users | 🔨 Noxio Autopilot offer live; first outreach in flight |
+| D — Commercial | Billing, plans, PWA | 🟡 Stripe checkout/portal/webhooks built; needs live keys |
 
-**Platform build** ([PLATFORM-SPEC.md](PLATFORM-SPEC.md)): session auth ✅ · dashboard shell ✅ · Stripe billing — checkout, portal, webhooks ✅ · production deploy 🔨 in progress
+**Infrastructure (built 2026-07-15):**
+- **Frontend:** Nuxt on Vercel (`noxioai.vercel.app`; apex cutover pending). `/api/*` reverse-proxied to the backend, so auth works same-origin.
+- **Backend + engine:** Go API + JARVIS on a hardened Ubuntu VPS (key-only SSH, ufw, fail2ban, auto-updates), behind Caddy/TLS.
+- **Database:** PostgreSQL on the VPS; nightly encrypted backups pushed to Telegram + 14-day local rotation.
+- **Email:** Resend HTTPS API (the datacenter blocks SMTP), branded HTML template, `hi@noxioai.com`.
+- **DR:** full rebuild runbook + server configs in [deploy/](deploy/) — any fresh VPS becomes production in ~20 min.
+
+## What is left
+
+- **DNS:** add `api.noxioai.com` A-record and point the apex domain `noxioai.com` at Vercel (currently GitHub Pages).
+- **Rotate credentials** shared during setup (Resend key, xAI key, Gmail app password).
+- **Stripe:** swap test keys for live keys to accept real payments.
+- **CI/CD:** GitHub Action to auto-build and deploy the JARVIS binary on push.
+- **Product:** the public Office UI (Phase B) and first outside users (Phase C).
+
+**Platform build** ([PLATFORM-SPEC.md](PLATFORM-SPEC.md)): session auth ✅ · dashboard shell ✅ · Stripe billing (checkout, portal, webhooks) ✅ · auth emails ✅ · production deploy ✅ (Vercel + VPS) · apex DNS cutover 🔨
 
 The detailed product plan lives in [docs/ROADMAP.md](docs/ROADMAP.md). The approved technology decisions live in [docs/TECH-STACK.md](docs/TECH-STACK.md).
 
@@ -103,12 +121,13 @@ Noxioai/
 
 | Area | Current implementation |
 |---|---|
-| Landing | Nuxt 3, Vue 3, TypeScript, Tailwind, `@nuxtjs/i18n`, `@vueuse/motion` |
+| Frontend | Nuxt 3, Vue 3, TypeScript, Tailwind, `@nuxtjs/i18n` (EN/FA/TR/AR), `@vueuse/motion`, deployed on Vercel |
 | Languages | TypeScript, Go, SQL, Bash, YAML |
-| Internal engine | Go, `database/sql` + pgx, PostgreSQL 16, OpenAI-compatible model interface |
+| Backend / engine | Go, `database/sql` + pgx, PostgreSQL, OpenAI-compatible model interface, session auth |
+| Email | Resend HTTPS API, branded MIME template (HTTP transport — datacenter blocks SMTP) |
 | JARVIS HUD | Embedded HTML, vendored Three.js, browser-native Web Speech API |
-| Operations | Docker Compose for Postgres, local launchd runtime, Telegram and Gmail SMTP integrations |
-| Planned public product | Nuxt office UI, Go API, PostgreSQL, session auth, shared business Brain, REST + SSE |
+| Operations | Ubuntu VPS, systemd services + timers, Caddy/TLS reverse proxy, ufw + fail2ban, encrypted Telegram backups |
+| Deploy | Vercel (frontend) + VPS (API/engine/DB); `vercel.json` proxies `/api/*` to the backend |
 
 ## Run locally
 

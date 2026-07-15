@@ -5,3 +5,7 @@ REPORT/
 *.env
 **/.env
 data/waitlist.json
+marketing/
+.foreman/
+deploy/
+.claude/
