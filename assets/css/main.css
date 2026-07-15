@@ -193,7 +193,12 @@ html[lang='ar'] body {
 .nav-cta,
 .primary-cta,
 .secondary-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-block-size: 44px;
+  line-height: 1;
+  white-space: nowrap;
   transition-property: transform, background-color, border-color, box-shadow;
   transition-duration: 180ms;
   transition-timing-function: var(--ease-out);
