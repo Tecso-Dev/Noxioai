@@ -58,13 +58,13 @@ The detailed product plan lives in [docs/ROADMAP.md](docs/ROADMAP.md). The appro
 ## Latest activity
 
 <!-- ACTIVITY:START -->
-_Auto-updated 2026-07-15 15:05 UTC_
+_Auto-updated 2026-07-15 15:10 UTC_
 
+- `b7a515a` cleanup: remove DIGIKALA screenshots + playwright session artifacts (unrelated to this project); mail: per-sender From identity (JARVIS_HERALD_FROM) + copyright footer in email template — 2026-07-15
 - `dc52145` vercel: production deploy config (proxy /api to backend) + README: current infra status and remaining work — 2026-07-15
 - `0c27144` brand: generated logo set (logomark/lockup/og), header mark, og:image+twitter meta, branded email template with logo + gradient; backup.sh env parsing hardened — 2026-07-15
 - `1af51f2` mail: unified transport — Resend HTTPS API in prod (aeza blocks SMTP), SMTP fallback locally; fix token-consume TOCTOU race with atomic UPDATE...RETURNING — 2026-07-15
 - `0568a15` wip: brain.go scoring improvements + tests (builds and passes locally) — 2026-07-15
-- `7f2463c` infra: DR runbook + server provisioning scripts/systemd units/Caddyfile, netops agent, brand assets — 2026-07-15
 <!-- ACTIVITY:END -->
 
 ## JARVIS command center
