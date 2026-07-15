@@ -39,6 +39,10 @@ func mailFrom() string {
 
 func sendViaResend(key, from, to, subject, text, html string) error {
 	payload := map[string]any{"from": from, "to": []string{to}, "subject": subject}
+	// until inbound routing for the domain exists, replies land in the business inbox
+	if rt := os.Getenv("JARVIS_REPLY_TO"); rt != "" {
+		payload["reply_to"] = rt
+	}
 	if text != "" {
 		payload["text"] = text
 	}
