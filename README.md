@@ -40,13 +40,13 @@ The detailed product plan lives in [docs/ROADMAP.md](docs/ROADMAP.md). The appro
 ## Latest activity
 
 <!-- ACTIVITY:START -->
-_Auto-updated 2026-07-15 12:42 UTC_
+_Auto-updated 2026-07-15 14:17 UTC_
 
+- `0568a15` wip: brain.go scoring improvements + tests (builds and passes locally) — 2026-07-15
+- `7f2463c` infra: DR runbook + server provisioning scripts/systemd units/Caddyfile, netops agent, brand assets — 2026-07-15
+- `199f5fa` fix nav/primary CTA buttons: flex centering (waitlist pill text was misaligned) — 2026-07-15
+- `d609632` auth emails: signup verification + password reset (single-use expiring tokens, no-enumeration endpoints, EN/FA/TR/AR pages) — 2026-07-15
 - `ea3b3ff` sitemap: trailing-slash URLs to match GitHub Pages canonical form (avoid 301 hops for crawlers) — 2026-07-15
-- `7a4b6ae` Noxio Autopilot services line: /services page with 3 fixed-price tiers (€490/€1,490/€75mo Care) + web3forms contact CTA, localized EN/FA/TR/AR (Persian digits via parsi-text), nav link; SEO: robots.txt + sitemap.xml — 2026-07-15
-- `f76d272` FA locale: Persian-digit prices on pricing cards via parsi-text (dogfooding our own npm package) — 2026-07-13
-- `ed9284d` README: current platform status + self-updating activity block (Action refreshes last-5-commits log on every push to main) — 2026-07-13
-- `083f974` Phase 4 billing frontend: pricing CTAs → Stripe Checkout (anon → signup?plan → auto-checkout at founder price); Nuxt devProxy /api→:7700 so auth+billing work same-origin in dev (was 404). Verified full funnel live: visitor → plan → signup → Stripe checkout €75/mo Pro — 2026-07-13
 <!-- ACTIVITY:END -->
 
 ## JARVIS command center
