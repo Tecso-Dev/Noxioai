@@ -15,10 +15,16 @@ import (
 // Resend HTTPS API when RESEND_API_KEY is set (production: aeza blocks outbound
 // SMTP ports entirely), Gmail SMTP fallback otherwise (dev/local).
 func deliverMail(to, subject, text, html string) error {
+	return deliverMailFrom(mailFrom(), to, subject, text, html)
+}
+
+// deliverMailFrom sends with an explicit From identity (must be on the
+// verified domain), e.g. personal-touch outreach vs transactional hi@.
+func deliverMailFrom(from, to, subject, text, html string) error {
 	if key := os.Getenv("RESEND_API_KEY"); key != "" {
-		return sendViaResend(key, to, subject, text, html)
+		return sendViaResend(key, from, to, subject, text, html)
 	}
-	return sendViaSMTP(to, subject, text, html)
+	return sendViaSMTP(from, to, subject, text, html)
 }
 
 func mailFrom() string {
@@ -31,8 +37,8 @@ func mailFrom() string {
 	return "NOXIOAI <hi@noxioai.com>"
 }
 
-func sendViaResend(key, to, subject, text, html string) error {
-	payload := map[string]any{"from": mailFrom(), "to": []string{to}, "subject": subject}
+func sendViaResend(key, from, to, subject, text, html string) error {
+	payload := map[string]any{"from": from, "to": []string{to}, "subject": subject}
 	if text != "" {
 		payload["text"] = text
 	}
@@ -61,7 +67,7 @@ func sendViaResend(key, to, subject, text, html string) error {
 	return nil
 }
 
-func sendViaSMTP(to, subject, text, html string) error {
+func sendViaSMTP(from, to, subject, text, html string) error {
 	user := os.Getenv("JARVIS_SMTP_USER")
 	pass := os.Getenv("JARVIS_SMTP_PASS")
 	if user == "" || pass == "" {
@@ -70,14 +76,14 @@ func sendViaSMTP(to, subject, text, html string) error {
 	var msg string
 	if html == "" {
 		msg = fmt.Sprintf("From: %s\r\nTo: %s\r\nSubject: %s\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n%s\r\n",
-			mailFrom(), to, subject, text)
+			from, to, subject, text)
 	} else {
 		const boundary = "noxioai-mail-boundary"
 		msg = fmt.Sprintf(
 			"From: %s\r\nTo: %s\r\nSubject: %s\r\nMIME-Version: 1.0\r\nContent-Type: multipart/alternative; boundary=%s\r\n\r\n"+
 				"--%s\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n%s\r\n"+
 				"--%s\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n%s\r\n--%s--\r\n",
-			mailFrom(), to, subject, boundary, boundary, text, boundary, html, boundary)
+			from, to, subject, boundary, boundary, text, boundary, html, boundary)
 	}
 	auth := smtp.PlainAuth("", user, pass, "smtp.gmail.com")
 	return smtp.SendMail("smtp.gmail.com:587", auth, user, []string{to}, []byte(msg))

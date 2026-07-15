@@ -12,3 +12,4 @@ logs
 *.log
 .vercel
 .env*
+.playwright-mcp/

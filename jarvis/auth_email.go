@@ -96,7 +96,8 @@ func authMailHTML(heading, body, link, cta string) string {
 </td></tr>
 <tr><td style="padding:20px 40px 30px;border-top:1px solid #eeeef4;" align="center">
   <p style="font-size:12px;color:#9a95b0;margin:0;line-height:1.7;">NOXIOAI — AI employees that work while you sleep.<br>
-  <a href="https://noxioai.com" style="color:#48CAE4;text-decoration:none;">noxioai.com</a> &nbsp;·&nbsp; <a href="mailto:hi@noxioai.com" style="color:#48CAE4;text-decoration:none;">hi@noxioai.com</a></p>
+  <a href="https://noxioai.com" style="color:#48CAE4;text-decoration:none;">noxioai.com</a> &nbsp;·&nbsp; <a href="mailto:hi@noxioai.com" style="color:#48CAE4;text-decoration:none;">hi@noxioai.com</a><br>
+  © 2026 NOXIOAI. All rights reserved.</p>
 </td></tr>
 </table>
 <p style="font-size:11px;color:#b6b2c6;margin:18px 0 0;">You received this because of an account action at noxioai.com.</p>

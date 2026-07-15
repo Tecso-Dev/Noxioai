@@ -65,7 +65,11 @@ func HeraldSend(ctx context.Context, db *sql.DB, outreachID int64) (string, erro
 	if subject == "" {
 		return "", fmt.Errorf("draft #%d has no Subject line", outreachID)
 	}
-	if err := deliverMail(to, subject, body, ""); err != nil {
+	from := os.Getenv("JARVIS_HERALD_FROM")
+	if from == "" {
+		from = mailFrom() // outreach reads better from a person; set JARVIS_HERALD_FROM
+	}
+	if err := deliverMailFrom(from, to, subject, body, ""); err != nil {
 		return "", fmt.Errorf("mail: %w", err)
 	}
 
