@@ -9,7 +9,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"net/smtp"
 	"os"
 	"strings"
 	"time"
@@ -55,41 +54,25 @@ func issueAuthToken(ctx context.Context, db *sql.DB, userID int64, purpose strin
 // Returns errInvalidToken for anything unusable (unknown, expired, already used).
 func consumeAuthToken(ctx context.Context, db *sql.DB, token, purpose string) (int64, error) {
 	var userID int64
-	var usedAt sql.NullTime
-	var expiresAt time.Time
+	// single atomic claim: two concurrent requests can never both consume the same token
 	err := db.QueryRowContext(ctx, `
-		SELECT user_id, used_at, expires_at FROM auth_tokens WHERE token = $1 AND purpose = $2`,
-		token, purpose).Scan(&userID, &usedAt, &expiresAt)
+		UPDATE auth_tokens SET used_at = now()
+		WHERE token = $1 AND purpose = $2 AND used_at IS NULL AND expires_at > now()
+		RETURNING user_id`,
+		token, purpose).Scan(&userID)
 	if errors.Is(err, sql.ErrNoRows) {
 		return 0, errInvalidToken
 	}
 	if err != nil {
 		return 0, err
 	}
-	if !tokenValid(usedAt, expiresAt, time.Now()) {
-		return 0, errInvalidToken
-	}
-	if _, err := db.ExecContext(ctx, `UPDATE auth_tokens SET used_at = now() WHERE token = $1`, token); err != nil {
-		return 0, err
-	}
 	return userID, nil
 }
 
-// sendAuthMail sends a text+HTML transactional email via Gmail SMTP (same creds as HERALD).
+// sendAuthMail sends a text+HTML transactional email through the shared
+// transport (Resend API in prod — aeza blocks SMTP — or SMTP locally).
 func sendAuthMail(to, subject, text, html string) error {
-	user := os.Getenv("JARVIS_SMTP_USER")
-	pass := os.Getenv("JARVIS_SMTP_PASS")
-	if user == "" || pass == "" {
-		return fmt.Errorf("SMTP not configured: set JARVIS_SMTP_USER/JARVIS_SMTP_PASS")
-	}
-	const boundary = "noxioai-authmail-boundary"
-	msg := fmt.Sprintf(
-		"From: NOXIOAI <%s>\r\nTo: %s\r\nSubject: %s\r\nMIME-Version: 1.0\r\nContent-Type: multipart/alternative; boundary=%s\r\n\r\n"+
-			"--%s\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n%s\r\n"+
-			"--%s\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n%s\r\n--%s--\r\n",
-		user, to, subject, boundary, boundary, text, boundary, html, boundary)
-	auth := smtp.PlainAuth("", user, pass, "smtp.gmail.com")
-	return smtp.SendMail("smtp.gmail.com:587", auth, user, []string{to}, []byte(msg))
+	return deliverMail(to, subject, text, html)
 }
 
 func authMailHTML(heading, body, link, cta string) string {

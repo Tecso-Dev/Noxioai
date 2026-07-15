@@ -4,13 +4,13 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"net/smtp"
 	"os"
 	"strings"
 )
 
-// HERALD (SPEC §8, email channel): dispatches APPROVED email outreach via
-// Gmail SMTP. Principle 1 holds in code — it refuses anything unapproved.
+// HERALD (SPEC §8, email channel): dispatches APPROVED email outreach through
+// deliverMail (Resend API in prod, SMTP fallback). Principle 1 holds in code —
+// it refuses anything unapproved.
 
 func splitDraft(draft string) (subject, body string) {
 	rest, ok := strings.CutPrefix(draft, "Subject: ")
@@ -24,10 +24,8 @@ func splitDraft(draft string) (subject, body string) {
 // HeraldSend emails an approved outreach draft to the lead's first known
 // contact address. Returns the recipient on success.
 func HeraldSend(ctx context.Context, db *sql.DB, outreachID int64) (string, error) {
-	user := os.Getenv("JARVIS_SMTP_USER")
-	pass := os.Getenv("JARVIS_SMTP_PASS")
-	if user == "" || pass == "" {
-		return "", fmt.Errorf("HERALD offline: set JARVIS_SMTP_PASS in jarvis/.env (Google account → App passwords, 2-minute errand)")
+	if os.Getenv("RESEND_API_KEY") == "" && os.Getenv("JARVIS_SMTP_PASS") == "" {
+		return "", fmt.Errorf("HERALD offline: set RESEND_API_KEY (or JARVIS_SMTP_USER/PASS for local SMTP) in jarvis/.env")
 	}
 
 	var draft, channel, company string
@@ -67,11 +65,8 @@ func HeraldSend(ctx context.Context, db *sql.DB, outreachID int64) (string, erro
 	if subject == "" {
 		return "", fmt.Errorf("draft #%d has no Subject line", outreachID)
 	}
-	msg := fmt.Sprintf("From: Sobhan Azimzadeh — NOXIOAI <%s>\r\nTo: %s\r\nSubject: %s\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n%s\r\n",
-		user, to, subject, body)
-	auth := smtp.PlainAuth("", user, pass, "smtp.gmail.com")
-	if err := smtp.SendMail("smtp.gmail.com:587", auth, user, []string{to}, []byte(msg)); err != nil {
-		return "", fmt.Errorf("smtp: %w", err)
+	if err := deliverMail(to, subject, body, ""); err != nil {
+		return "", fmt.Errorf("mail: %w", err)
 	}
 
 	if err := SetOutcome(ctx, db, outreachID, "sent"); err != nil {
