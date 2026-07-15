@@ -1,0 +1,14 @@
+[Unit]
+Description=JARVIS API server
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+User=jarvis
+WorkingDirectory=/opt/jarvis
+ExecStart=/opt/jarvis/jarvis serve
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,7 @@
+# Never upload the Go backend or any secrets to Vercel (frontend-only host)
+jarvis/
+docs/
+REPORT/
+*.env
+**/.env
+data/waitlist.json

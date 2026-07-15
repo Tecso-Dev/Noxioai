@@ -1,0 +1,9 @@
+[Unit]
+Description=JARVIS DB backup (local + encrypted Telegram offsite)
+After=postgresql.service
+
+[Service]
+Type=oneshot
+User=jarvis
+WorkingDirectory=/opt/jarvis
+ExecStart=/opt/jarvis/backup.sh

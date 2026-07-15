@@ -1,0 +1,9 @@
+[Unit]
+Description=JARVIS inbox check
+After=network-online.target postgresql.service
+
+[Service]
+Type=oneshot
+User=jarvis
+WorkingDirectory=/opt/jarvis
+ExecStart=/opt/jarvis/jarvis inbox
