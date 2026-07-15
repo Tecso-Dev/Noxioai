@@ -4,6 +4,8 @@
   color-scheme: dark;
   --cyan: #3ee1ff;
   --cyan-soft: rgba(62, 225, 255, 0.14);
+  --gold: #d4bf94;
+  --gold-soft: rgba(212, 191, 148, 0.22);
   --navy: #050a16;
   --panel-deep: rgba(8, 19, 37, 0.72);
   --panel-raised: rgba(15, 33, 57, 0.64);
@@ -127,19 +129,20 @@ html[lang='ar'] body {
 /* floating employee-work notification cards */
 @keyframes chip-drift {
   0%, 100% { translate: 0 0; }
-  50% { translate: 0 -8px; }
+  50% { translate: 0 -5px; }
 }
 .chip-float {
-  padding: 6px 12px;
+  padding: 5px 11px;
   border-radius: 999px;
-  border: 1px solid rgba(133, 209, 255, 0.28);
-  background: rgba(6, 23, 43, 0.78);
-  backdrop-filter: blur(10px);
-  color: #e8f7ff;
-  font-size: 12px;
-  font-weight: 600;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28), inset 0 1px rgba(255, 255, 255, 0.05);
-  animation: chip-drift 3.6s ease-in-out infinite;
+  border: 1px solid var(--gold-soft);
+  background: rgba(10, 20, 36, 0.6);
+  backdrop-filter: blur(14px);
+  color: #ecf3fa;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.26), inset 0 1px rgba(255, 255, 255, 0.06);
+  animation: chip-drift 5.5s ease-in-out infinite;
   white-space: nowrap;
 }
 
@@ -265,7 +268,7 @@ html[lang='ar'] body {
 .hero-console {
   background:
     linear-gradient(125deg, rgba(16, 40, 70, 0.85), rgba(5, 14, 29, 0.88) 55%, rgba(11, 23, 50, 0.8));
-  box-shadow: 0 38px 100px rgba(0, 0, 0, 0.42), inset 0 1px rgba(255, 255, 255, 0.09), 0 0 0 1px rgba(62, 225, 255, 0.04);
+  box-shadow: 0 38px 100px rgba(0, 0, 0, 0.42), inset 0 1px rgba(255, 255, 255, 0.09), 0 0 0 1px rgba(62, 225, 255, 0.04), 0 0 60px -30px rgba(212, 191, 148, 0.25);
   isolation: isolate;
   overflow: hidden;
   transition-property: transform, border-color, box-shadow;
@@ -336,7 +339,8 @@ html[lang='ar'] body {
 
 .console-status {
   font-family: 'DM Mono', monospace;
-  letter-spacing: 0.075em;
+  letter-spacing: 0.16em;
+  opacity: 0.68;
   position: relative;
   text-transform: uppercase;
 }
@@ -379,7 +383,7 @@ html[lang='ar'] body {
 }
 
 .console-chip {
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28), 0 0 18px rgba(62, 225, 255, 0.08);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28), 0 0 16px rgba(212, 191, 148, 0.1);
 }
 
 .noxio-home section:not(#waitlist) {
