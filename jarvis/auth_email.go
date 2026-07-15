@@ -76,14 +76,31 @@ func sendAuthMail(to, subject, text, html string) error {
 }
 
 func authMailHTML(heading, body, link, cta string) string {
-	return fmt.Sprintf(`<!doctype html><html><body style="margin:0;padding:0;background:#f5f5f7;font-family:-apple-system,Segoe UI,Roboto,sans-serif;">
-<table width="100%%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:40px 16px;">
-<table width="480" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;">
-<tr><td style="padding:32px 32px 8px;"><span style="font-size:20px;font-weight:800;color:#111;">NOXIO<span style="color:#6d5ef8;">AI</span></span></td></tr>
-<tr><td style="padding:8px 32px 0;"><h1 style="font-size:20px;color:#111;margin:16px 0;">%s</h1><p style="font-size:15px;color:#444;line-height:1.5;">%s</p></td></tr>
-<tr><td style="padding:24px 32px;"><a href="%s" style="display:inline-block;background:#6d5ef8;color:#fff;text-decoration:none;font-weight:700;padding:12px 24px;border-radius:999px;">%s</a></td></tr>
-<tr><td style="padding:0 32px 32px;"><p style="font-size:12px;color:#999;word-break:break-all;">%s</p></td></tr>
-</table></td></tr></table></body></html>`, heading, body, link, cta, link)
+	return fmt.Sprintf(`<!doctype html><html><body style="margin:0;padding:0;background:#f4f4f8;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+<table width="100%%" cellpadding="0" cellspacing="0" role="presentation"><tr><td align="center" style="padding:40px 16px;">
+<table width="520" cellpadding="0" cellspacing="0" role="presentation" style="max-width:100%%;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 1px 4px rgba(20,20,40,0.08);">
+<tr><td style="height:5px;background:linear-gradient(90deg,#48CAE4,#8E2DE2);font-size:0;line-height:0;">&nbsp;</td></tr>
+<tr><td align="center" style="padding:36px 32px 6px;">
+  <img src="https://noxioai.com/brand/noxioai-logo.png" width="52" height="52" alt="NOXIOAI" style="display:block;margin:0 auto 10px;border:0;">
+  <span style="font-size:22px;font-weight:800;letter-spacing:-0.02em;color:#111;">NOXIO<span style="color:#48CAE4;">AI</span></span>
+</td></tr>
+<tr><td align="center" style="padding:10px 40px 0;">
+  <h1 style="font-size:21px;color:#111;margin:14px 0 8px;">%s</h1>
+  <p style="font-size:15px;color:#4a4a5a;line-height:1.65;margin:0;">%s</p>
+</td></tr>
+<tr><td align="center" style="padding:28px 40px 10px;">
+  <a href="%s" style="display:inline-block;background:linear-gradient(120deg,#2ccbe7,#406cf1);color:#ffffff;text-decoration:none;font-weight:700;font-size:15px;padding:14px 34px;border-radius:999px;">%s</a>
+</td></tr>
+<tr><td align="center" style="padding:6px 40px 8px;">
+  <p style="font-size:12px;color:#9a95b0;line-height:1.6;">Button not working? Copy this link:<br><span style="word-break:break-all;color:#6d7ba8;">%s</span></p>
+</td></tr>
+<tr><td style="padding:20px 40px 30px;border-top:1px solid #eeeef4;" align="center">
+  <p style="font-size:12px;color:#9a95b0;margin:0;line-height:1.7;">NOXIOAI — AI employees that work while you sleep.<br>
+  <a href="https://noxioai.com" style="color:#48CAE4;text-decoration:none;">noxioai.com</a> &nbsp;·&nbsp; <a href="mailto:hi@noxioai.com" style="color:#48CAE4;text-decoration:none;">hi@noxioai.com</a></p>
+</td></tr>
+</table>
+<p style="font-size:11px;color:#b6b2c6;margin:18px 0 0;">You received this because of an account action at noxioai.com.</p>
+</td></tr></table></body></html>`, heading, body, link, cta, link)
 }
 
 // sendVerificationEmail emails the account-verification link.

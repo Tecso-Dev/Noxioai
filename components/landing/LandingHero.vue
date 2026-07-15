@@ -23,7 +23,7 @@ function resetTilt() {
     <div class="glow hero-glow absolute -top-32 inset-x-0 h-96 pointer-events-none" />
     <div class="hero-noise" aria-hidden="true" />
     <nav class="hero-nav relative z-10 mx-auto max-w-6xl flex items-center justify-between px-6 py-6">
-      <span class="brand-mark text-xl font-extrabold tracking-tight">NOXIO<span class="text-brand2">AI</span></span>
+      <span class="brand-mark flex items-center gap-2 text-xl font-extrabold tracking-tight"><img src="/brand/mark-dark.png" alt="" class="h-7 w-7 rounded-full" />NOXIO<span class="text-brand2">AI</span></span>
       <div class="flex items-center gap-4">
         <NuxtLink :to="localePath('/services')" class="nav-link text-sm font-semibold text-dim transition hover:text-snow">
           {{ $t('nav.services') }}

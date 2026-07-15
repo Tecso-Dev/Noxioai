@@ -37,6 +37,12 @@ export default defineNuxtConfig({
 
   app: {
     head: {
+      meta: [
+        { property: 'og:site_name', content: 'NOXIOAI' },
+        { property: 'og:image', content: 'https://noxioai.com/brand/og.png' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:image', content: 'https://noxioai.com/brand/og.png' }
+      ],
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },

@@ -1,7 +1,10 @@
 #!/bin/bash
 set -euo pipefail
 cd /opt/jarvis
-set -a; source ./.env; set +a
+# grep vars instead of sourcing: .env is Go-parser format, not always shell-safe
+JARVIS_DB_URL=$(grep '^JARVIS_DB_URL=' .env | cut -d= -f2-)
+JARVIS_TELEGRAM_CHAT=$(grep '^JARVIS_TELEGRAM_CHAT=' .env | cut -d= -f2-)
+JARVIS_TELEGRAM_TOKEN=$(grep '^JARVIS_TELEGRAM_TOKEN=' .env | cut -d= -f2-)
 TS=$(date +%Y%m%d-%H%M)
 DIR=/opt/jarvis/backups
 mkdir -p "$DIR"

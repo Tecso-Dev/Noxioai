@@ -71,7 +71,7 @@ async function submit() {
     <div class="site-glow site-glow--two" aria-hidden="true" />
 
     <nav class="relative z-10 mx-auto max-w-6xl flex items-center justify-between px-6 py-6">
-      <NuxtLink :to="localePath('/')" class="brand-mark text-xl font-extrabold tracking-tight">NOXIO<span class="text-brand2">AI</span></NuxtLink>
+      <NuxtLink :to="localePath('/')" class="brand-mark flex items-center gap-2 text-xl font-extrabold tracking-tight"><img src="/brand/mark-dark.png" alt="" class="h-7 w-7 rounded-full" />NOXIO<span class="text-brand2">AI</span></NuxtLink>
       <LandingLangSwitcher />
     </nav>
 
