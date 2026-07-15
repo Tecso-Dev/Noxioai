@@ -4,7 +4,8 @@
     "description": "NOXIOAI, yapay zeka çalışanlarından oluşan görsel bir çevrimiçi ofistir: pazarlama, sosyal medya, müşteri desteği ve geliştirme — işletmenizi tek ekrandan yönetin. Çok yakında; bekleme listesine katılın."
   },
   "nav": {
-    "waitlist": "Bekleme listesi"
+    "waitlist": "Bekleme listesi",
+    "services": "Hizmetler"
   },
   "hero": {
     "badge": "Çok yakında — v1",
@@ -190,5 +191,60 @@
       "soon": "Çok yakında"
     },
     "error": "Bir şeyler ters gitti. Lütfen tekrar deneyin."
+  },
+  "services": {
+    "meta": {
+      "title": "Noxio Autopilot — Sabit fiyatlı yapay zeka otomasyonları",
+      "description": "Sabit fiyatlı iş otomasyonları, 7 günde teslim edilir — her sabah NOXIOAI'nin kendi satış hattını çalıştıran aynı motor üzerine kurulu."
+    },
+    "hero": {
+      "title": "Noxio Autopilot",
+      "tagline": "Siz uyurken çalışan yapay zeka çalışanları.",
+      "sub": "Sabit fiyatlı iş otomasyonları, 7 günde teslim edilir — her sabah kendi satış hattımızı çalıştıran aynı motor üzerine kurulu."
+    },
+    "popular": "En popüler",
+    "once": "tek seferlik",
+    "perMonth": "/ay",
+    "proof": "1 numaralı müşteri biziz — bu otomasyonlar NOXIOAI'nin kendi hattını her gün çalıştırıyor.",
+    "choose": "Bu planı seç",
+    "tiers": {
+      "starter": {
+        "name": "Starter Otomasyon",
+        "tagline": "Bir yapay zeka çalışanı, 7 günde canlı.",
+        "f1": "Seçtiğiniz bir otomasyon (müşteri adayı puanlama, günlük raporlar, fatura takibi)",
+        "f2": "Kendi hesaplarınız ve verileriniz üzerinde çalışır",
+        "f3": "Onay kapıları — sizin izniniz olmadan hiçbir şey gönderilmez",
+        "f4": "7 günde teslim"
+      },
+      "business": {
+        "name": "Business Autopilot",
+        "tagline": "Arka ofisiniz 14 günde otomatikleşir.",
+        "f1": "Birlikte çalışan üç otomasyon",
+        "f2": "Telegram'da günlük özet",
+        "f3": "Sabah onay iş akışı",
+        "f4": "30 gün destek dahil"
+      },
+      "care": {
+        "name": "Autopilot Care",
+        "tagline": "Otopilotunuzu çalışır tutuyoruz.",
+        "f1": "Barındırma ve izleme",
+        "f2": "Düzeltmeler ve güncellemeler dahil",
+        "f3": "Ayda bir iyileştirme talebi",
+        "f4": "İstediğiniz zaman iptal edin"
+      }
+    },
+    "form": {
+      "heading": "Neyi otomatikleştireceğimizi söyleyin",
+      "sub": "Bir plan seçin, işletmeniz hakkında bilgi verin — bir iş günü içinde size dönüş yapalım.",
+      "name": "Adınız",
+      "email": "E-posta",
+      "message": "Neyi otomatikleştirmeliyiz?",
+      "tierLabel": "Seçilen plan",
+      "submit": "Talep gönder",
+      "sending": "Gönderiliyor…",
+      "success": "Alındı! Bir iş günü içinde sizinle iletişime geçeceğiz. 🎉",
+      "error": "Bir şeyler ters gitti — lütfen tekrar deneyin.",
+      "fallback": "Form henüz aktif değil; bize e-posta gönderin:"
+    }
   }
 }

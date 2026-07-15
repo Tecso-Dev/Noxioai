@@ -4,7 +4,8 @@
     "description": "NOXIOAI is a visual online office of AI employees: marketing, social media, customer support and development — run your business from one screen. Coming soon; join the waitlist."
   },
   "nav": {
-    "waitlist": "Waitlist"
+    "waitlist": "Waitlist",
+    "services": "Services"
   },
   "hero": {
     "badge": "Coming soon — v1",
@@ -190,5 +191,60 @@
       "soon": "Coming soon"
     },
     "error": "Something went wrong. Please try again."
+  },
+  "services": {
+    "meta": {
+      "title": "Noxio Autopilot — Fixed-price AI automations",
+      "description": "Fixed-price business automations, delivered in 7 days — built on the same engine that runs NOXIOAI's own sales pipeline every morning."
+    },
+    "hero": {
+      "title": "Noxio Autopilot",
+      "tagline": "AI employees that work while you sleep.",
+      "sub": "Fixed-price business automations, delivered in 7 days — built on the same engine that runs our own sales pipeline every morning."
+    },
+    "popular": "Most popular",
+    "once": "one-time",
+    "perMonth": "/mo",
+    "proof": "Customer #1 is us — these automations run NOXIOAI's own pipeline every day.",
+    "choose": "Choose this plan",
+    "tiers": {
+      "starter": {
+        "name": "Starter Automation",
+        "tagline": "One AI employee, live in 7 days.",
+        "f1": "One automation of your choice (lead scoring, daily reports, invoice chasing)",
+        "f2": "Runs on your own accounts and data",
+        "f3": "Approval gates — nothing is sent without you",
+        "f4": "Delivered in 7 days"
+      },
+      "business": {
+        "name": "Business Autopilot",
+        "tagline": "Your back office on autopilot in 14 days.",
+        "f1": "Three automations working together",
+        "f2": "Daily briefing in Telegram",
+        "f3": "Morning approval workflow",
+        "f4": "30 days of support included"
+      },
+      "care": {
+        "name": "Autopilot Care",
+        "tagline": "We keep your autopilot running.",
+        "f1": "Hosting and monitoring",
+        "f2": "Fixes and updates included",
+        "f3": "One improvement request per month",
+        "f4": "Cancel anytime"
+      }
+    },
+    "form": {
+      "heading": "Tell us what to automate",
+      "sub": "Pick a tier, tell us about your business, and we'll follow up within one business day.",
+      "name": "Your name",
+      "email": "Email",
+      "message": "What should we automate?",
+      "tierLabel": "Selected plan",
+      "submit": "Send request",
+      "sending": "Sending…",
+      "success": "Got it! We'll be in touch within one business day. 🎉",
+      "error": "Something went wrong — please try again.",
+      "fallback": "The form isn't live yet; email us at:"
+    }
   }
 }

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /app
+Disallow: /account
+
+Sitemap: https://noxioai.com/sitemap.xml

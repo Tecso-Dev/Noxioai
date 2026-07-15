@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ponytail: static sitemap; switch to @nuxtjs/sitemap when page count grows beyond a handful -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://noxioai.com/</loc></url>
+  <url><loc>https://noxioai.com/en</loc></url>
+  <url><loc>https://noxioai.com/tr</loc></url>
+  <url><loc>https://noxioai.com/ar</loc></url>
+  <url><loc>https://noxioai.com/services</loc></url>
+  <url><loc>https://noxioai.com/en/services</loc></url>
+  <url><loc>https://noxioai.com/tr/services</loc></url>
+  <url><loc>https://noxioai.com/ar/services</loc></url>
+</urlset>

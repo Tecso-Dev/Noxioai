@@ -1,5 +1,6 @@
 <script setup lang="ts">
 // 3D mouse-tilt on the office panel — transform-only (GPU), disabled for reduced-motion
+const localePath = useLocalePath()
 const tilt = ref({ rx: 0, ry: 0 })
 let motionOk = false
 onMounted(() => {
@@ -24,6 +25,9 @@ function resetTilt() {
     <nav class="hero-nav relative z-10 mx-auto max-w-6xl flex items-center justify-between px-6 py-6">
       <span class="brand-mark text-xl font-extrabold tracking-tight">NOXIO<span class="text-brand2">AI</span></span>
       <div class="flex items-center gap-4">
+        <NuxtLink :to="localePath('/services')" class="nav-link text-sm font-semibold text-dim transition hover:text-snow">
+          {{ $t('nav.services') }}
+        </NuxtLink>
         <LandingLangSwitcher />
         <a href="#waitlist" class="nav-cta rounded-full bg-brand px-4 py-2 text-sm font-semibold">
           {{ $t('nav.waitlist') }}
