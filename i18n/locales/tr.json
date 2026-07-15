@@ -192,6 +192,33 @@
     },
     "error": "Bir şeyler ters gitti. Lütfen tekrar deneyin."
   },
+  "authmail": {
+    "forgotPassword": "Şifrenizi mi unuttunuz?",
+    "verify": {
+      "pending": "E-postanız doğrulanıyor…",
+      "success": "E-posta doğrulandı",
+      "successDesc": "NOXIOAI hesabınız artık doğrulandı.",
+      "error": "Doğrulama başarısız",
+      "errorDesc": "Bu bağlantı geçersiz veya süresi dolmuş.",
+      "goToLogin": "Girişe git"
+    },
+    "reset": {
+      "title": "Şifrenizi sıfırlayın",
+      "desc": "E-postanızı girin, size bir sıfırlama bağlantısı gönderelim.",
+      "email": "E-posta",
+      "submit": "Sıfırlama bağlantısı gönder",
+      "sent": "E-postanızı kontrol edin",
+      "sentDesc": "Bu adrese kayıtlı bir hesap varsa, bir sıfırlama bağlantısı gönderilecek.",
+      "newPasswordTitle": "Yeni bir şifre seçin",
+      "newPassword": "Yeni şifre",
+      "confirmSubmit": "Şifreyi sıfırla",
+      "success": "Şifre sıfırlandı",
+      "successDesc": "Şifreniz güncellendi. Şimdi giriş yapabilirsiniz.",
+      "invalid": "Geçersiz veya süresi dolmuş bağlantı",
+      "invalidDesc": "Yeni bir şifre sıfırlama bağlantısı isteyin.",
+      "backToLogin": "Girişe dön"
+    }
+  },
   "services": {
     "meta": {
       "title": "Noxio Autopilot — Sabit fiyatlı yapay zeka otomasyonları",

@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -152,6 +153,17 @@ func registerAuth(mux *http.ServeMux, db *sql.DB) {
 			SameSite: http.SameSiteLaxMode, Expires: time.Now().Add(sessionLifetime),
 			MaxAge: int(sessionLifetime.Seconds()),
 		})
+		// Verification email must never block or fail signup — fire and forget.
+		go func(uid int64, email string) {
+			verifyToken, err := issueAuthToken(context.Background(), db, uid, "verify", verifyTokenTTL)
+			if err != nil {
+				log.Println("auth: issue verify token:", err)
+				return
+			}
+			if err := sendVerificationEmail(email, verifyToken); err != nil {
+				log.Println("auth: send verify email:", err)
+			}
+		}(userID, req.Email)
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]bool{"ok": true})
 	})
@@ -235,4 +247,6 @@ func registerAuth(mux *http.ServeMux, db *sql.DB) {
 			"email": user.Email, "name": user.Name, "locale": user.Locale, "is_admin": user.IsAdmin,
 		})
 	})
+
+	registerAuthEmail(mux, db)
 }

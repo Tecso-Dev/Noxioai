@@ -66,10 +66,19 @@ CREATE TABLE IF NOT EXISTS users (
   stripe_customer_id TEXT,
   created_at    TIMESTAMPTZ DEFAULT now()
 );
+ALTER TABLE users ADD COLUMN IF NOT EXISTS verified_at TIMESTAMPTZ;
 CREATE TABLE IF NOT EXISTS sessions (
   token      TEXT PRIMARY KEY,
   user_id    BIGINT REFERENCES users(id),
   expires_at TIMESTAMPTZ NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+CREATE TABLE IF NOT EXISTS auth_tokens (
+  token      TEXT PRIMARY KEY,
+  user_id    BIGINT REFERENCES users(id),
+  purpose    TEXT NOT NULL CHECK (purpose IN ('verify','reset')),
+  expires_at TIMESTAMPTZ NOT NULL,
+  used_at    TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT now()
 );
 CREATE TABLE IF NOT EXISTS subscriptions (

@@ -41,6 +41,9 @@ async function submit() {
         <input v-model="password" type="password" required autocomplete="current-password" minlength="8"
           class="mt-1 w-full rounded-xl border border-line bg-panel px-4 py-3 outline-none focus:border-brand2 transition" />
       </label>
+      <p class="mt-2 text-end">
+        <NuxtLink :to="localePath('/reset')" class="text-sm text-brand2 font-semibold">{{ $t('authmail.forgotPassword') }}</NuxtLink>
+      </p>
 
       <p v-if="err" class="mt-4 text-sm text-red" role="alert">{{ err }}</p>
 

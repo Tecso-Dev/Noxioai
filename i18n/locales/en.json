@@ -192,6 +192,33 @@
     },
     "error": "Something went wrong. Please try again."
   },
+  "authmail": {
+    "forgotPassword": "Forgot password?",
+    "verify": {
+      "pending": "Confirming your email…",
+      "success": "Email verified",
+      "successDesc": "Your NOXIOAI account is now verified.",
+      "error": "Verification failed",
+      "errorDesc": "This link is invalid or has expired.",
+      "goToLogin": "Go to login"
+    },
+    "reset": {
+      "title": "Reset your password",
+      "desc": "Enter your email and we'll send you a reset link.",
+      "email": "Email",
+      "submit": "Send reset link",
+      "sent": "Check your email",
+      "sentDesc": "If an account exists for that address, a reset link is on its way.",
+      "newPasswordTitle": "Choose a new password",
+      "newPassword": "New password",
+      "confirmSubmit": "Reset password",
+      "success": "Password reset",
+      "successDesc": "Your password has been updated. You can log in now.",
+      "invalid": "Invalid or expired link",
+      "invalidDesc": "Request a new password reset link.",
+      "backToLogin": "Back to login"
+    }
+  },
   "services": {
     "meta": {
       "title": "Noxio Autopilot — Fixed-price AI automations",
