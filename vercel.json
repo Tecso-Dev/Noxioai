@@ -3,7 +3,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://95.181.160.117.nip.io/api/:path*"
+      "destination": "https://api.noxioai.com/api/:path*"
     }
   ]
 }
