@@ -58,13 +58,13 @@ The detailed product plan lives in [docs/ROADMAP.md](docs/ROADMAP.md). The appro
 ## Latest activity
 
 <!-- ACTIVITY:START -->
-_Auto-updated 2026-07-15 15:54 UTC_
+_Auto-updated 2026-07-16 07:19 UTC_
 
+- `9103ec2` hero: luxury-minimal redesign — remove HUD console box/grid/status-chips, headline with champagne-gold accent, ambient free-floating sphere, gold CTA, more whitespace; premium-tech design system applied — 2026-07-16
 - `cfbffe9` hero: luxury data-orb redesign — Fibonacci point sphere (620 pts, 4 draw calls vs 19), gold+cyan armillary rings, lazy WebGL init off critical path, refined glass chips; brand: premium-tech design system doc — 2026-07-15
 - `38c3da7` brand: luxury old-money monogram (gold N crest) as favicon, header mark, email logo; keep serif wordmark for wide lockups — 2026-07-15
 - `1cc47fd` mail: optional JARVIS_REPLY_TO header so outreach replies work before inbound routing exists — 2026-07-15
 - `b7a515a` cleanup: remove DIGIKALA screenshots + playwright session artifacts (unrelated to this project); mail: per-sender From identity (JARVIS_HERALD_FROM) + copyright footer in email template — 2026-07-15
-- `dc52145` vercel: production deploy config (proxy /api to backend) + README: current infra status and remaining work — 2026-07-15
 <!-- ACTIVITY:END -->
 
 ## JARVIS command center
