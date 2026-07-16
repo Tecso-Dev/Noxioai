@@ -100,3 +100,84 @@ CREATE TABLE IF NOT EXISTS invoices (
   hosted_url     TEXT,
   created_at     TIMESTAMPTZ DEFAULT now()
 );
+
+-- ── multi-tenant ownership (PRODUCT-BUILD.md Phase P1) ──────────────────────
+-- Every CRM row belongs to exactly one platform user; per-owner uniques
+-- replace the old global ones so two tenants can target the same company.
+ALTER TABLE companies   ADD COLUMN IF NOT EXISTS owner_id BIGINT REFERENCES users(id);
+ALTER TABLE contacts    ADD COLUMN IF NOT EXISTS owner_id BIGINT REFERENCES users(id);
+ALTER TABLE leads       ADD COLUMN IF NOT EXISTS owner_id BIGINT REFERENCES users(id);
+ALTER TABLE outreach    ADD COLUMN IF NOT EXISTS owner_id BIGINT REFERENCES users(id);
+ALTER TABLE experiences ADD COLUMN IF NOT EXISTS owner_id BIGINT REFERENCES users(id);
+
+ALTER TABLE companies DROP CONSTRAINT IF EXISTS companies_website_key;
+DO $$ BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_constraint
+    WHERE conname = 'companies_owner_website_key' AND conrelid = 'companies'::regclass
+  ) THEN
+    ALTER TABLE companies ADD CONSTRAINT companies_owner_website_key UNIQUE (owner_id, website);
+  END IF;
+END $$;
+
+ALTER TABLE leads DROP CONSTRAINT IF EXISTS leads_company_id_key;
+DO $$ BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_constraint
+    WHERE conname = 'leads_owner_company_key' AND conrelid = 'leads'::regclass
+  ) THEN
+    ALTER TABLE leads ADD CONSTRAINT leads_owner_company_key UNIQUE (owner_id, company_id);
+  END IF;
+END $$;
+
+-- Composite parent keys let PostgreSQL enforce that child rows reference a
+-- parent belonging to the same owner, not merely an existing numeric id.
+DO $$ BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_constraint
+    WHERE conname = 'companies_owner_id_key' AND conrelid = 'companies'::regclass
+  ) THEN
+    ALTER TABLE companies ADD CONSTRAINT companies_owner_id_key UNIQUE (owner_id, id);
+  END IF;
+END $$;
+DO $$ BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_constraint
+    WHERE conname = 'leads_owner_id_key' AND conrelid = 'leads'::regclass
+  ) THEN
+    ALTER TABLE leads ADD CONSTRAINT leads_owner_id_key UNIQUE (owner_id, id);
+  END IF;
+END $$;
+DO $$ BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_constraint
+    WHERE conname = 'contacts_owner_company_fkey' AND conrelid = 'contacts'::regclass
+  ) THEN
+    ALTER TABLE contacts ADD CONSTRAINT contacts_owner_company_fkey
+      FOREIGN KEY (owner_id, company_id) REFERENCES companies(owner_id, id);
+  END IF;
+END $$;
+DO $$ BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_constraint
+    WHERE conname = 'leads_owner_company_fkey' AND conrelid = 'leads'::regclass
+  ) THEN
+    ALTER TABLE leads ADD CONSTRAINT leads_owner_company_fkey
+      FOREIGN KEY (owner_id, company_id) REFERENCES companies(owner_id, id);
+  END IF;
+END $$;
+DO $$ BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_constraint
+    WHERE conname = 'outreach_owner_lead_fkey' AND conrelid = 'outreach'::regclass
+  ) THEN
+    ALTER TABLE outreach ADD CONSTRAINT outreach_owner_lead_fkey
+      FOREIGN KEY (owner_id, lead_id) REFERENCES leads(owner_id, id);
+  END IF;
+END $$;
+
+CREATE INDEX IF NOT EXISTS idx_companies_owner   ON companies(owner_id);
+CREATE INDEX IF NOT EXISTS idx_contacts_owner    ON contacts(owner_id);
+CREATE INDEX IF NOT EXISTS idx_leads_owner       ON leads(owner_id);
+CREATE INDEX IF NOT EXISTS idx_outreach_owner    ON outreach(owner_id);
+CREATE INDEX IF NOT EXISTS idx_experiences_owner ON experiences(owner_id);

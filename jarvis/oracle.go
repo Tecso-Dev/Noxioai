@@ -17,8 +17,9 @@ import (
 // ORACLE — market intelligence agent (SPEC Phase 2): search the niche,
 // read each company's site, score it as a potential NOXIOAI client, store the lead.
 type Oracle struct {
-	Brain *Brain
-	DB    *sql.DB
+	Brain   *Brain
+	DB      *sql.DB
+	OwnerID int64
 }
 
 func (o *Oracle) Name() string { return "oracle" }
@@ -305,7 +306,7 @@ Website URL: %s
 
 func (o *Oracle) extract(ctx context.Context, niche string, cand candidate, page string) (*leadExtract, error) {
 	lessonsBlock := ""
-	if lessons, _ := RecentLessons(ctx, o.DB, "oracle", 3); len(lessons) > 0 {
+	if lessons, _ := RecentLessons(ctx, o.DB, o.OwnerID, "oracle", 3); len(lessons) > 0 {
 		lessonsBlock = "Problems seen at similar companies before (for context):\n- " + strings.Join(lessons, "\n- ") + "\n"
 	}
 	prompt := fmt.Sprintf(extractLeadPrompt, niche, cand.URL, lessonsBlock, page)
@@ -371,18 +372,18 @@ func tier(score int) string {
 
 func (o *Oracle) store(ctx context.Context, cand candidate, l *leadExtract, niche string, emails []string) error {
 	website := "https://" + normalizeHost(cand.Host) // canonical per-company key
-	companyID, err := UpsertCompany(ctx, o.DB, l.Name, website, l.Industry, l.Country, l.Notes)
+	companyID, err := UpsertCompany(ctx, o.DB, o.OwnerID, l.Name, website, l.Industry, l.Country, l.Notes)
 	if err != nil {
 		return err
 	}
-	if err := UpsertLead(ctx, o.DB, companyID, l.Score, tier(l.Score), l.Reasoning, l.ObservedProblem, l.SuggestedOffer); err != nil {
+	if err := UpsertLead(ctx, o.DB, o.OwnerID, companyID, l.Score, tier(l.Score), l.Reasoning, l.ObservedProblem, l.SuggestedOffer); err != nil {
 		return err
 	}
 	for _, c := range l.Contacts {
 		if c.Name == "" && c.Email == "" && c.Linkedin == "" {
 			continue
 		}
-		if err := AddContact(ctx, o.DB, companyID, c.Name, c.Role, c.Email, c.Linkedin); err != nil {
+		if err := AddContact(ctx, o.DB, o.OwnerID, companyID, c.Name, c.Role, c.Email, c.Linkedin); err != nil {
 			return err
 		}
 	}
@@ -390,11 +391,11 @@ func (o *Oracle) store(ctx context.Context, cand candidate, l *leadExtract, nich
 		if email == "" {
 			continue
 		}
-		if err := AddContact(ctx, o.DB, companyID, "", "", email, ""); err != nil {
+		if err := AddContact(ctx, o.DB, o.OwnerID, companyID, "", "", email, ""); err != nil {
 			return err
 		}
 	}
-	return AddExperience(ctx, o.DB, "oracle",
+	return AddExperience(ctx, o.DB, o.OwnerID, "oracle",
 		fmt.Sprintf("niche: %s, site: %s", niche, cand.Host),
 		fmt.Sprintf("scored %d (%s)", l.Score, tier(l.Score)),
 		"lead stored", l.ObservedProblem)

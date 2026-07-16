@@ -13,8 +13,9 @@ import (
 // email + LinkedIn outreach, store UNAPPROVED. Principle 1: nothing sends
 // without `jarvis approve`; sending itself stays manual copy/paste in v1.
 type Atlas struct {
-	Brain *Brain
-	DB    *sql.DB
+	Brain   *Brain
+	DB      *sql.DB
+	OwnerID int64
 }
 
 func (a *Atlas) Name() string { return "atlas" }
@@ -46,13 +47,13 @@ func (a *Atlas) Run(ctx context.Context, task Task) (Result, error) {
 	if err != nil {
 		return Result{}, fmt.Errorf("usage: jarvis atlas <lead-id>  (list ids with: jarvis leads)")
 	}
-	lead, err := GetLead(ctx, a.DB, id)
+	lead, err := GetLead(ctx, a.DB, a.OwnerID, id)
 	if err != nil {
 		return Result{}, fmt.Errorf("lead %d: %w", id, err)
 	}
 
 	lessonsBlock := ""
-	if lessons, _ := RecentLessons(ctx, a.DB, "atlas", 3); len(lessons) > 0 {
+	if lessons, _ := RecentLessons(ctx, a.DB, a.OwnerID, "atlas", 3); len(lessons) > 0 {
 		lessonsBlock = "Lessons from past outreach:\n- " + strings.Join(lessons, "\n- ")
 	}
 	prompt := fmt.Sprintf(draftPrompt, lead.Name, lead.Website, lead.Industry, lead.Notes,
@@ -77,15 +78,15 @@ func (a *Atlas) Run(ctx context.Context, task Task) (Result, error) {
 		}
 	}
 
-	emailID, err := CreateOutreach(ctx, a.DB, lead.ID, "email", "Subject: "+d.Email.Subject+"\n\n"+d.Email.Body)
+	emailID, err := CreateOutreach(ctx, a.DB, a.OwnerID, lead.ID, "email", "Subject: "+d.Email.Subject+"\n\n"+d.Email.Body)
 	if err != nil {
 		return Result{}, err
 	}
-	liID, err := CreateOutreach(ctx, a.DB, lead.ID, "linkedin", d.Linkedin)
+	liID, err := CreateOutreach(ctx, a.DB, a.OwnerID, lead.ID, "linkedin", d.Linkedin)
 	if err != nil {
 		return Result{}, err
 	}
-	if err := AddExperience(ctx, a.DB, "atlas",
+	if err := AddExperience(ctx, a.DB, a.OwnerID, "atlas",
 		fmt.Sprintf("lead %d: %s (%s)", lead.ID, lead.Name, lead.Website),
 		"drafted email + linkedin", "stored unapproved", lead.ObservedProblem); err != nil {
 		return Result{}, err

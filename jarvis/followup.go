@@ -40,23 +40,25 @@ type followupCandidate struct {
 
 // RunFollowup drafts at most five second-touch emails for sent outreach that
 // has been silent for three days and has no newer email for the same lead.
-func RunFollowup(ctx context.Context, db *sql.DB, brain *Brain) (drafted int, err error) {
+func RunFollowup(ctx context.Context, db *sql.DB, ownerID int64, brain *Brain) (drafted int, err error) {
 	rows, err := db.QueryContext(ctx, `
 		SELECT o.lead_id, o.draft
 		FROM outreach o
-		WHERE o.channel = 'email'
+		WHERE o.owner_id = $1
+		  AND o.channel = 'email'
 		  AND o.sent_at IS NOT NULL
 		  AND o.sent_at < now() - interval '3 days'
 		  AND o.outcome IN ('sent')
 		  AND NOT EXISTS (
 			SELECT 1
 			FROM outreach newer
-			WHERE newer.lead_id = o.lead_id
+			WHERE newer.owner_id = o.owner_id
+			  AND newer.lead_id = o.lead_id
 			  AND newer.channel = 'email'
 			  AND newer.created_at > o.sent_at
 		  )
 		ORDER BY o.sent_at
-		LIMIT 5`)
+		LIMIT 5`, ownerID)
 	if err != nil {
 		return 0, err
 	}
@@ -79,7 +81,7 @@ func RunFollowup(ctx context.Context, db *sql.DB, brain *Brain) (drafted int, er
 	}
 
 	for _, candidate := range candidates {
-		lead, err := GetLead(ctx, db, candidate.LeadID)
+		lead, err := GetLead(ctx, db, ownerID, candidate.LeadID)
 		if err != nil {
 			return drafted, fmt.Errorf("lead %d: %w", candidate.LeadID, err)
 		}
@@ -105,11 +107,11 @@ func RunFollowup(ctx context.Context, db *sql.DB, brain *Brain) (drafted int, er
 			}
 		}
 
-		if _, err := CreateOutreach(ctx, db, lead.ID, "email", "Subject: "+followup.Subject+"\n\n"+followup.Body); err != nil {
+		if _, err := CreateOutreach(ctx, db, ownerID, lead.ID, "email", "Subject: "+followup.Subject+"\n\n"+followup.Body); err != nil {
 			return drafted, err
 		}
 		drafted++
-		if err := AddExperience(ctx, db, "atlas", fmt.Sprintf("followup for lead %d", lead.ID),
+		if err := AddExperience(ctx, db, ownerID, "atlas", fmt.Sprintf("followup for lead %d", lead.ID),
 			"drafted follow-up", "stored unapproved", ""); err != nil {
 			return drafted, err
 		}

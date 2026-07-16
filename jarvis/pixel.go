@@ -26,8 +26,8 @@ Industry: %s
 Notes: %s
 Observed problem: %s`
 
-func RunPixel(ctx context.Context, db *sql.DB, brain *Brain, leadID int64) (string, error) {
-	lead, err := GetLead(ctx, db, leadID)
+func RunPixel(ctx context.Context, db *sql.DB, ownerID int64, brain *Brain, leadID int64) (string, error) {
+	lead, err := GetLead(ctx, db, ownerID, leadID)
 	if err != nil {
 		return "", err
 	}
@@ -37,6 +37,6 @@ func RunPixel(ctx context.Context, db *sql.DB, brain *Brain, leadID int64) (stri
 		return "", err
 	}
 	critique = strings.TrimSpace(critique)
-	AddExperience(ctx, db, "pixel", fmt.Sprintf("design review: %s", lead.Name), "wrote design critique", "delivered", oneLine(critique, 120))
+	AddExperience(ctx, db, ownerID, "pixel", fmt.Sprintf("design review: %s", lead.Name), "wrote design critique", "delivered", oneLine(critique, 120))
 	return critique, nil
 }

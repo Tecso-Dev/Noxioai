@@ -81,7 +81,7 @@ func authMailHTML(heading, body, link, cta string) string {
 <table width="520" cellpadding="0" cellspacing="0" role="presentation" style="max-width:100%%;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 1px 4px rgba(20,20,40,0.08);">
 <tr><td style="height:5px;background:#b39868;background:linear-gradient(90deg,#d4bf94,#b39868);font-size:0;line-height:0;">&nbsp;</td></tr>
 <tr><td align="center" style="padding:44px 40px 8px;">
-  <img src="https://noxioai.com/brand/noxioai-logo.png" width="60" height="60" alt="NOXIOAI" style="display:block;margin:0 auto 14px;border-radius:50%;border:1px solid #e6ddc9;">
+  <img src="https://noxioai.com/brand/noxioai-logo.png" width="60" height="60" alt="NOXIOAI" style="display:block;margin:0 auto 14px;border-radius:50%%;border:1px solid #e6ddc9;">
   <span style="font-size:22px;font-weight:800;letter-spacing:-0.02em;color:#111;">NOXIO<span style="color:#b39868;">AI</span></span>
 </td></tr>
 <tr><td align="center" style="padding:12px 44px 0;">

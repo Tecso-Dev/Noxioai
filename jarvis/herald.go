@@ -23,7 +23,7 @@ func splitDraft(draft string) (subject, body string) {
 
 // HeraldSend emails an approved outreach draft to the lead's first known
 // contact address. Returns the recipient on success.
-func HeraldSend(ctx context.Context, db *sql.DB, outreachID int64) (string, error) {
+func HeraldSend(ctx context.Context, db *sql.DB, ownerID, outreachID int64) (string, error) {
 	if os.Getenv("RESEND_API_KEY") == "" && os.Getenv("JARVIS_SMTP_PASS") == "" {
 		return "", fmt.Errorf("HERALD offline: set RESEND_API_KEY (or JARVIS_SMTP_USER/PASS for local SMTP) in jarvis/.env")
 	}
@@ -36,7 +36,7 @@ func HeraldSend(ctx context.Context, db *sql.DB, outreachID int64) (string, erro
 	err := db.QueryRowContext(ctx, `
 		SELECT o.draft, o.channel, o.approved, c.id, c.name, o.outcome, o.sent_at
 		FROM outreach o JOIN leads l ON l.id=o.lead_id JOIN companies c ON c.id=l.company_id
-		WHERE o.id=$1`, outreachID).Scan(&draft, &channel, &approved, &companyID, &company, &outcome, &sentAt)
+		WHERE o.id=$1 AND o.owner_id=$2`, outreachID, ownerID).Scan(&draft, &channel, &approved, &companyID, &company, &outcome, &sentAt)
 	if err != nil {
 		return "", fmt.Errorf("outreach #%d: %w", outreachID, err)
 	}
@@ -52,8 +52,8 @@ func HeraldSend(ctx context.Context, db *sql.DB, outreachID int64) (string, erro
 
 	var to string
 	err = db.QueryRowContext(ctx, `
-		SELECT email FROM contacts WHERE company_id=$1 AND COALESCE(email,'')<>'' ORDER BY id LIMIT 1`,
-		companyID).Scan(&to)
+		SELECT email FROM contacts WHERE company_id=$1 AND owner_id=$2 AND COALESCE(email,'')<>'' ORDER BY id LIMIT 1`,
+		companyID, ownerID).Scan(&to)
 	if err == sql.ErrNoRows {
 		return "", fmt.Errorf("no contact email on file for %s — send manually or add a contact", company)
 	}
@@ -73,10 +73,10 @@ func HeraldSend(ctx context.Context, db *sql.DB, outreachID int64) (string, erro
 		return "", fmt.Errorf("mail: %w", err)
 	}
 
-	if err := SetOutcome(ctx, db, outreachID, "sent"); err != nil {
+	if err := SetOutcome(ctx, db, ownerID, outreachID, "sent"); err != nil {
 		return to, err
 	}
-	return to, AddExperience(ctx, db, "herald",
+	return to, AddExperience(ctx, db, ownerID, "herald",
 		fmt.Sprintf("outreach %d → %s (%s)", outreachID, to, company),
 		"dispatched approved email", "sent", "")
 }

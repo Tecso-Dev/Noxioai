@@ -23,15 +23,15 @@ Max 180 words. Plain text only.
 Pipeline:
 %s`
 
-func crmSnapshot(ctx context.Context, db *sql.DB) string {
+func crmSnapshot(ctx context.Context, db *sql.DB, ownerID int64) string {
 	var b strings.Builder
 	var total, new24, pending, approved, sent int
-	db.QueryRowContext(ctx, `SELECT count(*), count(*) FILTER (WHERE created_at > now()-interval '24 hours') FROM leads`).Scan(&total, &new24)
+	db.QueryRowContext(ctx, `SELECT count(*), count(*) FILTER (WHERE created_at > now()-interval '24 hours') FROM leads WHERE owner_id=$1`, ownerID).Scan(&total, &new24)
 	db.QueryRowContext(ctx, `SELECT count(*) FILTER (WHERE NOT approved AND outcome IS NULL),
-		count(*) FILTER (WHERE approved), count(*) FILTER (WHERE sent_at IS NOT NULL) FROM outreach`).Scan(&pending, &approved, &sent)
+		count(*) FILTER (WHERE approved), count(*) FILTER (WHERE sent_at IS NOT NULL) FROM outreach WHERE owner_id=$1`, ownerID).Scan(&pending, &approved, &sent)
 	fmt.Fprintf(&b, "Leads: %d total, %d new in 24h. Outreach: %d approved, %d sent, %d awaiting approval.\n", total, new24, approved, sent, pending)
 
-	if rows, err := db.QueryContext(ctx, `SELECT status, count(*) FROM leads GROUP BY status ORDER BY 2 DESC`); err == nil {
+	if rows, err := db.QueryContext(ctx, `SELECT status, count(*) FROM leads WHERE owner_id=$1 GROUP BY status ORDER BY 2 DESC`, ownerID); err == nil {
 		b.WriteString("Funnel: ")
 		for rows.Next() {
 			var s string
@@ -46,7 +46,7 @@ func crmSnapshot(ctx context.Context, db *sql.DB) string {
 	if rows, err := db.QueryContext(ctx, `
 		SELECT c.name, COALESCE(l.score,0), COALESCE(l.observed_problem,'')
 		FROM leads l JOIN companies c ON c.id=l.company_id
-		WHERE l.status='new' ORDER BY l.score DESC LIMIT 3`); err == nil {
+		WHERE l.owner_id=$1 AND l.status='new' ORDER BY l.score DESC LIMIT 3`, ownerID); err == nil {
 		b.WriteString("Top unworked leads:\n")
 		for rows.Next() {
 			var name, prob string
@@ -60,13 +60,13 @@ func crmSnapshot(ctx context.Context, db *sql.DB) string {
 	return b.String()
 }
 
-func RunCaleb(ctx context.Context, db *sql.DB, brain *Brain) (string, error) {
+func RunCaleb(ctx context.Context, db *sql.DB, ownerID int64, brain *Brain) (string, error) {
 	memo, err := brain.Chat([]Message{{Role: "user",
-		Content: fmt.Sprintf(calebPrompt, crmSnapshot(ctx, db))}}, nil)
+		Content: fmt.Sprintf(calebPrompt, crmSnapshot(ctx, db, ownerID))}}, nil)
 	if err != nil {
 		return "", err
 	}
 	memo = strings.TrimSpace(memo)
-	AddExperience(ctx, db, "caleb", "morning pipeline read", "wrote marketing memo", "delivered", oneLine(memo, 120))
+	AddExperience(ctx, db, ownerID, "caleb", "morning pipeline read", "wrote marketing memo", "delivered", oneLine(memo, 120))
 	return memo, nil
 }

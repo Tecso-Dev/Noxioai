@@ -13,8 +13,8 @@ import (
 
 // FRIDAY morning briefing (SPEC Phase 4). Not an agent — one function on a
 // timer (launchd, 08:00). Reads the CRM, composes the day, pings Telegram.
-func RunBrief(ctx context.Context, db *sql.DB, brain *Brain) error {
-	if _, err := CheckInbox(ctx, db); err != nil {
+func RunBrief(ctx context.Context, db *sql.DB, ownerID int64, brain *Brain) error {
+	if _, err := CheckInbox(ctx, db, ownerID); err != nil {
 		// Inbox replies are supplemental; the brief must still be delivered.
 	}
 
@@ -23,7 +23,7 @@ func RunBrief(ctx context.Context, db *sql.DB, brain *Brain) error {
 
 	var total, new24 int
 	if err := db.QueryRowContext(ctx,
-		`SELECT count(*), count(*) FILTER (WHERE created_at > now() - interval '24 hours') FROM leads`).
+		`SELECT count(*), count(*) FILTER (WHERE created_at > now() - interval '24 hours') FROM leads WHERE owner_id=$1`, ownerID).
 		Scan(&total, &new24); err != nil {
 		return err
 	}
@@ -32,7 +32,7 @@ func RunBrief(ctx context.Context, db *sql.DB, brain *Brain) error {
 	rows, err := db.QueryContext(ctx, `
 		SELECT l.id, COALESCE(l.score,0), c.name
 		FROM leads l JOIN companies c ON c.id = l.company_id
-		WHERE l.status = 'new' ORDER BY l.score DESC LIMIT 3`)
+		WHERE l.owner_id = $1 AND l.status = 'new' ORDER BY l.score DESC LIMIT 3`, ownerID)
 	if err != nil {
 		return err
 	}
@@ -54,7 +54,7 @@ func RunBrief(ctx context.Context, db *sql.DB, brain *Brain) error {
 	drafts, err := db.QueryContext(ctx, `
 		SELECT o.id, o.channel, c.name
 		FROM outreach o JOIN leads l ON l.id = o.lead_id JOIN companies c ON c.id = l.company_id
-		WHERE NOT o.approved AND o.outcome IS NULL ORDER BY o.id LIMIT 5`)
+		WHERE o.owner_id = $1 AND NOT o.approved AND o.outcome IS NULL ORDER BY o.id LIMIT 5`, ownerID)
 	if err != nil {
 		return err
 	}
@@ -75,7 +75,7 @@ func RunBrief(ctx context.Context, db *sql.DB, brain *Brain) error {
 	outcomes, err := db.QueryContext(ctx, `
 		SELECT COALESCE(o.outcome,''), c.name
 		FROM outreach o JOIN leads l ON l.id = o.lead_id JOIN companies c ON c.id = l.company_id
-		WHERE l.updated_at > now() - interval '24 hours' AND o.outcome IS NOT NULL`)
+		WHERE o.owner_id = $1 AND l.updated_at > now() - interval '24 hours' AND o.outcome IS NOT NULL`, ownerID)
 	if err != nil {
 		return err
 	}
@@ -93,7 +93,7 @@ func RunBrief(ctx context.Context, db *sql.DB, brain *Brain) error {
 	}
 
 	// CALEB's marketing memo — best effort; the brief still goes out if the brain is down.
-	if memo, err := RunCaleb(ctx, db, brain); err == nil && memo != "" {
+	if memo, err := RunCaleb(ctx, db, ownerID, brain); err == nil && memo != "" {
 		b.WriteString("\n📈 CALEB — marketing memo:\n" + memo + "\n")
 	}
 

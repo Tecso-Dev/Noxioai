@@ -15,7 +15,7 @@ import (
 
 // CheckInbox looks for recent unread Gmail replies and advances their leads.
 // It remains dormant until Gmail credentials are configured.
-func CheckInbox(ctx context.Context, db *sql.DB) (replies int, err error) {
+func CheckInbox(ctx context.Context, db *sql.DB, ownerID int64) (replies int, err error) {
 	user := os.Getenv("JARVIS_SMTP_USER")
 	pass := os.Getenv("JARVIS_SMTP_PASS")
 	if user == "" || pass == "" {
@@ -76,7 +76,7 @@ func CheckInbox(ctx context.Context, db *sql.DB) (replies int, err error) {
 		if err := ctx.Err(); err != nil {
 			return replies, err
 		}
-		processed, err := processInboxReply(ctx, db, email)
+		processed, err := processInboxReply(ctx, db, ownerID, email)
 		if err != nil {
 			return replies, err
 		}
@@ -91,7 +91,7 @@ func normalizeInboxEmail(email string) string {
 	return strings.ToLower(strings.TrimSpace(email))
 }
 
-func processInboxReply(ctx context.Context, db *sql.DB, email string) (bool, error) {
+func processInboxReply(ctx context.Context, db *sql.DB, ownerID int64, email string) (bool, error) {
 	var outreachID int64
 	var company string
 	var outcome sql.NullString
@@ -101,9 +101,9 @@ func processInboxReply(ctx context.Context, db *sql.DB, email string) (bool, err
 		JOIN leads l ON l.company_id = ct.company_id
 		JOIN companies c ON c.id = ct.company_id
 		JOIN outreach o ON o.lead_id = l.id
-		WHERE LOWER(ct.email) = LOWER($1) AND o.sent_at IS NOT NULL
+		WHERE ct.owner_id = $2 AND LOWER(ct.email) = LOWER($1) AND o.sent_at IS NOT NULL
 		ORDER BY o.sent_at DESC, o.id DESC
-		LIMIT 1`, email).Scan(&outreachID, &company, &outcome)
+		LIMIT 1`, email, ownerID).Scan(&outreachID, &company, &outcome)
 	if err == sql.ErrNoRows {
 		return false, nil
 	}
@@ -114,10 +114,10 @@ func processInboxReply(ctx context.Context, db *sql.DB, email string) (bool, err
 		return false, nil
 	}
 
-	if err := SetOutcome(ctx, db, outreachID, "replied"); err != nil {
+	if err := SetOutcome(ctx, db, ownerID, outreachID, "replied"); err != nil {
 		return false, err
 	}
-	if err := AddExperience(ctx, db, "herald",
+	if err := AddExperience(ctx, db, ownerID, "herald",
 		"inbox: reply from "+email, "marked replied", "lead advanced", ""); err != nil {
 		return false, err
 	}

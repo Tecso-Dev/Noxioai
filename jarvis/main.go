@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"context"
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -21,13 +22,25 @@ status updates, vary with original, composed system language such as "Systems
 are standing by, Sir" or "Diagnostics are green"; never quote film dialogue
 or imitate a real actor.`
 
+// mustOwnerID resolves the CLI owner (JARVIS_OWNER_EMAIL, default Sobhan) or
+// exits — every CRM CLI command needs one (PRODUCT-BUILD.md Phase P1).
+func mustOwnerID(db *sql.DB) int64 {
+	id, err := defaultOwnerID(context.Background(), db)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "✗ cannot resolve owner (run `jarvis db init` first):", err)
+		os.Exit(1)
+	}
+	return id
+}
+
 func main() {
 	loadDotEnv()
 
 	if len(os.Args) > 1 && os.Args[1] == "brief" {
 		db := mustDB()
 		defer db.Close()
-		if err := RunBrief(context.Background(), db, NewBrainFromEnv()); err != nil {
+		ownerID := mustOwnerID(db)
+		if err := RunBrief(context.Background(), db, ownerID, NewBrainFromEnv()); err != nil {
 			fmt.Fprintln(os.Stderr, "✗ brief:", err)
 			os.Exit(1)
 		}
@@ -38,7 +51,8 @@ func main() {
 	if len(os.Args) > 1 && os.Args[1] == "inbox" {
 		db := mustDB()
 		defer db.Close()
-		replies, err := CheckInbox(context.Background(), db)
+		ownerID := mustOwnerID(db)
+		replies, err := CheckInbox(context.Background(), db, ownerID)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "✗ inbox:", err)
 			os.Exit(1)
@@ -54,22 +68,24 @@ func main() {
 			os.Exit(1)
 		}
 		defer db.Close()
-		if err := InitSchema(context.Background(), db); err != nil {
+		ownerID, err := InitSchema(context.Background(), db)
+		if err != nil {
 			fmt.Fprintln(os.Stderr, "✗ schema failed:", err)
 			os.Exit(1)
 		}
-		fmt.Println("✓ schema applied: companies, contacts, leads, outreach, experiences")
+		fmt.Printf("✓ schema applied: companies, contacts, leads, outreach, experiences\n✓ owner ready: user #%d (existing rows backfilled)\n", ownerID)
 		return
 	}
 
 	if len(os.Args) > 2 && (os.Args[1] == "oracle" || os.Args[1] == "atlas") {
 		db := mustDB()
 		defer db.Close()
+		ownerID := mustOwnerID(db)
 		var agent Agent
 		if os.Args[1] == "oracle" {
-			agent = &Oracle{Brain: NewBrainFromEnv(), DB: db}
+			agent = &Oracle{Brain: NewBrainFromEnv(), DB: db, OwnerID: ownerID}
 		} else {
-			agent = &Atlas{Brain: NewBrainFromEnv(), DB: db}
+			agent = &Atlas{Brain: NewBrainFromEnv(), DB: db, OwnerID: ownerID}
 		}
 		res, err := agent.Run(context.Background(), Task{Agent: os.Args[1], Input: strings.Join(os.Args[2:], " ")})
 		if err != nil {
@@ -83,7 +99,7 @@ func main() {
 	if len(os.Args) > 1 && os.Args[1] == "leads" {
 		db := mustDB()
 		defer db.Close()
-		if err := PrintLeads(context.Background(), db); err != nil {
+		if err := PrintLeads(context.Background(), db, mustOwnerID(db)); err != nil {
 			fmt.Fprintln(os.Stderr, "✗ leads:", err)
 			os.Exit(1)
 		}
@@ -98,7 +114,7 @@ func main() {
 			fmt.Fprintln(os.Stderr, "usage: jarvis approve <outreach-id>")
 			os.Exit(1)
 		}
-		draft, err := ApproveOutreach(context.Background(), db, id)
+		draft, err := ApproveOutreach(context.Background(), db, mustOwnerID(db), id)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "✗ approve:", err)
 			os.Exit(1)
@@ -110,7 +126,7 @@ func main() {
 	if len(os.Args) > 1 && os.Args[1] == "caleb" {
 		db := mustDB()
 		defer db.Close()
-		memo, err := RunCaleb(context.Background(), db, NewBrainFromEnv())
+		memo, err := RunCaleb(context.Background(), db, mustOwnerID(db), NewBrainFromEnv())
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "✗ caleb:", err)
 			os.Exit(1)
@@ -122,7 +138,7 @@ func main() {
 	if len(os.Args) > 1 && os.Args[1] == "followup" {
 		db := mustDB()
 		defer db.Close()
-		drafted, err := RunFollowup(context.Background(), db, NewBrainFromEnv())
+		drafted, err := RunFollowup(context.Background(), db, mustOwnerID(db), NewBrainFromEnv())
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "✗ followup:", err)
 			os.Exit(1)
@@ -139,7 +155,7 @@ func main() {
 			fmt.Fprintln(os.Stderr, "usage: jarvis pixel <lead-id>")
 			os.Exit(1)
 		}
-		critique, err := RunPixel(context.Background(), db, NewBrainFromEnv(), id)
+		critique, err := RunPixel(context.Background(), db, mustOwnerID(db), NewBrainFromEnv(), id)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "✗ pixel:", err)
 			os.Exit(1)
@@ -156,7 +172,7 @@ func main() {
 			fmt.Fprintln(os.Stderr, "usage: jarvis send <approved-email-outreach-id>")
 			os.Exit(1)
 		}
-		to, err := HeraldSend(context.Background(), db, id)
+		to, err := HeraldSend(context.Background(), db, mustOwnerID(db), id)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "✗ HERALD:", err)
 			os.Exit(1)
@@ -173,7 +189,7 @@ func main() {
 			fmt.Fprintln(os.Stderr, "usage: jarvis outcome <outreach-id> <sent|no_reply|replied|meeting|won|lost>")
 			os.Exit(1)
 		}
-		if err := SetOutcome(context.Background(), db, id, os.Args[3]); err != nil {
+		if err := SetOutcome(context.Background(), db, mustOwnerID(db), id, os.Args[3]); err != nil {
 			fmt.Fprintln(os.Stderr, "✗ outcome:", err)
 			os.Exit(1)
 		}
@@ -258,8 +274,30 @@ func serveHTTP(brain *Brain, memory *MemoryStore) {
 	registerHUD(mux, brain, memory, db)
 	registerAuth(mux, db)
 	registerBilling(mux, db)
+	registerChat(mux, brain, db)
 
+	mux.HandleFunc("GET /health", func(w http.ResponseWriter, _ *http.Request) {
+		json.NewEncoder(w).Encode(map[string]string{"status": "online", "model": brain.Model})
+	})
+
+	addr := envOr("JARVIS_ADDR", "127.0.0.1:7700")
+	fmt.Printf("⚡ JARVIS HUD on http://%s  (dashboard, POST /chat, GET /health)\n", addr)
+	if err := http.ListenAndServe(addr, mux); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+
+func registerChat(mux *http.ServeMux, brain *Brain, db *sql.DB) {
 	mux.HandleFunc("POST /chat", func(w http.ResponseWriter, r *http.Request) {
+		if db == nil {
+			http.Error(w, "CRM offline", http.StatusServiceUnavailable)
+			return
+		}
+		ownerID, ok := sessionOwner(db, w, r)
+		if !ok {
+			return
+		}
 		var req struct {
 			Messages []Message `json:"messages"`
 		}
@@ -267,10 +305,9 @@ func serveHTTP(brain *Brain, memory *MemoryStore) {
 			http.Error(w, "bad request", http.StatusBadRequest)
 			return
 		}
-		system := systemPrompt + memory.SystemContext()
-		if db != nil { // ground the chat in REAL numbers so it never invents pipeline status
-			system += "\n\n## Live business data (real, current — answer from THIS, never invent)\n" + crmSnapshot(r.Context(), db)
-		}
+		// Personal JARVIS memory remains CLI-only until P2 introduces tenant
+		// business profiles. Web chat receives only this tenant's CRM snapshot.
+		system := systemPrompt + "\n\n## Live business data (real, current — answer from THIS, never invent)\n" + crmSnapshot(r.Context(), db, ownerID)
 		history := append([]Message{{Role: "system", Content: system}}, req.Messages...)
 
 		w.Header().Set("Content-Type", "text/event-stream")
@@ -291,15 +328,4 @@ func serveHTTP(brain *Brain, memory *MemoryStore) {
 		fmt.Fprint(w, "data: [DONE]\n\n")
 		flusher.Flush()
 	})
-
-	mux.HandleFunc("GET /health", func(w http.ResponseWriter, _ *http.Request) {
-		json.NewEncoder(w).Encode(map[string]string{"status": "online", "model": brain.Model})
-	})
-
-	addr := envOr("JARVIS_ADDR", "127.0.0.1:7700")
-	fmt.Printf("⚡ JARVIS HUD on http://%s  (dashboard, POST /chat, GET /health)\n", addr)
-	if err := http.ListenAndServe(addr, mux); err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
 }

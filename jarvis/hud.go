@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	_ "embed"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
@@ -65,6 +66,36 @@ func heraldStatus() string {
 	return "v2"
 }
 
+var errAuthenticationRequired = errors.New("authentication required")
+
+// ownerFromSession is the single HTTP authorization boundary for tenant CRM
+// data. CLI commands use defaultOwnerID; HTTP requests never inherit it.
+func ownerFromSession(ctx context.Context, db *sql.DB, r *http.Request) (int64, error) {
+	user, err := currentUser(ctx, db, r)
+	if err != nil {
+		return 0, err
+	}
+	if user == nil {
+		return 0, errAuthenticationRequired
+	}
+	return user.ID, nil
+}
+
+// sessionOwner writes an appropriate HTTP error so handlers can return on a
+// failed owner lookup without confusing database failures with a bad session.
+func sessionOwner(db *sql.DB, w http.ResponseWriter, r *http.Request) (ownerID int64, ok bool) {
+	ownerID, err := ownerFromSession(r.Context(), db, r)
+	if errors.Is(err, errAuthenticationRequired) {
+		http.Error(w, "unauthorized: sign in required", http.StatusUnauthorized)
+		return 0, false
+	}
+	if err != nil {
+		http.Error(w, "owner lookup failed", http.StatusInternalServerError)
+		return 0, false
+	}
+	return ownerID, true
+}
+
 // registerHUD wires the Iron-Man dashboard onto the serve mux. db may be nil
 // (Postgres down) — the HUD still chats, panels show CRM OFFLINE.
 func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.DB) {
@@ -103,11 +134,19 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 
 	mux.HandleFunc("GET /api/status", func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
+		var ownerID int64
+		if db != nil {
+			var ok bool
+			ownerID, ok = sessionOwner(db, w, r)
+			if !ok {
+				return
+			}
+		}
 		lastOps := map[string]string{}
 		if db != nil {
 			if rows, err := db.QueryContext(ctx, `
 				SELECT DISTINCT ON (agent) agent, decision || ' · ' || to_char(created_at,'HH24:MI')
-				FROM experiences ORDER BY agent, created_at DESC`); err == nil {
+				FROM experiences WHERE owner_id=$1 ORDER BY agent, created_at DESC`, ownerID); err == nil {
 				for rows.Next() {
 					var a, d string
 					if rows.Scan(&a, &d) == nil {
@@ -144,18 +183,18 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 		if db != nil && db.PingContext(ctx) == nil {
 			resp["db"] = "online"
 			var leadCount, pendingCount, approvedCount, expCount int
-			db.QueryRowContext(ctx, `SELECT count(*) FROM leads`).Scan(&leadCount)
-			db.QueryRowContext(ctx, `SELECT count(*) FROM outreach WHERE NOT approved AND outcome IS NULL`).Scan(&pendingCount)
-			db.QueryRowContext(ctx, `SELECT count(*) FROM outreach WHERE approved`).Scan(&approvedCount)
-			db.QueryRowContext(ctx, `SELECT count(*) FROM experiences`).Scan(&expCount)
+			db.QueryRowContext(ctx, `SELECT count(*) FROM leads WHERE owner_id=$1`, ownerID).Scan(&leadCount)
+			db.QueryRowContext(ctx, `SELECT count(*) FROM outreach WHERE owner_id=$1 AND NOT approved AND outcome IS NULL`, ownerID).Scan(&pendingCount)
+			db.QueryRowContext(ctx, `SELECT count(*) FROM outreach WHERE owner_id=$1 AND approved`, ownerID).Scan(&approvedCount)
+			db.QueryRowContext(ctx, `SELECT count(*) FROM experiences WHERE owner_id=$1`, ownerID).Scan(&expCount)
 			resp["lead_count"], resp["pending_count"] = leadCount, pendingCount
 			resp["approved_count"], resp["exp_count"] = approvedCount, expCount
 			var contactCount int
-			db.QueryRowContext(ctx, `SELECT count(*) FROM contacts`).Scan(&contactCount)
+			db.QueryRowContext(ctx, `SELECT count(*) FROM contacts WHERE owner_id=$1`, ownerID).Scan(&contactCount)
 			resp["contact_count"] = contactCount
 			groupCount := func(query string) map[string]int {
 				out := map[string]int{}
-				if rows, err := db.QueryContext(ctx, query); err == nil {
+				if rows, err := db.QueryContext(ctx, query, ownerID); err == nil {
 					for rows.Next() {
 						var k string
 						var n int
@@ -167,14 +206,14 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 				}
 				return out
 			}
-			resp["funnel"] = groupCount(`SELECT status, count(*) FROM leads GROUP BY status`)
-			resp["tiers"] = groupCount(`SELECT COALESCE(tier,'?'), count(*) FROM leads GROUP BY 1`)
+			resp["funnel"] = groupCount(`SELECT status, count(*) FROM leads WHERE owner_id=$1 GROUP BY status`)
+			resp["tiers"] = groupCount(`SELECT COALESCE(tier,'?'), count(*) FROM leads WHERE owner_id=$1 GROUP BY 1`)
 
 			leads := []map[string]any{}
 			if rows, err := db.QueryContext(ctx, `
 				SELECT l.id, COALESCE(l.score,0), COALESCE(l.tier,''), l.status, c.name,
-				       EXISTS(SELECT 1 FROM contacts ct WHERE ct.company_id=c.id AND COALESCE(ct.email,'')<>'') AS has_email
-				FROM leads l JOIN companies c ON c.id=l.company_id ORDER BY l.score DESC LIMIT 20`); err == nil {
+				       EXISTS(SELECT 1 FROM contacts ct WHERE ct.company_id=c.id AND ct.owner_id=$1 AND COALESCE(ct.email,'')<>'') AS has_email
+				FROM leads l JOIN companies c ON c.id=l.company_id WHERE l.owner_id=$1 ORDER BY l.score DESC LIMIT 20`, ownerID); err == nil {
 				for rows.Next() {
 					var id int64
 					var score int
@@ -192,7 +231,7 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 			if rows, err := db.QueryContext(ctx, `
 				SELECT o.id, o.channel, c.name
 				FROM outreach o JOIN leads l ON l.id=o.lead_id JOIN companies c ON c.id=l.company_id
-				WHERE NOT o.approved AND o.outcome IS NULL ORDER BY o.id`); err == nil {
+				WHERE o.owner_id=$1 AND NOT o.approved AND o.outcome IS NULL ORDER BY o.id`, ownerID); err == nil {
 				for rows.Next() {
 					var id int64
 					var channel, name string
@@ -215,11 +254,15 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 			http.Error(w, "need ?name and a live CRM", http.StatusBadRequest)
 			return
 		}
+		ownerID, ok := sessionOwner(db, w, r)
+		if !ok {
+			return
+		}
 		missions := []map[string]string{}
 		if rows, err := db.QueryContext(r.Context(), `
 			SELECT to_char(created_at,'DD Mon HH24:MI'), COALESCE(input,''), COALESCE(decision,''),
 			       COALESCE(result,''), COALESCE(lesson,'')
-			FROM experiences WHERE agent=$1 ORDER BY created_at DESC LIMIT 10`, name); err == nil {
+			FROM experiences WHERE owner_id=$1 AND agent=$2 ORDER BY created_at DESC LIMIT 10`, ownerID, name); err == nil {
 			for rows.Next() {
 				var when, in, dec, res, les string
 				if rows.Scan(&when, &in, &dec, &res, &les) == nil {
@@ -230,7 +273,7 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 			rows.Close()
 		}
 		var count int
-		db.QueryRowContext(r.Context(), `SELECT count(*) FROM experiences WHERE agent=$1`, name).Scan(&count)
+		db.QueryRowContext(r.Context(), `SELECT count(*) FROM experiences WHERE owner_id=$1 AND agent=$2`, ownerID, name).Scan(&count)
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]any{"name": name, "count": count, "missions": missions})
 	})
@@ -251,34 +294,52 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 	}
 
 	mux.HandleFunc("POST /api/oracle", func(w http.ResponseWriter, r *http.Request) {
-		var req struct{ Niche string `json:"niche"` }
+		var req struct {
+			Niche string `json:"niche"`
+		}
 		if json.NewDecoder(r.Body).Decode(&req) != nil || req.Niche == "" || db == nil {
 			http.Error(w, "need {niche} and a live CRM", http.StatusBadRequest)
 			return
 		}
-		runAgent(&Oracle{Brain: brain, DB: db}, req.Niche, "🔎 ORACLE hunting: "+req.Niche)
+		ownerID, ok := sessionOwner(db, w, r)
+		if !ok {
+			return
+		}
+		runAgent(&Oracle{Brain: brain, DB: db, OwnerID: ownerID}, req.Niche, "🔎 ORACLE hunting: "+req.Niche)
 		w.WriteHeader(http.StatusAccepted)
 	})
 
 	mux.HandleFunc("POST /api/atlas", func(w http.ResponseWriter, r *http.Request) {
-		var req struct{ Lead int64 `json:"lead"` }
+		var req struct {
+			Lead int64 `json:"lead"`
+		}
 		if json.NewDecoder(r.Body).Decode(&req) != nil || req.Lead == 0 || db == nil {
 			http.Error(w, "need {lead} and a live CRM", http.StatusBadRequest)
 			return
 		}
-		runAgent(&Atlas{Brain: brain, DB: db}, fmt.Sprint(req.Lead), fmt.Sprintf("✍️ ATLAS drafting for lead %d", req.Lead))
+		ownerID, ok := sessionOwner(db, w, r)
+		if !ok {
+			return
+		}
+		runAgent(&Atlas{Brain: brain, DB: db, OwnerID: ownerID}, fmt.Sprint(req.Lead), fmt.Sprintf("✍️ ATLAS drafting for lead %d", req.Lead))
 		w.WriteHeader(http.StatusAccepted)
 	})
 
 	mux.HandleFunc("POST /api/pixel", func(w http.ResponseWriter, r *http.Request) {
-		var req struct{ Lead int64 `json:"lead"` }
+		var req struct {
+			Lead int64 `json:"lead"`
+		}
 		if json.NewDecoder(r.Body).Decode(&req) != nil || req.Lead == 0 || db == nil {
 			http.Error(w, "need {lead} and a live CRM", http.StatusBadRequest)
 			return
 		}
+		ownerID, ok := sessionOwner(db, w, r)
+		if !ok {
+			return
+		}
 		act.add("🎨 PIXEL reviewing lead %d", req.Lead)
 		busy.set("PIXEL", true)
-		critique, err := RunPixel(r.Context(), db, brain, req.Lead)
+		critique, err := RunPixel(r.Context(), db, ownerID, brain, req.Lead)
 		busy.set("PIXEL", false)
 		if err != nil {
 			act.add("✗ PIXEL: %v", err)
@@ -295,11 +356,15 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 			http.Error(w, "CRM offline", http.StatusServiceUnavailable)
 			return
 		}
+		ownerID, ok := sessionOwner(db, w, r)
+		if !ok {
+			return
+		}
 		act.add("📬 HERALD checking inbox for replies")
 		busy.set("HERALD", true)
 		go func() {
 			defer busy.set("HERALD", false)
-			n, err := CheckInbox(context.Background(), db)
+			n, err := CheckInbox(context.Background(), db, ownerID)
 			if err != nil {
 				act.add("✗ inbox: %v", err)
 				return
@@ -314,13 +379,17 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 			http.Error(w, "CRM offline", http.StatusServiceUnavailable)
 			return
 		}
+		ownerID, ok := sessionOwner(db, w, r)
+		if !ok {
+			return
+		}
 		act.add("📨 briefing requested")
 		busy.set("FRIDAY", true)
 		busy.set("CALEB", true)
 		go func() {
 			defer busy.set("FRIDAY", false)
 			defer busy.set("CALEB", false)
-			if err := RunBrief(context.Background(), db, brain); err != nil {
+			if err := RunBrief(context.Background(), db, ownerID, brain); err != nil {
 				act.add("✗ brief: %v", err)
 			} else {
 				act.add("✓ brief delivered to Telegram")
@@ -331,12 +400,18 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 
 	// HERALD dispatch — only works on drafts Sobhan already approved.
 	mux.HandleFunc("POST /api/send", func(w http.ResponseWriter, r *http.Request) {
-		var req struct{ ID int64 `json:"id"` }
+		var req struct {
+			ID int64 `json:"id"`
+		}
 		if json.NewDecoder(r.Body).Decode(&req) != nil || req.ID == 0 || db == nil {
 			http.Error(w, "need {id} and a live CRM", http.StatusBadRequest)
 			return
 		}
-		to, err := HeraldSend(r.Context(), db, req.ID)
+		ownerID, ok := sessionOwner(db, w, r)
+		if !ok {
+			return
+		}
+		to, err := HeraldSend(r.Context(), db, ownerID, req.ID)
 		if err != nil {
 			act.add("✗ HERALD: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)
@@ -349,12 +424,18 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 
 	// Approve stays synchronous — it IS the human gate (Principle 1).
 	mux.HandleFunc("POST /api/approve", func(w http.ResponseWriter, r *http.Request) {
-		var req struct{ ID int64 `json:"id"` }
+		var req struct {
+			ID int64 `json:"id"`
+		}
 		if json.NewDecoder(r.Body).Decode(&req) != nil || req.ID == 0 || db == nil {
 			http.Error(w, "need {id} and a live CRM", http.StatusBadRequest)
 			return
 		}
-		draft, err := ApproveOutreach(r.Context(), db, req.ID)
+		ownerID, ok := sessionOwner(db, w, r)
+		if !ok {
+			return
+		}
+		draft, err := ApproveOutreach(r.Context(), db, ownerID, req.ID)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

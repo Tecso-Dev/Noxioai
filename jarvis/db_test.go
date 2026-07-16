@@ -15,15 +15,16 @@ func TestDBRoundTrip(t *testing.T) {
 	defer db.Close()
 	ctx := context.Background()
 
-	if err := InitSchema(ctx, db); err != nil {
+	ownerID, err := InitSchema(ctx, db)
+	if err != nil {
 		t.Fatalf("InitSchema: %v", err)
 	}
 
 	var id int64
 	err = db.QueryRowContext(ctx,
-		`INSERT INTO companies (name, website) VALUES ('__test co', 'https://roundtrip.test.invalid')
-		 ON CONFLICT (website) DO UPDATE SET name = EXCLUDED.name
-		 RETURNING id`).Scan(&id)
+		`INSERT INTO companies (owner_id, name, website) VALUES ($1, '__test co', 'https://roundtrip.test.invalid')
+		 ON CONFLICT (owner_id, website) DO UPDATE SET name = EXCLUDED.name
+		 RETURNING id`, ownerID).Scan(&id)
 	if err != nil {
 		t.Fatalf("insert: %v", err)
 	}
