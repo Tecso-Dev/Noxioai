@@ -1,3 +1,21 @@
+# SECURITY: public edge exposes ONLY the app's public endpoints.
+# The jarvis HUD + agent-control endpoints (/api/send /atlas /oracle /brief
+# /inbox /pixel /approve, /chat, /api/status, /api/agent, /) are Sobhan's
+# private cockpit — reachable via SSH/CLI only, NEVER from the internet.
+(appapi) {
+	@public path /api/auth/* /api/billing/* /api/stripe/*
+	handle @public {
+		reverse_proxy 127.0.0.1:7700
+	}
+	handle {
+		respond "404" 404
+	}
+}
+
+api.noxioai.com {
+	import appapi
+}
+
 95.181.160.117.nip.io {
-	reverse_proxy 127.0.0.1:7700
+	import appapi
 }
