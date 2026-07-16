@@ -54,7 +54,7 @@ function initScene(host: HTMLDivElement) {
   pGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3))
   const points = new THREE.Points(pGeo, new THREE.PointsMaterial({
     size: 0.05, sizeAttenuation: true, map: sprite, vertexColors: true,
-    transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending, depthWrite: false,
+    transparent: true, opacity: 0.4, blending: THREE.AdditiveBlending, depthWrite: false,
   }))
   points.scale.setScalar(1.08)
   root.add(points)
@@ -69,14 +69,14 @@ function initScene(host: HTMLDivElement) {
     return new THREE.BufferGeometry().setFromPoints(pts)
   }
   const ringGeo = ringGeometry(1.34)
-  const ringGold = new THREE.LineLoop(ringGeo, new THREE.LineBasicMaterial({ color: gold, transparent: true, opacity: 0.32, blending: THREE.AdditiveBlending, depthWrite: false }))
+  const ringGold = new THREE.LineLoop(ringGeo, new THREE.LineBasicMaterial({ color: gold, transparent: true, opacity: 0.22, blending: THREE.AdditiveBlending, depthWrite: false }))
   ringGold.rotation.set(1.18, 0, 0.35)
-  const ringCyan = new THREE.LineLoop(ringGeo, new THREE.LineBasicMaterial({ color: cyan, transparent: true, opacity: 0.26, blending: THREE.AdditiveBlending, depthWrite: false }))
+  const ringCyan = new THREE.LineLoop(ringGeo, new THREE.LineBasicMaterial({ color: cyan, transparent: true, opacity: 0.18, blending: THREE.AdditiveBlending, depthWrite: false }))
   ringCyan.rotation.set(-1.02, 0, -0.5)
   root.add(ringGold, ringCyan)
 
   // faint core glow — warm-cool blend, small enough to read as a spark, not a marble
-  const core = new THREE.Sprite(new THREE.SpriteMaterial({ map: sprite, color: new THREE.Color('#f3e9d2'), transparent: true, opacity: 0.32, blending: THREE.AdditiveBlending, depthWrite: false }))
+  const core = new THREE.Sprite(new THREE.SpriteMaterial({ map: sprite, color: new THREE.Color('#f3e9d2'), transparent: true, opacity: 0.24, blending: THREE.AdditiveBlending, depthWrite: false }))
   core.scale.set(0.16, 0.16, 1)
   root.add(core)
 
@@ -93,7 +93,7 @@ function initScene(host: HTMLDivElement) {
     root.position.y = Math.sin(t * 0.18) * 0.05
     ringGold.rotation.y += 0.0009
     ringCyan.rotation.y -= 0.0007
-    core.material.opacity = 0.28 + Math.sin(t * 0.6) * 0.06
+    core.material.opacity = 0.2 + Math.sin(t * 0.6) * 0.05
     renderer.render(scene, cam)
     raf = requestAnimationFrame(tick)
   }

@@ -6,6 +6,11 @@
   --cyan-soft: rgba(62, 225, 255, 0.14);
   --gold: #d4bf94;
   --gold-soft: rgba(212, 191, 148, 0.22);
+  --gold-deep: #b39868;
+  --pulse: #48cae4;
+  --night: #0b0b12;
+  --ivory: #f2efe8;
+  --dim: #9a95b0;
   --navy: #050a16;
   --panel-deep: rgba(8, 19, 37, 0.72);
   --panel-raised: rgba(15, 33, 57, 0.64);
@@ -94,6 +99,13 @@ html[lang='ar'] body {
   filter: blur(32px);
 }
 
+/* hero-only override: quiet gold + a whisper of cyan, no violet HUD wash */
+.hero-glow {
+  background:
+    radial-gradient(55% 55% at 75% 15%, rgba(212, 191, 148, 0.22), transparent 70%),
+    radial-gradient(45% 45% at 20% 10%, rgba(72, 202, 228, 0.12), transparent 70%);
+}
+
 .text-gradient {
   background: linear-gradient(105deg, #f5fbff 0%, #7deaff 50%, #9e9cff 100%);
   -webkit-background-clip: text;
@@ -161,17 +173,19 @@ html[lang='ar'] body {
 }
 
 .hero {
-  border-block-end: 1px solid rgba(137, 184, 221, 0.12);
+  border-block-end: 1px solid rgba(137, 184, 221, 0.08);
 }
 
-.hero::after {
-  background: linear-gradient(90deg, transparent, rgba(62, 225, 255, 0.72), transparent);
-  content: '';
-  height: 1px;
-  inset-block-end: 0;
-  inset-inline: 22%;
-  opacity: 0.6;
+/* single ambient visual: the fine-dot sphere floats free, no card, no border */
+.hero-ambient {
   position: absolute;
+  inset-block-start: -4rem;
+  inset-inline-end: -6rem;
+  inline-size: min(46rem, 78vw);
+  block-size: min(46rem, 78vw);
+  opacity: 0.85;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .hero-noise {
@@ -185,12 +199,15 @@ html[lang='ar'] body {
 }
 
 .hero-nav {
-  border-block-end: 1px solid rgba(137, 184, 221, 0.1);
+  border-block-end: 1px solid rgba(137, 184, 221, 0.06);
 }
 
 .brand-mark {
-  letter-spacing: -0.07em;
-  text-shadow: 0 0 24px rgba(62, 225, 255, 0.18);
+  letter-spacing: -0.04em;
+}
+
+.brand-accent {
+  color: var(--gold);
 }
 
 .nav-cta,
@@ -202,21 +219,21 @@ html[lang='ar'] body {
   min-block-size: 44px;
   line-height: 1;
   white-space: nowrap;
-  transition-property: transform, background-color, border-color, box-shadow;
+  transition-property: transform, background-color, border-color, box-shadow, color;
   transition-duration: 180ms;
   transition-timing-function: var(--ease-out);
 }
 
-.nav-cta,
-.primary-cta {
-  background: linear-gradient(120deg, #2ccbe7, #406cf1);
-  box-shadow: 0 10px 28px rgba(39, 170, 228, 0.22);
+/* nav CTA: ghost/hairline — the airier of the two, defers to the hero's solid gold pill */
+.nav-cta {
+  background: transparent;
+  border: 1px solid var(--gold-soft);
+  color: var(--gold);
 }
 
-.nav-cta:hover,
-.primary-cta:hover {
-  box-shadow: 0 14px 34px rgba(39, 170, 228, 0.32);
-  transform: translateY(-2px);
+.nav-cta:hover {
+  background: var(--gold-soft);
+  border-color: var(--gold);
 }
 
 .nav-cta:active,
@@ -225,24 +242,50 @@ html[lang='ar'] body {
   transform: scale(0.97);
 }
 
+/* hero primary CTA: solid champagne-gold pill */
+.primary-cta {
+  background: linear-gradient(135deg, var(--gold), var(--gold-deep));
+  box-shadow: 0 12px 30px rgba(212, 191, 148, 0.18);
+  color: var(--night);
+}
+
+.primary-cta:hover {
+  box-shadow: 0 16px 38px rgba(212, 191, 148, 0.28);
+  transform: translateY(-2px);
+}
+
+/* hero secondary CTA: ghost/hairline */
 .secondary-cta {
-  background: rgba(12, 29, 51, 0.5);
+  background: transparent;
+  border-color: var(--line-soft);
+  color: var(--ivory);
 }
 
 .secondary-cta:hover {
-  border-color: rgba(62, 225, 255, 0.62);
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.08);
+  border-color: rgba(242, 239, 232, 0.4);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
   transform: translateY(-2px);
 }
 
 .hero-badge {
-  background: rgba(8, 29, 51, 0.6);
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.06), 0 10px 26px rgba(0, 0, 0, 0.16);
+  background: transparent;
+  border-color: var(--gold-soft);
+  box-shadow: none;
+  color: var(--gold);
+  letter-spacing: 0.02em;
 }
 
 .hero-title {
-  letter-spacing: -0.055em;
+  color: var(--ivory);
+  letter-spacing: -0.045em;
   text-wrap: balance;
+}
+
+.hero-title-accent {
+  background: linear-gradient(100deg, var(--ivory) 0%, var(--gold) 55%, var(--gold-deep) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .hero-copy {
@@ -255,111 +298,34 @@ html[lang='ar'] body {
   max-inline-size: 100%;
 }
 
+.hero-subtitle {
+  line-height: 1.7;
+  margin-inline: auto;
+  max-inline-size: 34rem;
+}
+
 .hero-subtitle,
 .noxio-home p {
   color: var(--text-muted);
   text-wrap: pretty;
 }
 
-.hero-stage {
-  perspective: 1100px;
+/* subtle fade/rise on load — pure CSS, never gates the LCP title behind JS */
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.hero-console {
-  background:
-    linear-gradient(125deg, rgba(16, 40, 70, 0.85), rgba(5, 14, 29, 0.88) 55%, rgba(11, 23, 50, 0.8));
-  box-shadow: 0 38px 100px rgba(0, 0, 0, 0.42), inset 0 1px rgba(255, 255, 255, 0.09), 0 0 0 1px rgba(62, 225, 255, 0.04), 0 0 60px -30px rgba(212, 191, 148, 0.25);
-  isolation: isolate;
-  overflow: hidden;
-  transition-property: transform, border-color, box-shadow;
-  transition-duration: 160ms;
-  transition-timing-function: ease-out;
+.hero-badge,
+.hero-title,
+.hero-subtitle,
+.hero-actions {
+  animation: hero-rise 700ms var(--ease-out) both;
 }
 
-.hero-console::before {
-  background: linear-gradient(100deg, transparent 10%, rgba(160, 236, 255, 0.12) 50%, transparent 70%);
-  content: '';
-  height: 80%;
-  inset-block-start: -14%;
-  inset-inline-start: -34%;
-  pointer-events: none;
-  position: absolute;
-  transform: rotate(11deg);
-  width: 34%;
-}
-
-.console-grid {
-  mask-image: radial-gradient(80% 72% at 50% 72%, black 22%, transparent 80%);
-  opacity: 0.9;
-}
-
-.console-orbit {
-  border: 1px solid rgba(62, 225, 255, 0.2);
-  border-radius: 50%;
-  inset-block-start: 50%;
-  inset-inline-start: 50%;
-  pointer-events: none;
-  position: absolute;
-  transform: translate(-50%, -50%) rotateX(65deg) rotateZ(-8deg);
-}
-
-.console-orbit--one {
-  block-size: 15rem;
-  inline-size: 28rem;
-}
-
-.console-orbit--two {
-  block-size: 23rem;
-  border-color: rgba(108, 118, 255, 0.17);
-  inline-size: 18rem;
-  transform: translate(-50%, -50%) rotateX(65deg) rotateZ(42deg);
-}
-
-.console-core {
-  background: radial-gradient(circle, rgba(238, 255, 255, 0.92) 0 3%, rgba(62, 225, 255, 0.32) 16%, rgba(62, 225, 255, 0.08) 34%, transparent 66%);
-  block-size: 18rem;
-  filter: blur(0.2px);
-  inline-size: 18rem;
-  inset-block-start: 48%;
-  inset-inline-start: 50%;
-  mix-blend-mode: screen;
-  opacity: 0.74;
-  pointer-events: none;
-  position: absolute;
-  transform: translate(-50%, -50%);
-}
-
-.console-core span {
-  animation: core-breathe 3.8s ease-in-out infinite;
-  background: radial-gradient(circle, rgba(188, 250, 255, 0.95), rgba(62, 225, 255, 0.18) 42%, transparent 70%);
-  border-radius: 50%;
-  inset: 0;
-  position: absolute;
-}
-
-.console-status {
-  font-family: 'DM Mono', monospace;
-  letter-spacing: 0.16em;
-  opacity: 0.68;
-  position: relative;
-  text-transform: uppercase;
-}
-
-.console-status__pulse {
-  align-items: center;
-  display: inline-flex;
-  gap: 0.4rem;
-}
-
-.console-status__pulse i {
-  animation: status-pulse 2s ease-in-out infinite;
-  background: #65f7c7;
-  border-radius: 50%;
-  box-shadow: 0 0 12px #65f7c7;
-  display: inline-block;
-  height: 0.42rem;
-  width: 0.42rem;
-}
+.hero-title { animation-delay: 80ms; }
+.hero-subtitle { animation-delay: 160ms; }
+.hero-actions { animation-delay: 240ms; }
 
 .office-team {
   min-block-size: 10.5rem;
@@ -380,10 +346,6 @@ html[lang='ar'] body {
   font-size: 0.65rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-}
-
-.console-chip {
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28), 0 0 16px rgba(212, 191, 148, 0.1);
 }
 
 .noxio-home section:not(#waitlist) {
@@ -535,16 +497,6 @@ html[lang='ar'] body {
   background: rgba(3, 8, 18, 0.64);
 }
 
-@keyframes core-breathe {
-  0%, 100% { opacity: 0.55; transform: scale(0.88); }
-  50% { opacity: 1; transform: scale(1.06); }
-}
-
-@keyframes status-pulse {
-  0%, 100% { opacity: 0.55; transform: scale(0.82); }
-  50% { opacity: 1; transform: scale(1); }
-}
-
 /* accessible focus rings (never removed, only styled) */
 :focus-visible {
   outline: 2px solid #48cae4;
@@ -554,13 +506,13 @@ html[lang='ar'] body {
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .px-bob,
-  .chip-float,
-  .console-core span,
-  .console-status__pulse i { animation: none; }
+  .px-bob { animation: none; }
+  .hero-badge,
+  .hero-title,
+  .hero-subtitle,
+  .hero-actions { animation: none; opacity: 1; transform: none; }
   .card3d,
   .card3d:hover,
-  .hero-console,
   .nav-cta,
   .primary-cta,
   .secondary-cta { transform: none; transition: none; }
@@ -620,10 +572,15 @@ html[lang='ar'] body {
   .feature-card { min-block-size: auto; }
   .team-card { min-block-size: auto; }
   .waitlist-panel { margin-inline: 1rem; padding-inline: 1rem; }
-  .console-status__label { font-size: 0.6rem; }
-  .console-orbit--one { inline-size: 19rem; }
-  .console-orbit--two { inline-size: 14rem; }
   .office-team { min-block-size: 9.5rem; padding-block-start: 3rem; }
+  .hero-ambient {
+    inset-block-start: -2rem;
+    inset-inline-end: 50%;
+    inline-size: 22rem;
+    block-size: 22rem;
+    opacity: 0.5;
+    translate: 50% 0;
+  }
 }
 
 /* ── Spatial-glass system (shared across landing sections) ─────────────── */
