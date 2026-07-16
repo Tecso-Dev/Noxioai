@@ -119,7 +119,10 @@
   },
   "footer": {
     "made": "Built by the TECSO team",
-    "soon": "Coming soon…"
+    "soon": "Coming soon…",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "about": "About"
   },
   "pricing": {
     "spots": "Only 10 founding spots",
@@ -273,5 +276,346 @@
       "error": "Something went wrong — please try again.",
       "fallback": "The form isn't live yet; email us at:"
     }
+  },
+  "privacy": {
+    "meta": {
+      "title": "Privacy Policy — NOXIOAI",
+      "description": "How NOXIOAI collects, uses, stores and protects personal data, and the rights available to you."
+    },
+    "eyebrow": "Privacy & data",
+    "title": "Privacy Policy",
+    "intro": "NOXIOAI is the controller of the personal data described in this policy. We collect only what we need to provide and improve our AI software and automation services.",
+    "updated": "Last updated: July 16, 2026",
+    "sections": {
+      "data": {
+        "title": "Data we collect",
+        "body": "The information we collect depends on how you interact with NOXIOAI.",
+        "items": {
+          "waitlist": {
+            "label": "Waitlist",
+            "text": "Your email address when you ask to receive product news or an invitation."
+          },
+          "account": {
+            "label": "Accounts",
+            "text": "Your name and email address, plus a securely hashed version of your password. We do not store your password in readable form."
+          },
+          "payments": {
+            "label": "Payments",
+            "text": "Stripe customer and subscription IDs, billing status and limited transaction metadata. Card details go directly to Stripe; NOXIOAI never receives or stores card numbers."
+          },
+          "analytics": {
+            "label": "Analytics & cookies",
+            "text": "Basic device and browser information, approximate location derived from an IP address, visited pages, product events and cookie identifiers. Essential cookies keep the service working; optional analytics are used only where permitted or consented to."
+          }
+        }
+      },
+      "purpose": {
+        "title": "Why we use it",
+        "body": "We use personal data only for defined business and service purposes.",
+        "items": {
+          "provide": {
+            "label": "Provide the service",
+            "text": "Create and maintain accounts, deliver software features and carry out requested automation services."
+          },
+          "communicate": {
+            "label": "Communicate",
+            "text": "Send waitlist updates, transactional messages, service notices and replies to support requests."
+          },
+          "payments": {
+            "label": "Manage payments",
+            "text": "Start, administer and confirm subscriptions and other purchases."
+          },
+          "security": {
+            "label": "Protect NOXIOAI",
+            "text": "Authenticate users, prevent abuse, investigate incidents and keep the service reliable."
+          },
+          "improve": {
+            "label": "Improve the product",
+            "text": "Understand aggregate usage and identify where performance and user experience can be improved."
+          }
+        }
+      },
+      "basis": {
+        "title": "Legal bases",
+        "body": "Under the GDPR, our processing relies on the legal basis that fits each use.",
+        "items": {
+          "consent": {
+            "label": "Consent",
+            "text": "For waitlist marketing and optional analytics or cookies. You may withdraw consent at any time."
+          },
+          "contract": {
+            "label": "Contract",
+            "text": "To create your account, provide purchased services and administer your subscription."
+          },
+          "legitimate": {
+            "label": "Legitimate interests",
+            "text": "To secure, operate and improve NOXIOAI where those interests are not overridden by your rights and freedoms."
+          },
+          "obligation": {
+            "label": "Legal obligation",
+            "text": "To meet accounting, tax, fraud-prevention and other duties that apply to us."
+          }
+        }
+      },
+      "retention": {
+        "title": "How long we keep data",
+        "body": "We keep personal data only for as long as its purpose and applicable law require, then delete or anonymise it.",
+        "items": {
+          "waitlist": {
+            "label": "Waitlist data",
+            "text": "Until you unsubscribe, withdraw consent, or the waitlist purpose has ended."
+          },
+          "account": {
+            "label": "Account data",
+            "text": "While your account is active and for a limited period afterwards for security, disputes and backup rotation."
+          },
+          "payments": {
+            "label": "Payment records",
+            "text": "For the period required by Polish and EU accounting, tax and legal obligations."
+          },
+          "analytics": {
+            "label": "Analytics data",
+            "text": "According to the shortest practical period configured for the analytics service, after which it is deleted or aggregated."
+          }
+        }
+      },
+      "rights": {
+        "title": "Your rights",
+        "body": "Depending on the circumstances, the GDPR gives you the following rights. We may need to verify your identity before completing a request.",
+        "items": {
+          "access": {
+            "label": "Access",
+            "text": "Ask whether we process your data and receive a copy of it."
+          },
+          "rectify": {
+            "label": "Rectification",
+            "text": "Correct personal data that is inaccurate or incomplete."
+          },
+          "erase": {
+            "label": "Erasure",
+            "text": "Ask us to delete data when there is no lawful reason to keep it."
+          },
+          "restrict": {
+            "label": "Restriction",
+            "text": "Ask us to limit processing in specific circumstances."
+          },
+          "portability": {
+            "label": "Portability",
+            "text": "Receive eligible data in a structured, commonly used, machine-readable format."
+          },
+          "object": {
+            "label": "Objection",
+            "text": "Object to processing based on legitimate interests or to direct marketing."
+          },
+          "withdraw": {
+            "label": "Withdraw consent",
+            "text": "Withdraw consent at any time without affecting processing that was lawful before withdrawal."
+          },
+          "complain": {
+            "label": "Complaint",
+            "text": "Lodge a complaint with Poland's Personal Data Protection Office (UODO) or the supervisory authority where you live or work."
+          }
+        }
+      },
+      "processors": {
+        "title": "Processors & infrastructure",
+        "body": "We share data only with providers that help us run NOXIOAI, under appropriate data-protection terms.",
+        "items": {
+          "vercel": {
+            "label": "Vercel",
+            "text": "Website and application hosting and delivery."
+          },
+          "cloudflare": {
+            "label": "Cloudflare",
+            "text": "Network delivery, DNS, security and abuse protection."
+          },
+          "stripe": {
+            "label": "Stripe",
+            "text": "Payment and subscription processing. Stripe receives payment details directly."
+          },
+          "resend": {
+            "label": "Resend",
+            "text": "Waitlist, account and transactional email delivery."
+          },
+          "database": {
+            "label": "Postgres in Germany",
+            "text": "Our core service data is stored in a self-hosted Postgres database on a VPS located in Germany."
+          }
+        }
+      },
+      "transfers": {
+        "title": "International transfers",
+        "body": "Some providers may process data outside the European Economic Area. When they do, we rely on a European Commission adequacy decision or appropriate safeguards such as the European Commission's Standard Contractual Clauses. You may contact us for more information about the safeguards used.",
+        "items": {}
+      },
+      "contact": {
+        "title": "Contact us",
+        "body": "To exercise a privacy right or ask a question about this policy, contact NOXIOAI at:",
+        "items": {}
+      }
+    }
+  },
+  "terms": {
+    "meta": {
+      "title": "Terms of Service — NOXIOAI",
+      "description": "The terms that apply when you use NOXIOAI software, subscriptions and done-for-you automation services."
+    },
+    "eyebrow": "Service agreement",
+    "title": "Terms of Service",
+    "intro": "These terms govern your use of NOXIOAI's AI automation software, subscriptions and done-for-you automation services.",
+    "updated": "Last updated: July 16, 2026",
+    "sections": {
+      "acceptance": {
+        "title": "Acceptance",
+        "body": "By accessing or using NOXIOAI, creating an account or purchasing a service, you agree to these terms. If you do not agree, do not use the service. Additional written terms may apply to a specific done-for-you project; if they conflict, those project terms control for that project.",
+        "items": {}
+      },
+      "service": {
+        "title": "What we provide",
+        "body": "NOXIOAI offers software and professional services designed to help businesses automate work. Features may evolve as the product develops.",
+        "items": {
+          "software": {
+            "label": "AI automation software",
+            "text": "Tools and AI employees that generate, organise or automate business work. You remain responsible for reviewing outputs and approving actions."
+          },
+          "services": {
+            "label": "Done-for-you services",
+            "text": "Custom automation design, setup, integration, maintenance and related consulting agreed in a proposal or order."
+          }
+        }
+      },
+      "accounts": {
+        "title": "Accounts",
+        "body": "You are responsible for activity performed through your account.",
+        "items": {
+          "accurate": {
+            "label": "Accurate information",
+            "text": "Provide current, complete information and keep it updated."
+          },
+          "security": {
+            "label": "Account security",
+            "text": "Keep credentials confidential and notify us promptly if you suspect unauthorised access."
+          },
+          "eligibility": {
+            "label": "Authority",
+            "text": "You must be legally able to enter this agreement. If you act for an organisation, you confirm that you can bind it to these terms."
+          }
+        }
+      },
+      "acceptable": {
+        "title": "Acceptable use",
+        "body": "Use NOXIOAI lawfully and in a way that does not harm people, systems or the service.",
+        "items": {
+          "law": {
+            "label": "No unlawful use",
+            "text": "Do not use the service for fraud, harassment, unlawful surveillance, discrimination, spam or content that violates applicable law."
+          },
+          "abuse": {
+            "label": "No harmful automation",
+            "text": "Do not submit malware, overload the service, scrape it abusively or automate actions that you are not authorised to perform."
+          },
+          "security": {
+            "label": "No security interference",
+            "text": "Do not bypass safeguards, probe vulnerabilities without written permission or attempt to access another user's data."
+          },
+          "rights": {
+            "label": "Respect rights",
+            "text": "Only provide data and content you are entitled to use, and respect privacy, intellectual-property and third-party rights."
+          }
+        }
+      },
+      "payments": {
+        "title": "Payments & subscriptions",
+        "body": "Payments are processed by Stripe. Prices, billing frequency and included services are shown at purchase or in your proposal.",
+        "items": {
+          "billing": {
+            "label": "Billing",
+            "text": "You authorise Stripe to charge the selected payment method for amounts due. We do not store card numbers."
+          },
+          "renewal": {
+            "label": "Renewal",
+            "text": "Recurring subscriptions renew automatically for the stated billing period until cancelled."
+          },
+          "cancel": {
+            "label": "Cancellation",
+            "text": "You may cancel a subscription before its next renewal. Access continues through the paid period unless stated otherwise."
+          },
+          "refunds": {
+            "label": "Refunds",
+            "text": "If you believe a refund is appropriate, contact us. We review requests individually, without limiting any mandatory consumer rights."
+          },
+          "taxes": {
+            "label": "Taxes",
+            "text": "Prices may exclude taxes unless stated otherwise. You are responsible for taxes that legally apply to your purchase."
+          }
+        }
+      },
+      "ownership": {
+        "title": "Ownership & customer content",
+        "body": "Each party keeps ownership of what it brings to the relationship.",
+        "items": {
+          "noxioai": {
+            "label": "NOXIOAI",
+            "text": "We own the service, software, brand, interfaces and underlying technology, excluding customer content and third-party materials."
+          },
+          "customer": {
+            "label": "Your content",
+            "text": "You retain ownership of content and data you provide. You grant us the limited permission needed to process it and deliver the service."
+          }
+        }
+      },
+      "availability": {
+        "title": "Service provided “as is”",
+        "body": "To the fullest extent permitted by law, NOXIOAI is provided “as is” and “as available.” We do not promise uninterrupted operation or that AI output will always be accurate or suitable for a specific purpose. You must review important outputs before relying on or sending them. This does not affect guarantees or rights that cannot legally be excluded.",
+        "items": {}
+      },
+      "liability": {
+        "title": "Limitation of liability",
+        "body": "To the fullest extent permitted by law, NOXIOAI is not liable for indirect, incidental, special or consequential loss, lost profit, lost revenue or lost data. Our total liability relating to the service is limited to the amount you paid NOXIOAI during the 12 months before the event giving rise to the claim. Nothing in these terms excludes liability for fraud, wilful misconduct, death or personal injury, or any liability that cannot be limited under applicable law.",
+        "items": {}
+      },
+      "termination": {
+        "title": "Termination",
+        "body": "You may stop using NOXIOAI at any time and cancel recurring subscriptions as described above. We may suspend or terminate access for a material breach, unlawful use, security risk or non-payment, with notice where reasonably possible. On termination, your right to use the service ends; accrued payment obligations and terms that by nature should survive remain in effect.",
+        "items": {}
+      },
+      "law": {
+        "title": "Governing law",
+        "body": "These terms are governed by the laws of Poland and applicable European Union law. Disputes are subject to the competent courts in Poland, except where mandatory consumer law gives you the right to use another law or forum. Your non-waivable consumer rights remain unaffected.",
+        "items": {}
+      },
+      "changes": {
+        "title": "Changes to these terms",
+        "body": "We may update these terms as NOXIOAI, the law or our business changes. We will post the updated terms and revise the date above. For material changes, we will provide reasonable notice where practical. Continued use after the new terms take effect means you accept them; if you do not, you should stop using the service.",
+        "items": {}
+      },
+      "contact": {
+        "title": "Contact us",
+        "body": "Questions, cancellation issues and refund requests can be sent to NOXIOAI at:",
+        "items": {}
+      }
+    }
+  },
+  "about": {
+    "meta": {
+      "title": "About NOXIOAI — AI employees for small business",
+      "description": "NOXIOAI builds thoughtful AI employees that give small businesses an always-on team."
+    },
+    "eyebrow": "About NOXIOAI",
+    "title": "AI employees that work while you sleep.",
+    "intro": "We are building an always-on team for the businesses that have never had one.",
+    "story": {
+      "title": "Built for real work",
+      "body": "NOXIOAI turns practical automation into AI employees you can understand, direct and trust with the repetitive work behind a growing business."
+    },
+    "founder": {
+      "title": "Founder-led by design",
+      "body": "We stay close to the product and the people using it. Every workflow is shaped with care, restraint and a premium-tech standard—useful before impressive."
+    },
+    "mission": {
+      "title": "The mission",
+      "body": "Give small businesses an always-on team: capable when the day is busy, dependable after the office closes and always under the owner's control."
+    },
+    "cta": "Join the waitlist"
   }
 }

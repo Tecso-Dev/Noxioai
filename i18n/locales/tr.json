@@ -119,7 +119,10 @@
   },
   "footer": {
     "made": "TECSO ekibi tarafından geliştirildi",
-    "soon": "Çok yakında…"
+    "soon": "Çok yakında…",
+    "privacy": "Gizlilik",
+    "terms": "Koşullar",
+    "about": "Hakkımızda"
   },
   "pricing": {
     "spots": "Yalnızca 10 kurucu yeri",
@@ -273,5 +276,346 @@
       "error": "Bir şeyler ters gitti — lütfen tekrar deneyin.",
       "fallback": "Form henüz aktif değil; bize e-posta gönderin:"
     }
+  },
+  "privacy": {
+    "meta": {
+      "title": "Gizlilik Politikası — NOXIOAI",
+      "description": "NOXIOAI'nin kişisel verileri nasıl topladığı, kullandığı, sakladığı ve koruduğu ile sahip olduğunuz haklar."
+    },
+    "eyebrow": "Gizlilik ve veriler",
+    "title": "Gizlilik Politikası",
+    "intro": "NOXIOAI, bu politikada açıklanan kişisel verilerin veri sorumlusudur. Yalnızca yapay zeka yazılımımızı ve otomasyon hizmetlerimizi sunmak ve geliştirmek için gereken verileri toplarız.",
+    "updated": "Son güncelleme: 16 Temmuz 2026",
+    "sections": {
+      "data": {
+        "title": "Topladığımız veriler",
+        "body": "Topladığımız bilgiler, NOXIOAI ile nasıl etkileşim kurduğunuza bağlıdır.",
+        "items": {
+          "waitlist": {
+            "label": "Bekleme listesi",
+            "text": "Ürün haberleri veya davet almak istediğinizde verdiğiniz e-posta adresi."
+          },
+          "account": {
+            "label": "Hesaplar",
+            "text": "Adınız ve e-posta adresiniz ile parolanızın güvenli biçimde özetlenmiş sürümü. Parolanızı okunabilir biçimde saklamayız."
+          },
+          "payments": {
+            "label": "Ödemeler",
+            "text": "Stripe müşteri ve abonelik kimlikleri, faturalandırma durumu ve sınırlı işlem bilgileri. Kart bilgileri doğrudan Stripe'a gider; NOXIOAI kart numaralarını hiçbir zaman almaz veya saklamaz."
+          },
+          "analytics": {
+            "label": "Analiz ve çerezler",
+            "text": "Temel cihaz ve tarayıcı bilgileri, IP adresinden türetilen yaklaşık konum, ziyaret edilen sayfalar, ürün olayları ve çerez kimlikleri. Zorunlu çerezler hizmetin çalışmasını sağlar; isteğe bağlı analiz yalnızca izin verildiğinde veya onayınızla kullanılır."
+          }
+        }
+      },
+      "purpose": {
+        "title": "Verileri neden kullanıyoruz",
+        "body": "Kişisel verileri yalnızca belirli iş ve hizmet amaçları için kullanırız.",
+        "items": {
+          "provide": {
+            "label": "Hizmeti sunmak",
+            "text": "Hesap oluşturmak ve sürdürmek, yazılım özelliklerini sunmak ve talep edilen otomasyon hizmetlerini gerçekleştirmek."
+          },
+          "communicate": {
+            "label": "İletişim kurmak",
+            "text": "Bekleme listesi haberleri, işlem mesajları, hizmet bildirimleri ve destek taleplerine yanıt göndermek."
+          },
+          "payments": {
+            "label": "Ödemeleri yönetmek",
+            "text": "Abonelikleri ve diğer satın alımları başlatmak, yönetmek ve doğrulamak."
+          },
+          "security": {
+            "label": "NOXIOAI'yi korumak",
+            "text": "Kullanıcıların kimliğini doğrulamak, kötüye kullanımı önlemek, olayları incelemek ve hizmeti güvenilir tutmak."
+          },
+          "improve": {
+            "label": "Ürünü geliştirmek",
+            "text": "Toplu kullanım eğilimlerini anlamak, performansın ve kullanıcı deneyiminin geliştirilebileceği alanları belirlemek."
+          }
+        }
+      },
+      "basis": {
+        "title": "Hukuki dayanaklar",
+        "body": "GDPR kapsamında her veri işleme faaliyeti, kullanım amacına uygun hukuki dayanağa dayanır.",
+        "items": {
+          "consent": {
+            "label": "Onay",
+            "text": "Bekleme listesi pazarlaması ve isteğe bağlı analiz veya çerezler için. Onayınızı istediğiniz zaman geri çekebilirsiniz."
+          },
+          "contract": {
+            "label": "Sözleşme",
+            "text": "Hesabınızı oluşturmak, satın alınan hizmetleri sunmak ve aboneliğinizi yönetmek için."
+          },
+          "legitimate": {
+            "label": "Meşru menfaatler",
+            "text": "Hak ve özgürlüklerinizin önüne geçmediği ölçüde NOXIOAI'yi güvenli şekilde işletmek ve geliştirmek için."
+          },
+          "obligation": {
+            "label": "Hukuki yükümlülük",
+            "text": "Muhasebe, vergi, dolandırıcılığı önleme ve bize uygulanan diğer yasal yükümlülükleri yerine getirmek için."
+          }
+        }
+      },
+      "retention": {
+        "title": "Verileri ne kadar süre saklarız",
+        "body": "Kişisel verileri yalnızca amacı ve yürürlükteki mevzuat gerektirdiği sürece saklar, ardından siler veya anonimleştiririz.",
+        "items": {
+          "waitlist": {
+            "label": "Bekleme listesi verileri",
+            "text": "Listeden ayrılana, onayınızı geri çekene veya bekleme listesinin amacı sona erene kadar."
+          },
+          "account": {
+            "label": "Hesap verileri",
+            "text": "Hesabınız aktif olduğu sürece ve sonrasında güvenlik, uyuşmazlıklar ve yedeklerin dönüşümlü silinmesi için sınırlı bir süre."
+          },
+          "payments": {
+            "label": "Ödeme kayıtları",
+            "text": "Polonya ve AB muhasebe, vergi ve diğer hukuki yükümlülüklerinin gerektirdiği süre boyunca."
+          },
+          "analytics": {
+            "label": "Analiz verileri",
+            "text": "Analiz hizmetinde ayarlanan uygulanabilir en kısa süre boyunca; sonrasında silinir veya toplu hale getirilir."
+          }
+        }
+      },
+      "rights": {
+        "title": "Haklarınız",
+        "body": "Koşullara bağlı olarak GDPR size aşağıdaki hakları tanır. Bir talebi yerine getirmeden önce kimliğinizi doğrulamamız gerekebilir.",
+        "items": {
+          "access": {
+            "label": "Erişim",
+            "text": "Verilerinizi işleyip işlemediğimizi sorabilir ve bir kopyasını alabilirsiniz."
+          },
+          "rectify": {
+            "label": "Düzeltme",
+            "text": "Yanlış veya eksik kişisel verilerin düzeltilmesini isteyebilirsiniz."
+          },
+          "erase": {
+            "label": "Silme",
+            "text": "Verileri saklamak için hukuki bir neden kalmadığında silinmesini isteyebilirsiniz."
+          },
+          "restrict": {
+            "label": "Kısıtlama",
+            "text": "Belirli durumlarda verilerinizin işlenmesinin sınırlandırılmasını isteyebilirsiniz."
+          },
+          "portability": {
+            "label": "Taşınabilirlik",
+            "text": "Uygun verileri yapılandırılmış, yaygın kullanılan ve makinece okunabilir bir biçimde alabilirsiniz."
+          },
+          "object": {
+            "label": "İtiraz",
+            "text": "Meşru menfaate dayalı veri işlemeye veya doğrudan pazarlamaya itiraz edebilirsiniz."
+          },
+          "withdraw": {
+            "label": "Onayı geri çekme",
+            "text": "Geri çekmeden önce hukuka uygun yapılan işlemleri etkilemeden onayınızı istediğiniz zaman geri çekebilirsiniz."
+          },
+          "complain": {
+            "label": "Şikâyet",
+            "text": "Polonya Kişisel Verileri Koruma Ofisine (UODO) veya yaşadığınız ya da çalıştığınız yerdeki denetim makamına şikâyette bulunabilirsiniz."
+          }
+        }
+      },
+      "processors": {
+        "title": "Veri işleyenler ve altyapı",
+        "body": "Verileri yalnızca NOXIOAI'yi çalıştırmamıza yardımcı olan sağlayıcılarla, uygun veri koruma koşulları altında paylaşırız.",
+        "items": {
+          "vercel": {
+            "label": "Vercel",
+            "text": "Web sitesi ve uygulamanın barındırılması ve sunulması."
+          },
+          "cloudflare": {
+            "label": "Cloudflare",
+            "text": "Ağ dağıtımı, DNS, güvenlik ve kötüye kullanım koruması."
+          },
+          "stripe": {
+            "label": "Stripe",
+            "text": "Ödeme ve abonelik işlemleri. Stripe ödeme bilgilerini doğrudan alır."
+          },
+          "resend": {
+            "label": "Resend",
+            "text": "Bekleme listesi, hesap ve işlem e-postalarının iletilmesi."
+          },
+          "database": {
+            "label": "Almanya'da Postgres",
+            "text": "Temel hizmet verilerimiz Almanya'da bulunan bir VPS üzerindeki, kendi yönettiğimiz Postgres veritabanında saklanır."
+          }
+        }
+      },
+      "transfers": {
+        "title": "Uluslararası veri aktarımları",
+        "body": "Bazı sağlayıcılar verileri Avrupa Ekonomik Alanı dışında işleyebilir. Böyle durumlarda Avrupa Komisyonunun yeterlilik kararına veya Avrupa Komisyonu Standart Sözleşme Maddeleri gibi uygun güvencelere dayanırız. Kullanılan güvenceler hakkında daha fazla bilgi için bizimle iletişime geçebilirsiniz.",
+        "items": {}
+      },
+      "contact": {
+        "title": "Bize ulaşın",
+        "body": "Gizlilik hakkınızı kullanmak veya bu politika hakkında soru sormak için NOXIOAI'ye şu adresten ulaşın:",
+        "items": {}
+      }
+    }
+  },
+  "terms": {
+    "meta": {
+      "title": "Hizmet Koşulları — NOXIOAI",
+      "description": "NOXIOAI yazılımını, aboneliklerini ve sizin için hazırlanan otomasyon hizmetlerini kullanırken geçerli olan koşullar."
+    },
+    "eyebrow": "Hizmet sözleşmesi",
+    "title": "Hizmet Koşulları",
+    "intro": "Bu koşullar, NOXIOAI'nin yapay zeka otomasyon yazılımını, aboneliklerini ve sizin için hazırlanan otomasyon hizmetlerini kullanımınızı düzenler.",
+    "updated": "Son güncelleme: 16 Temmuz 2026",
+    "sections": {
+      "acceptance": {
+        "title": "Kabul",
+        "body": "NOXIOAI'ye erişerek veya hizmeti kullanarak, hesap oluşturarak ya da bir hizmet satın alarak bu koşulları kabul edersiniz. Kabul etmiyorsanız hizmeti kullanmayın. Belirli bir özel proje için ek yazılı koşullar geçerli olabilir; çelişki halinde o proje açısından proje koşulları geçerlidir.",
+        "items": {}
+      },
+      "service": {
+        "title": "Sunduğumuz hizmet",
+        "body": "NOXIOAI, işletmelerin işlerini otomatikleştirmesine yardımcı olan yazılım ve profesyonel hizmetler sunar. Ürün geliştikçe özellikler değişebilir.",
+        "items": {
+          "software": {
+            "label": "Yapay zeka otomasyon yazılımı",
+            "text": "İşleri üreten, düzenleyen veya otomatikleştiren araçlar ve yapay zeka çalışanları. Çıktıları incelemekten ve işlemleri onaylamaktan siz sorumlusunuz."
+          },
+          "services": {
+            "label": "Sizin için hazırlanan hizmetler",
+            "text": "Teklif veya siparişte kararlaştırılan özel otomasyon tasarımı, kurulumu, entegrasyonu, bakımı ve ilgili danışmanlık."
+          }
+        }
+      },
+      "accounts": {
+        "title": "Hesaplar",
+        "body": "Hesabınız üzerinden gerçekleştirilen faaliyetlerden siz sorumlusunuz.",
+        "items": {
+          "accurate": {
+            "label": "Doğru bilgiler",
+            "text": "Güncel ve eksiksiz bilgi verin, bu bilgileri güncel tutun."
+          },
+          "security": {
+            "label": "Hesap güvenliği",
+            "text": "Giriş bilgilerinizi gizli tutun ve yetkisiz erişimden şüphelenirseniz bize derhal bildirin."
+          },
+          "eligibility": {
+            "label": "Yetki",
+            "text": "Bu sözleşmeyi yapmaya hukuken ehil olmalısınız. Bir kuruluş adına hareket ediyorsanız kuruluşu bu koşullarla bağlama yetkiniz olduğunu doğrularsınız."
+          }
+        }
+      },
+      "acceptable": {
+        "title": "Kabul edilebilir kullanım",
+        "body": "NOXIOAI'yi hukuka uygun ve insanlara, sistemlere veya hizmete zarar vermeyecek biçimde kullanın.",
+        "items": {
+          "law": {
+            "label": "Hukuka aykırı kullanım yok",
+            "text": "Hizmeti dolandırıcılık, taciz, hukuka aykırı gözetim, ayrımcılık, istenmeyen ileti veya yürürlükteki hukuku ihlal eden içerik için kullanmayın."
+          },
+          "abuse": {
+            "label": "Zararlı otomasyon yok",
+            "text": "Kötü amaçlı yazılım göndermeyin, hizmeti aşırı yüklemeyin, kötüye kullanacak biçimde veri çekmeyin veya yetkiniz olmayan işlemleri otomatikleştirmeyin."
+          },
+          "security": {
+            "label": "Güvenliğe müdahale yok",
+            "text": "Koruyucu önlemleri aşmayın, yazılı izin olmadan güvenlik açığı aramayın veya başka bir kullanıcının verilerine erişmeye çalışmayın."
+          },
+          "rights": {
+            "label": "Haklara saygı",
+            "text": "Yalnızca kullanma hakkınız bulunan veri ve içeriği sağlayın; gizliliğe, fikrî mülkiyete ve üçüncü taraf haklarına saygı gösterin."
+          }
+        }
+      },
+      "payments": {
+        "title": "Ödemeler ve abonelikler",
+        "body": "Ödemeler Stripe tarafından işlenir. Fiyatlar, faturalandırma sıklığı ve kapsam satın alma sırasında veya teklifinizde gösterilir.",
+        "items": {
+          "billing": {
+            "label": "Faturalandırma",
+            "text": "Vadesi gelen tutarların seçilen ödeme yönteminden alınması için Stripe'a yetki verirsiniz. Kart numaralarını saklamayız."
+          },
+          "renewal": {
+            "label": "Yenileme",
+            "text": "Düzenli abonelikler iptal edilene kadar belirtilen faturalandırma döneminde otomatik olarak yenilenir."
+          },
+          "cancel": {
+            "label": "İptal",
+            "text": "Aboneliği bir sonraki yenilemeden önce iptal edebilirsiniz. Aksi belirtilmedikçe erişim, ödenmiş dönemin sonuna kadar devam eder."
+          },
+          "refunds": {
+            "label": "İadeler",
+            "text": "İade yapılmasının uygun olduğunu düşünüyorsanız bize ulaşın. Zorunlu tüketici haklarını sınırlamadan talepleri ayrı ayrı değerlendiririz."
+          },
+          "taxes": {
+            "label": "Vergiler",
+            "text": "Aksi belirtilmedikçe fiyatlara vergiler dahil olmayabilir. Satın alımınıza hukuken uygulanan vergilerden siz sorumlusunuz."
+          }
+        }
+      },
+      "ownership": {
+        "title": "Mülkiyet ve müşteri içeriği",
+        "body": "Her taraf, ilişkiye getirdiği unsurların mülkiyetini korur.",
+        "items": {
+          "noxioai": {
+            "label": "NOXIOAI",
+            "text": "Müşteri içeriği ve üçüncü taraf materyalleri hariç hizmet, yazılım, marka, arayüzler ve temel teknoloji bize aittir."
+          },
+          "customer": {
+            "label": "İçeriğiniz",
+            "text": "Sağladığınız içerik ve verilerin mülkiyeti sizde kalır. Bunları işlemek ve hizmeti sunmak için gereken sınırlı izni bize verirsiniz."
+          }
+        }
+      },
+      "availability": {
+        "title": "Hizmet “olduğu gibi” sunulur",
+        "body": "Kanunun izin verdiği en geniş ölçüde NOXIOAI “olduğu gibi” ve “mevcut haliyle” sunulur. Kesintisiz çalışmayı veya yapay zeka çıktılarının her zaman doğru ya da belirli bir amaca uygun olacağını taahhüt etmeyiz. Önemli çıktılara güvenmeden veya bunları göndermeden önce incelemelisiniz. Bu hüküm, hukuken kapsam dışı bırakılamayan garanti veya hakları etkilemez.",
+        "items": {}
+      },
+      "liability": {
+        "title": "Sorumluluğun sınırlandırılması",
+        "body": "Kanunun izin verdiği en geniş ölçüde NOXIOAI dolaylı, arızi, özel veya sonuç olarak doğan zararlardan; kâr, gelir ya da veri kaybından sorumlu değildir. Hizmetle ilgili toplam sorumluluğumuz, talebe yol açan olaydan önceki 12 ay içinde NOXIOAI'ye ödediğiniz tutarla sınırlıdır. Bu koşullar dolandırıcılık, kasıtlı davranış, ölüm veya bedensel zarar ya da yürürlükteki hukuk uyarınca sınırlandırılamayan sorumluluğu ortadan kaldırmaz.",
+        "items": {}
+      },
+      "termination": {
+        "title": "Sona erme",
+        "body": "NOXIOAI'yi kullanmayı istediğiniz zaman bırakabilir ve düzenli abonelikleri yukarıda açıklandığı şekilde iptal edebilirsiniz. Esaslı ihlal, hukuka aykırı kullanım, güvenlik riski veya ödeme yapılmaması halinde, makul olduğu ölçüde bildirimde bulunarak erişimi askıya alabilir veya sonlandırabiliriz. Sona erdiğinde hizmeti kullanma hakkınız biter; doğmuş ödeme yükümlülükleri ve niteliği gereği devam etmesi gereken hükümler geçerliliğini korur.",
+        "items": {}
+      },
+      "law": {
+        "title": "Uygulanacak hukuk",
+        "body": "Bu koşullar Polonya hukuku ve uygulanabilir Avrupa Birliği hukuku tarafından yönetilir. Zorunlu tüketici hukukunun size başka bir hukuk veya mahkemeye başvurma hakkı verdiği durumlar hariç uyuşmazlıklar Polonya'daki yetkili mahkemelere tabidir. Vazgeçilemez tüketici haklarınız etkilenmez.",
+        "items": {}
+      },
+      "changes": {
+        "title": "Koşullardaki değişiklikler",
+        "body": "NOXIOAI, mevzuat veya işimiz değiştikçe bu koşulları güncelleyebiliriz. Güncel koşulları yayımlar ve yukarıdaki tarihi değiştiririz. Önemli değişikliklerde, uygulanabilir olduğu ölçüde makul süre önce bildirimde bulunuruz. Yeni koşullar yürürlüğe girdikten sonra kullanmaya devam etmeniz onları kabul ettiğiniz anlamına gelir; kabul etmiyorsanız hizmeti kullanmayı bırakmalısınız.",
+        "items": {}
+      },
+      "contact": {
+        "title": "Bize ulaşın",
+        "body": "Sorularınızı, iptal sorunlarını ve iade taleplerini NOXIOAI'ye şu adresten iletebilirsiniz:",
+        "items": {}
+      }
+    }
+  },
+  "about": {
+    "meta": {
+      "title": "NOXIOAI Hakkında — Küçük işletmeler için yapay zeka çalışanları",
+      "description": "NOXIOAI, küçük işletmelere her an çalışan bir ekip sunan özenli yapay zeka çalışanları geliştirir."
+    },
+    "eyebrow": "NOXIOAI Hakkında",
+    "title": "Siz uyurken çalışan yapay zeka çalışanları.",
+    "intro": "Daha önce böyle bir ekibe sahip olamayan işletmeler için her an çalışan bir ekip kuruyoruz.",
+    "story": {
+      "title": "Gerçek işler için üretildi",
+      "body": "NOXIOAI, pratik otomasyonu anlayabileceğiniz, yönlendirebileceğiniz ve büyüyen bir işletmenin perde arkasındaki tekrarlı işleri emanet edebileceğiniz yapay zeka çalışanlarına dönüştürür."
+    },
+    "founder": {
+      "title": "Kurucu liderliğinde, bilinçli olarak",
+      "body": "Ürüne ve ürünü kullanan insanlara yakın kalırız. Her iş akışı özen, sadelik ve premium teknoloji standardıyla şekillenir; etkileyici görünmeden önce faydalı olur."
+    },
+    "mission": {
+      "title": "Misyonumuz",
+      "body": "Küçük işletmelere her an çalışan bir ekip vermek: yoğun günde yetkin, mesai bittikten sonra güvenilir ve her zaman işletme sahibinin kontrolünde."
+    },
+    "cta": "Bekleme listesine katıl"
   }
 }

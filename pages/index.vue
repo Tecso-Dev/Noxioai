@@ -22,9 +22,6 @@ useSeoMeta({
     <LandingPricing />
     <LandingFaq />
     <LandingWaitlist />
-    <footer class="noxio-footer relative border-t border-line py-8 text-center text-sm text-dim">
-      <p>NOXIOAI — {{ $t('footer.soon') }}</p>
-      <p class="mt-1">{{ $t('footer.made') }} · <a href="https://github.com/Tecso-Dev" class="hover:text-brand2 transition">Tecso-Dev</a></p>
-    </footer>
+    <LandingFooter />
   </main>
 </template>
