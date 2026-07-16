@@ -58,13 +58,13 @@ The detailed product plan lives in [docs/ROADMAP.md](docs/ROADMAP.md). The appro
 ## Latest activity
 
 <!-- ACTIVITY:START -->
-_Auto-updated 2026-07-16 07:48 UTC_
+_Auto-updated 2026-07-16 08:06 UTC_
 
+- `4b03197` redesign R2+R3: full premium-tech system — landing sections (team/features/how/faq/pricing/waitlist) + all pages (services/auth/account/dashboard) to gold/ivory; unified single pulse-cyan (killed #3ee1ff family); fixed pre-existing bugs (text-red, cyan glow shadowing); luxury og image; complete design-system doc — 2026-07-16
+- `81ea730` email: gold/ivory template to match new brand — champagne top bar, gold button/links, gold-crest logo as circular medallion (fixes dark-square-on-white), utf-8 charset (fixes em-dash mojibake) — 2026-07-16
 - `d8be3c1` design system R1: premium-tech foundation — ivory text, champagne-gold primary accents (violet demoted), calmer glows/hairlines, bg-brand contrast safety rule; tailwind gold/ivory tokens — 2026-07-16
 - `9103ec2` hero: luxury-minimal redesign — remove HUD console box/grid/status-chips, headline with champagne-gold accent, ambient free-floating sphere, gold CTA, more whitespace; premium-tech design system applied — 2026-07-16
 - `cfbffe9` hero: luxury data-orb redesign — Fibonacci point sphere (620 pts, 4 draw calls vs 19), gold+cyan armillary rings, lazy WebGL init off critical path, refined glass chips; brand: premium-tech design system doc — 2026-07-15
-- `38c3da7` brand: luxury old-money monogram (gold N crest) as favicon, header mark, email logo; keep serif wordmark for wide lockups — 2026-07-15
-- `1cc47fd` mail: optional JARVIS_REPLY_TO header so outreach replies work before inbound routing exists — 2026-07-15
 <!-- ACTIVITY:END -->
 
 ## JARVIS command center
