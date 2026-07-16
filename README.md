@@ -58,13 +58,13 @@ The detailed product plan lives in [docs/ROADMAP.md](docs/ROADMAP.md). The appro
 ## Latest activity
 
 <!-- ACTIVITY:START -->
-_Auto-updated 2026-07-16 12:12 UTC_
+_Auto-updated 2026-07-16 13:30 UTC_
 
+- `01eb519` legal + about: Privacy Policy, Terms of Service (GDPR/UODO-checked), About page + shared footer with links, all 4 locales (Codex-built, Claude-verified) — 2026-07-16
 - `00ef539` docs: update ledger + agent handoff for P1 — 2026-07-16
 - `c369466` product P1: multi-tenant foundation — owner_id on all CRM tables, per-owner unique constraints, session/CLI owner scoping across every query, backfill to default owner, mandatory TestTenantIsolation — 2026-07-16
 - `6d8e36a` infra: point Vercel /api proxy at api.noxioai.com (own subdomain) instead of temporary nip.io host — removes third-party wildcard-DNS dependency — 2026-07-16
 - `2f6df7b` security: lock public edge — Caddy allowlists only /api/auth,/billing,/stripe; blocks HUD + agent-control endpoints (/send,/atlas,/oracle,/brief,/approve,/chat,/status) that were internet-reachable and unauthenticated — 2026-07-16
-- `4b03197` redesign R2+R3: full premium-tech system — landing sections (team/features/how/faq/pricing/waitlist) + all pages (services/auth/account/dashboard) to gold/ivory; unified single pulse-cyan (killed #3ee1ff family); fixed pre-existing bugs (text-red, cyan glow shadowing); luxury og image; complete design-system doc — 2026-07-16
 <!-- ACTIVITY:END -->
 
 ## JARVIS command center
