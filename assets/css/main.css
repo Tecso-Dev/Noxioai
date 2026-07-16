@@ -2,8 +2,8 @@
 
 :root {
   color-scheme: dark;
-  --cyan: #3ee1ff;
-  --cyan-soft: rgba(62, 225, 255, 0.14);
+  --cyan: #48CAE4;
+  --cyan-soft: rgba(72, 202, 228, 0.14);
   --gold: #d4bf94;
   --gold-soft: rgba(212, 191, 148, 0.22);
   --gold-deep: #b39868;
@@ -35,7 +35,7 @@ body {
   min-width: 320px;
   margin: 0;
   background:
-    radial-gradient(circle at 50% -10%, rgba(62, 225, 255, 0.07), transparent 28rem),
+    radial-gradient(circle at 50% -10%, rgba(72, 202, 228, 0.07), transparent 28rem),
     linear-gradient(180deg, #071225 0%, var(--navy) 36rem, #040914 100%);
 }
 
@@ -61,8 +61,8 @@ html[lang='ar'] body {
 
 .site-grid {
   background-image:
-    linear-gradient(rgba(75, 184, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(75, 184, 255, 0.035) 1px, transparent 1px);
+    linear-gradient(rgba(72, 202, 228, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(72, 202, 228, 0.035) 1px, transparent 1px);
   background-size: 64px 64px;
   mask-image: linear-gradient(to bottom, black 0%, transparent 48rem);
   z-index: -2;
@@ -75,7 +75,7 @@ html[lang='ar'] body {
 }
 
 .site-glow--one {
-  background: radial-gradient(circle, rgba(62, 225, 255, 0.08), transparent 62%);
+  background: radial-gradient(circle, rgba(72, 202, 228, 0.08), transparent 62%);
   inset-block-start: 22rem;
   inset-inline-start: -24rem;
 }
@@ -94,7 +94,7 @@ html[lang='ar'] body {
 /* soft gradient glow used behind hero + waitlist */
 .glow {
   background:
-    radial-gradient(60% 60% at 28% 20%, rgba(62, 225, 255, 0.2), transparent 70%),
+    radial-gradient(60% 60% at 28% 20%, rgba(72, 202, 228, 0.2), transparent 70%),
     radial-gradient(50% 50% at 80% 10%, rgba(212, 191, 148, 0.14), transparent 70%);
   filter: blur(32px);
 }
@@ -132,8 +132,8 @@ html[lang='ar'] body {
 /* pixel-office floor grid */
 .floor-grid {
   background-image:
-    linear-gradient(rgba(62, 225, 255, 0.11) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(62, 225, 255, 0.11) 1px, transparent 1px);
+    linear-gradient(rgba(72, 202, 228, 0.11) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(72, 202, 228, 0.11) 1px, transparent 1px);
   background-size: 24px 24px;
   mask-image: radial-gradient(70% 70% at 50% 60%, #000 40%, transparent 100%);
 }

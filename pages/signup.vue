@@ -40,32 +40,32 @@ async function submit() {
 <template>
   <main class="auth-wrap min-h-dvh flex items-center justify-center px-6 py-16">
     <div class="site-grid" aria-hidden="true" />
-    <form class="glass-card auth-card relative z-10 w-full max-w-sm rounded-2xl p-8" @submit.prevent="submit">
-      <NuxtLink :to="localePath('/')" class="brand-mark block text-center text-lg font-extrabold tracking-tight mb-6">NOXIO<span class="text-brand2">AI</span></NuxtLink>
+    <form class="glass-card auth-card relative z-10 w-full max-w-sm rounded-2xl p-10" @submit.prevent="submit">
+      <NuxtLink :to="localePath('/')" class="brand-mark flex items-center justify-center gap-2 text-lg font-extrabold tracking-tight mb-8"><img src="/brand/mark-dark.png" alt="" class="h-7 w-7 rounded-full" />NOXIO<span class="brand-accent">AI</span></NuxtLink>
       <h1 class="text-2xl font-bold text-center">{{ $t('auth.signup.title') }}</h1>
 
-      <label class="block mt-6 text-sm text-dim">{{ $t('auth.signup.name') }}
+      <label class="block mt-8 text-sm text-dim">{{ $t('auth.signup.name') }}
         <input v-model="name" type="text" required autocomplete="name"
-          class="mt-1 w-full rounded-xl border border-line bg-panel px-4 py-3 outline-none focus:border-brand2 transition" />
+          class="mt-1.5 w-full rounded-xl border border-line bg-panel px-4 py-3 outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/20" />
       </label>
       <label class="block mt-4 text-sm text-dim">{{ $t('auth.signup.email') }}
         <input v-model="email" type="email" required autocomplete="email"
-          class="mt-1 w-full rounded-xl border border-line bg-panel px-4 py-3 outline-none focus:border-brand2 transition" />
+          class="mt-1.5 w-full rounded-xl border border-line bg-panel px-4 py-3 outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/20" />
       </label>
       <label class="block mt-4 text-sm text-dim">{{ $t('auth.signup.password') }}
         <input v-model="password" type="password" required autocomplete="new-password" minlength="8"
-          class="mt-1 w-full rounded-xl border border-line bg-panel px-4 py-3 outline-none focus:border-brand2 transition" />
+          class="mt-1.5 w-full rounded-xl border border-line bg-panel px-4 py-3 outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/20" />
       </label>
 
-      <p v-if="err" class="mt-4 text-sm text-red" role="alert">{{ err }}</p>
+      <p v-if="err" class="mt-4 text-sm text-red-400" role="alert">{{ err }}</p>
 
       <button type="submit" :disabled="busy"
-        class="mt-6 w-full rounded-full bg-brand px-5 py-3 font-bold text-night disabled:opacity-50 transition">
+        class="mt-7 w-full rounded-full bg-brand px-5 py-3 font-bold text-night transition hover:bg-gold-deep disabled:opacity-50">
         {{ busy ? '…' : $t('auth.signup.submit') }}
       </button>
-      <p class="mt-5 text-center text-sm text-dim">
+      <p class="mt-6 text-center text-sm text-dim">
         {{ $t('auth.signup.haveAccount') }}
-        <NuxtLink :to="localePath('/login')" class="text-brand2 font-semibold">{{ $t('auth.signup.loginLink') }}</NuxtLink>
+        <NuxtLink :to="localePath('/login')" class="text-gold font-semibold transition hover:text-gold-deep">{{ $t('auth.signup.loginLink') }}</NuxtLink>
       </p>
     </form>
   </main>

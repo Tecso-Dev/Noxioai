@@ -35,9 +35,9 @@ async function choosePlan(plan: string) {
 </script>
 
 <template>
-  <section id="pricing" class="noxio-section relative mx-auto max-w-6xl px-6 py-20">
+  <section id="pricing" class="noxio-section relative mx-auto max-w-6xl px-6 py-24">
     <div class="text-center">
-      <span class="pill inline-block rounded-full border border-line bg-panel px-4 py-1.5 text-sm text-brand2 font-semibold">
+      <span class="pill inline-block rounded-full border border-line bg-panel px-4 py-1.5 text-sm text-gold font-semibold">
         {{ $t('pricing.spots') }}
       </span>
       <h2 v-motion :initial="{ opacity: 0, y: 20 }" :visible-once="{ opacity: 1, y: 0, transition: { duration: 600 } }"
@@ -58,14 +58,14 @@ async function choosePlan(plan: string) {
         <h3 class="text-xl font-bold">{{ $t(`pricing.plans.${p.key}.name`) }}</h3>
         <p class="mt-1 text-sm text-dim">{{ $t(`pricing.plans.${p.key}.tagline`) }}</p>
         <div class="mt-5 flex items-end gap-2">
-          <span class="text-4xl font-extrabold text-snow">€{{ price(p.now) }}</span>
+          <span class="text-4xl font-extrabold text-gold">€{{ price(p.now) }}</span>
           <span class="text-dim line-through mb-1">€{{ price(p.was) }}</span>
           <span class="text-dim mb-1 text-sm">{{ $t('pricing.perMonth') }}</span>
         </div>
-        <span class="mt-1 inline-block text-xs text-brand2 font-semibold">{{ $t('pricing.founder') }}</span>
+        <span class="mt-1 inline-block text-xs text-gold font-semibold">{{ $t('pricing.founder') }}</span>
         <ul class="mt-6 space-y-2 text-sm">
           <li v-for="n in 4" :key="n" class="flex items-start gap-2">
-            <span class="text-brand2 mt-0.5">✦</span>
+            <span class="text-gold mt-0.5">✦</span>
             <span class="text-dim">{{ $t(`pricing.plans.${p.key}.f${n}`) }}</span>
           </li>
         </ul>
@@ -81,14 +81,9 @@ async function choosePlan(plan: string) {
 </template>
 
 <style scoped>
-.glass-card {
-  background: rgba(7, 24, 39, 0.55);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-}
-.glass-card:hover { transform: translateY(-4px); box-shadow: 0 20px 50px rgba(0, 0, 0, .4), 0 0 24px rgba(62, 225, 255, .12); }
+/* featured tier: gold hairline (border-brand in template) + a subtle gold glow */
 .glass-card--featured {
-  background: rgba(10, 40, 60, 0.6);
-  box-shadow: 0 0 30px rgba(62, 225, 255, .18);
+  background: rgba(18, 43, 72, 0.6);
+  box-shadow: 0 0 30px rgba(212, 191, 148, 0.16);
 }
 </style>

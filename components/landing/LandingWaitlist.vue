@@ -33,7 +33,7 @@ async function submit() {
   <section id="waitlist" class="waitlist-section relative overflow-hidden py-24">
     <div class="glow absolute inset-x-0 top-0 h-72 pointer-events-none" />
     <div class="waitlist-panel glass-card rounded-3xl relative z-10 mx-auto max-w-xl px-6 py-10 text-center">
-      <h2 class="text-3xl sm:text-4xl font-extrabold">{{ $t('waitlist.heading') }}</h2>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-gradient">{{ $t('waitlist.heading') }}</h2>
       <p class="mt-3 text-dim">{{ $t('waitlist.sub') }}</p>
 
       <form v-if="hasKey && state !== 'done'" class="mt-8 flex flex-col sm:flex-row gap-3" @submit.prevent="submit">
@@ -43,7 +43,7 @@ async function submit() {
           type="email"
           required
           :placeholder="$t('waitlist.placeholder')"
-          class="waitlist-input flex-1 rounded-full border border-line bg-panel px-5 py-3 outline-none focus:border-brand2 transition"
+          class="waitlist-input flex-1 rounded-full border border-line bg-panel px-5 py-3 text-ivory outline-none transition"
           dir="ltr"
         />
         <button
@@ -55,14 +55,14 @@ async function submit() {
         </button>
       </form>
 
-      <p v-if="state === 'done'" class="mt-8 rounded-2xl border border-line bg-panel px-6 py-4 font-semibold text-brand2">
+      <p v-if="state === 'done'" class="mt-8 rounded-2xl border border-line bg-panel px-6 py-4 font-semibold text-gold">
         {{ $t('waitlist.success') }}
       </p>
       <p v-if="state === 'error'" class="mt-4 text-sm text-red-400">{{ $t('waitlist.error') }}</p>
 
       <p v-if="!hasKey" class="mt-8 rounded-2xl border border-line bg-panel px-6 py-4 text-dim">
         {{ $t('waitlist.fallback') }}
-        <a href="mailto:hi@noxioai.com" class="text-brand2 font-semibold" dir="ltr">hi&#64;noxioai.com</a>
+        <a href="mailto:hi@noxioai.com" class="text-gold font-semibold" dir="ltr">hi&#64;noxioai.com</a>
       </p>
     </div>
   </section>

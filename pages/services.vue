@@ -71,7 +71,7 @@ async function submit() {
     <div class="site-glow site-glow--two" aria-hidden="true" />
 
     <nav class="relative z-10 mx-auto max-w-6xl flex items-center justify-between px-6 py-6">
-      <NuxtLink :to="localePath('/')" class="brand-mark flex items-center gap-2 text-xl font-extrabold tracking-tight"><img src="/brand/mark-dark.png" alt="" class="h-7 w-7 rounded-full" />NOXIO<span class="text-brand2">AI</span></NuxtLink>
+      <NuxtLink :to="localePath('/')" class="brand-mark flex items-center gap-2 text-xl font-extrabold tracking-tight"><img src="/brand/mark-dark.png" alt="" class="h-7 w-7 rounded-full" />NOXIO<span class="brand-accent">AI</span></NuxtLink>
       <LandingLangSwitcher />
     </nav>
 
@@ -96,12 +96,12 @@ async function submit() {
           <h2 class="text-xl font-bold">{{ $t(`services.tiers.${tier.key}.name`) }}</h2>
           <p class="mt-1 text-sm text-dim">{{ $t(`services.tiers.${tier.key}.tagline`) }}</p>
           <div class="mt-5 flex items-end gap-2">
-            <span class="text-4xl font-extrabold text-snow">€{{ price(tier.amount) }}</span>
+            <span class="text-4xl font-extrabold text-gold">€{{ price(tier.amount) }}</span>
             <span class="mb-1 text-sm text-dim">{{ tier.period === 'month' ? $t('services.perMonth') : $t('services.once') }}</span>
           </div>
           <ul class="mt-6 flex-1 space-y-2 text-sm">
             <li v-for="n in 4" :key="n" class="flex items-start gap-2">
-              <span class="mt-0.5 text-brand2">✦</span>
+              <span class="mt-0.5 text-gold">✦</span>
               <span class="text-dim">{{ $t(`services.tiers.${tier.key}.f${n}`) }}</span>
             </li>
           </ul>
@@ -132,15 +132,15 @@ async function submit() {
           </p>
           <input
             v-model="name" type="text" required :placeholder="$t('services.form.name')"
-            class="rounded-full border border-line bg-panel px-5 py-3 outline-none transition focus:border-brand2"
+            class="rounded-full border border-line bg-panel px-5 py-3 outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/20"
           />
           <input
             v-model="email" type="email" required :placeholder="$t('services.form.email')" dir="ltr"
-            class="rounded-full border border-line bg-panel px-5 py-3 outline-none transition focus:border-brand2"
+            class="rounded-full border border-line bg-panel px-5 py-3 outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/20"
           />
           <textarea
             v-model="message" rows="3" required :placeholder="$t('services.form.message')"
-            class="resize-none rounded-2xl border border-line bg-panel px-5 py-3 outline-none transition focus:border-brand2"
+            class="resize-none rounded-2xl border border-line bg-panel px-5 py-3 outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/20"
           />
           <button
             type="submit" :disabled="state === 'sending'"
@@ -150,28 +150,28 @@ async function submit() {
           </button>
         </form>
 
-        <p v-if="state === 'done'" class="mt-8 rounded-2xl border border-line bg-panel px-6 py-4 font-semibold text-brand2">
+        <p v-if="state === 'done'" class="mt-8 rounded-2xl border border-line bg-panel px-6 py-4 font-semibold text-gold">
           {{ $t('services.form.success') }}
         </p>
         <p v-if="state === 'error'" class="mt-4 text-sm text-red-400">{{ $t('services.form.error') }}</p>
 
         <p v-if="!hasKey" class="mt-8 rounded-2xl border border-line bg-panel px-6 py-4 text-dim">
           {{ $t('services.form.fallback') }}
-          <a href="mailto:hi@noxioai.com" class="font-semibold text-brand2" dir="ltr">hi&#64;noxioai.com</a>
+          <a href="mailto:hi@noxioai.com" class="font-semibold text-gold" dir="ltr">hi&#64;noxioai.com</a>
         </p>
       </div>
     </section>
 
     <footer class="noxio-footer relative border-t border-line py-8 text-center text-sm text-dim">
       <p>NOXIOAI — {{ $t('footer.soon') }}</p>
-      <p class="mt-1">{{ $t('footer.made') }} · <a href="https://github.com/Tecso-Dev" class="transition hover:text-brand2">Tecso-Dev</a></p>
+      <p class="mt-1">{{ $t('footer.made') }} · <a href="https://github.com/Tecso-Dev" class="transition hover:text-gold">Tecso-Dev</a></p>
     </footer>
   </main>
 </template>
 
 <style scoped>
 .glass-card--featured {
-  background: rgba(10, 40, 60, 0.6);
-  box-shadow: 0 0 30px rgba(62, 225, 255, .18);
+  background: linear-gradient(140deg, rgba(212, 191, 148, 0.14), rgba(7, 24, 39, 0.6));
+  box-shadow: 0 0 34px rgba(212, 191, 148, 0.16);
 }
 </style>

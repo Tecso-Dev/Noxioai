@@ -40,7 +40,7 @@ Design law: marketing/brand/DESIGN-SYSTEM.md (night/panel/ivory #f2efe8/gold #d4
 | R2a | Landing sections: Team/Features/How/Why/FAQ/Waitlist/Pricing/LangSwitcher | components/landing/* (not LandingHero/HeroScene) | after R1 |
 | R2b | Pages: services, login, signup, verify, reset, account, app(dashboard) | pages/* | after R1, parallel w/ R2a |
 | R2c | Email templates re-skin to match (gold/ivory) | jarvis/auth_email.go | after R1, parallel |
-| R3 | Verify all (build+visual fa/en), regenerate og.png+banner to match, deploy | — | last |
+| R3 | Verify all (build+visual fa/en), EXPLICIT color-coherence sweep (user flagged mismatched palette mid-transition — every surface must use ONLY night/panel/ivory/gold/gold-deep/pulse-cyan/dim; grep for stray #8E2DE2/violet/old-blue hexes across components+pages+css), regenerate og.png+banner to match, single deploy | — | last |
 
 Rule: R2a/R2b/R2c may NOT touch main.css (R1 owns it); section-scoped styles go in component <style> blocks if needed.
 
