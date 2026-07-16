@@ -76,27 +76,27 @@ func sendAuthMail(to, subject, text, html string) error {
 }
 
 func authMailHTML(heading, body, link, cta string) string {
-	return fmt.Sprintf(`<!doctype html><html><body style="margin:0;padding:0;background:#f4f4f8;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+	return fmt.Sprintf(`<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:0;background:#f4f4f8;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
 <table width="100%%" cellpadding="0" cellspacing="0" role="presentation"><tr><td align="center" style="padding:40px 16px;">
 <table width="520" cellpadding="0" cellspacing="0" role="presentation" style="max-width:100%%;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 1px 4px rgba(20,20,40,0.08);">
-<tr><td style="height:5px;background:linear-gradient(90deg,#48CAE4,#8E2DE2);font-size:0;line-height:0;">&nbsp;</td></tr>
-<tr><td align="center" style="padding:36px 32px 6px;">
-  <img src="https://noxioai.com/brand/noxioai-logo.png" width="52" height="52" alt="NOXIOAI" style="display:block;margin:0 auto 10px;border:0;">
-  <span style="font-size:22px;font-weight:800;letter-spacing:-0.02em;color:#111;">NOXIO<span style="color:#48CAE4;">AI</span></span>
+<tr><td style="height:5px;background:#b39868;background:linear-gradient(90deg,#d4bf94,#b39868);font-size:0;line-height:0;">&nbsp;</td></tr>
+<tr><td align="center" style="padding:44px 40px 8px;">
+  <img src="https://noxioai.com/brand/noxioai-logo.png" width="60" height="60" alt="NOXIOAI" style="display:block;margin:0 auto 14px;border-radius:50%;border:1px solid #e6ddc9;">
+  <span style="font-size:22px;font-weight:800;letter-spacing:-0.02em;color:#111;">NOXIO<span style="color:#b39868;">AI</span></span>
 </td></tr>
-<tr><td align="center" style="padding:10px 40px 0;">
+<tr><td align="center" style="padding:12px 44px 0;">
   <h1 style="font-size:21px;color:#111;margin:14px 0 8px;">%s</h1>
   <p style="font-size:15px;color:#4a4a5a;line-height:1.65;margin:0;">%s</p>
 </td></tr>
-<tr><td align="center" style="padding:28px 40px 10px;">
-  <a href="%s" style="display:inline-block;background:linear-gradient(120deg,#2ccbe7,#406cf1);color:#ffffff;text-decoration:none;font-weight:700;font-size:15px;padding:14px 34px;border-radius:999px;">%s</a>
+<tr><td align="center" style="padding:32px 44px 12px;">
+  <a href="%s" bgcolor="#d4bf94" style="display:inline-block;background:#d4bf94;background:linear-gradient(120deg,#d4bf94,#b39868);color:#111111;text-decoration:none;font-weight:700;font-size:15px;padding:14px 34px;border-radius:999px;box-shadow:0 4px 14px rgba(179,152,104,0.35);">%s</a>
 </td></tr>
-<tr><td align="center" style="padding:6px 40px 8px;">
-  <p style="font-size:12px;color:#9a95b0;line-height:1.6;">Button not working? Copy this link:<br><span style="word-break:break-all;color:#6d7ba8;">%s</span></p>
+<tr><td align="center" style="padding:8px 44px 10px;">
+  <p style="font-size:12px;color:#9a95b0;line-height:1.6;">Button not working? Copy this link:<br><span style="word-break:break-all;color:#b39868;">%s</span></p>
 </td></tr>
-<tr><td style="padding:20px 40px 30px;border-top:1px solid #eeeef4;" align="center">
+<tr><td style="padding:22px 44px 34px;border-top:1px solid #eeeef4;" align="center">
   <p style="font-size:12px;color:#9a95b0;margin:0;line-height:1.7;">NOXIOAI — AI employees that work while you sleep.<br>
-  <a href="https://noxioai.com" style="color:#48CAE4;text-decoration:none;">noxioai.com</a> &nbsp;·&nbsp; <a href="mailto:hi@noxioai.com" style="color:#48CAE4;text-decoration:none;">hi@noxioai.com</a><br>
+  <a href="https://noxioai.com" style="color:#b39868;text-decoration:none;">noxioai.com</a> &nbsp;·&nbsp; <a href="mailto:hi@noxioai.com" style="color:#b39868;text-decoration:none;">hi@noxioai.com</a><br>
   © 2026 NOXIOAI. All rights reserved.</p>
 </td></tr>
 </table>
