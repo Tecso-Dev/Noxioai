@@ -7,22 +7,26 @@ ownership of work, and record a concise handoff when stopping.
 ## Current state
 
 - **Branch:** `main`
-- **Latest remote commit:** `4016668` — Phase 1 i18n foundation: Turkish and
-  Arabic draft locales, including RTL support.
-- **Internal engine:** JARVIS v1 is shipped as an internal proving ground.
-- **Public product:** the approved five-phase SaaS plan is in
-  [PLATFORM-SPEC.md](../PLATFORM-SPEC.md). Phase 1 is the public landing
-  redesign and localization pass; Phase 2 auth is being developed separately.
-- **Worktree notice:** Uncommitted edits are currently present in
-  `.claude/launch.json`, `jarvis/go.mod`, `jarvis/go.sum`, `jarvis/main.go`,
-  `jarvis/auth.go`, and `jarvis/auth_test.go`. Treat them as reserved for the
-  active auth work.
+- **Latest remote commit:** `6d8e36a` — Vercel `/api` proxy uses
+  `api.noxioai.com`.
+- **Internal engine:** JARVIS v1 is live; the current product direction turns
+  its sales workflow into the multi-tenant self-serve product specified in
+  [PRODUCT-BUILD.md](../PRODUCT-BUILD.md).
+- **Public product:** Nuxt frontend, session auth, transactional email,
+  dashboard shell, and Stripe test-mode billing are live. The public edge
+  exposes only approved auth/billing routes; agent-control routes remain
+  blocked pending the authenticated P3 UI.
+- **Worktree notice:** P1 is implemented and locally verified but uncommitted
+  on `main`. The dirty `jarvis/` CRM/agent files, `schema.sql`, the two tenancy
+  tests, `PRODUCT-BUILD.md`, and this coordination documentation belong to the
+  P1 change set. Do not mix unrelated edits into them.
 - **Reference documents:**
   - [Product roadmap](ROADMAP.md)
   - [Approved public tech stack](TECH-STACK.md)
   - [JARVIS specification](../jarvis/SPEC.md)
   - [JARVIS operating guide](../jarvis/README.md)
   - [Platform specification](../PLATFORM-SPEC.md)
+  - [Self-serve product build](../PRODUCT-BUILD.md)
 
 ## Coordination rules
 
@@ -43,10 +47,37 @@ ownership of work, and record a concise handoff when stopping.
 
 | Owner/session | Scope | Files or area | Branch | Status | Notes |
 | --- | --- | --- | --- | --- | --- |
-| Codex | Phase 1 public landing redesign and localization polish | Public Nuxt UI: `pages/`, `components/`, `assets/`, and needed locale copy | `main` | In progress | No changes to JARVIS, auth, billing, or `.claude/`. |
-| Claude session | Phase 2 auth foundation | `.claude/launch.json`, `jarvis/go.mod`, `jarvis/go.sum`, `jarvis/main.go`, `jarvis/auth.go`, `jarvis/auth_test.go`, `jarvis/docs/superpowers/` | — | In progress | Auth files are reserved until Claude records a handoff. |
+| Codex | Product M1 / P1 multi-tenant foundation | Current dirty P1 files listed above | `main` | Local verification complete | Awaiting Sobhan's decision on commit and production rollout. P2 has not started. |
 
 ## Handoff log
+
+### 2026-07-16 — Codex
+
+- **Completed:** Resumed Claude's P1 work after its session-limit cutoff and
+  completed the local multi-tenant foundation. Added owner scoping to all CRM
+  call paths, session-only HTTP ownership, per-owner uniqueness, mandatory
+  owner columns, database-enforced same-owner parent/child relationships, an
+  atomic backfill/finalization transaction, and static/runtime regression
+  tests. Web chat no longer exposes Sobhan's personal memory and now requires
+  an authenticated session.
+- **Files changed:** `PRODUCT-BUILD.md`, `.foreman/ledger.md`, this handoff,
+  `jarvis/schema.sql`, `jarvis/db.go`, CRM agent/caller files, `jarvis/main.go`,
+  `jarvis/hud.go`, `jarvis/db_test.go`, `jarvis/tenancy_test.go`, and
+  `jarvis/tenant_security_test.go`. `jarvis/auth_email.go` has a one-character
+  percent-escape fix needed for `go vet`.
+- **Commit/branch:** Uncommitted on `main`; baseline and `origin/main` remain
+  `6d8e36a`.
+- **Verified:** `go vet`, build, full tests, race tests, explicit tenant and
+  anonymous-route tests, static CRM-query guard, `git diff --check`, and two
+  consecutive local migration runs. Production-copy counts remain 41
+  companies, 56 contacts, and 41 leads; null-owner and relationship-mismatch
+  counts are all zero.
+- **Remaining work:** With separate approval, confirm the production owner
+  email, build/upload a candidate binary, take a fresh database backup, stop
+  the service, run the candidate's idempotent migration, activate it, restart,
+  and smoke-test. Rollback is restore-the-backup plus the previous binary.
+- **Decision needed from Sobhan:** Approve commit only, or approve commit plus
+  the separately gated production rollout. Do not start P2 before this review.
 
 ### 2026-07-12 — Codex
 

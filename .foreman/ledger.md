@@ -48,3 +48,19 @@ Rule: R2a/R2b/R2c may NOT touch main.css (R1 owns it); section-scoped styles go 
 
 - 2026-07-15 T1 attempt 1 → DONE (report synthesized into T2 ticket)
 - 2026-07-15 T2 attempt 1 → dispatched sonnet, sync
+
+## MISSION P1: multi-tenant foundation (2026-07-16, product build M1)
+Baseline: 6d8e36a. Local test DB: docker jarvis-db :5434 (copy of prod, 41 leads). Production server DB: DO NOT TOUCH during build — migration runs only after verification, with a backup first.
+Security boundary: tenant isolation. 38 CRM query sites across brief/db/inbox/herald/hud/followup/caleb.go — EVERY one must filter by owner_id. Isolation test is the safety net + mandatory.
+| ID | Task | Seat | Status |
+|----|------|------|--------|
+| P1 | schema owner_id + per-owner uniques + backfill + owner-scope all CRM queries + isolation test (LOCAL db only) | Sonnet worker + Codex hardening | DONE (local) |
+| P1-verify | vet + build + full/race tests + isolation/security tests + migration idempotency + DB audit | Codex | PASS |
+| P1-prod | backup prod, run migration with candidate binary, activate binary, smoke test | LEAD (separate approval) | AWAITING OWNER APPROVAL |
+
+P1 verification evidence: `go vet ./...`, `go build ./...`, `go test -count=1 ./...`,
+and `go test -race -count=1 ./...` pass. The local production-copy DB retains
+41 companies / 56 contacts / 41 leads; all five CRM tables have zero null
+owners, all owner columns are `NOT NULL`, and cross-owner relationship mismatch
+counts are zero. Migration ran twice successfully. No production access,
+commit, push, or deployment was performed.
