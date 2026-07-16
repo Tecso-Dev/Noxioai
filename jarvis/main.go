@@ -36,6 +36,17 @@ func mustOwnerID(db *sql.DB) int64 {
 func main() {
 	loadDotEnv()
 
+	if len(os.Args) > 1 && os.Args[1] == "support" {
+		if strings.TrimSpace(os.Getenv("JARVIS_SUPPORT_BOT_TOKEN")) == "" {
+			fmt.Println("support bot token not configured")
+			return
+		}
+		db := mustDB()
+		defer db.Close()
+		RunSupportBot(context.Background(), db)
+		return
+	}
+
 	if len(os.Args) > 1 && os.Args[1] == "brief" {
 		db := mustDB()
 		defer db.Close()

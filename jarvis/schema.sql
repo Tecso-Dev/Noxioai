@@ -111,6 +111,17 @@ CREATE TABLE IF NOT EXISTS waitlist (
   created_at TIMESTAMPTZ DEFAULT now()
 );
 
+-- Platform-global NOXIOAI support conversations; deliberately not tenant-owned.
+CREATE TABLE IF NOT EXISTS support_messages (
+  id           BIGSERIAL PRIMARY KEY,
+  chat_id      BIGINT NOT NULL,
+  username     TEXT,
+  customer_msg TEXT,
+  bot_reply    TEXT,
+  escalated    BOOLEAN DEFAULT FALSE,
+  created_at   TIMESTAMPTZ DEFAULT now()
+);
+
 -- ── multi-tenant ownership (PRODUCT-BUILD.md Phase P1) ──────────────────────
 -- Every CRM row belongs to exactly one platform user; per-owner uniques
 -- replace the old global ones so two tenants can target the same company.
