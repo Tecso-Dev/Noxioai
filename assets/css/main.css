@@ -14,8 +14,8 @@
   --navy: #050a16;
   --panel-deep: rgba(8, 19, 37, 0.72);
   --panel-raised: rgba(15, 33, 57, 0.64);
-  --line-soft: rgba(137, 184, 221, 0.2);
-  --text-muted: #9bb0c6;
+  --line-soft: rgba(212, 191, 148, 0.16);
+  --text-muted: #9a95b0;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -35,7 +35,7 @@ body {
   min-width: 320px;
   margin: 0;
   background:
-    radial-gradient(circle at 50% -10%, rgba(62, 225, 255, 0.11), transparent 28rem),
+    radial-gradient(circle at 50% -10%, rgba(62, 225, 255, 0.07), transparent 28rem),
     linear-gradient(180deg, #071225 0%, var(--navy) 36rem, #040914 100%);
 }
 
@@ -70,32 +70,32 @@ html[lang='ar'] body {
 
 .site-glow {
   filter: blur(32px);
-  opacity: 0.75;
+  opacity: 0.48;
   z-index: -1;
 }
 
 .site-glow--one {
-  background: radial-gradient(circle, rgba(62, 225, 255, 0.13), transparent 62%);
+  background: radial-gradient(circle, rgba(62, 225, 255, 0.08), transparent 62%);
   inset-block-start: 22rem;
   inset-inline-start: -24rem;
 }
 
 .site-glow--two {
-  background: radial-gradient(circle, rgba(118, 82, 255, 0.15), transparent 62%);
+  background: radial-gradient(circle, rgba(212, 191, 148, 0.1), transparent 62%);
   inset-block-start: 62rem;
   inset-inline-end: -28rem;
 }
 
 ::selection {
-  background: #8e2de2;
-  color: #fff;
+  background: #d4bf94;
+  color: #0b0b12;
 }
 
 /* soft gradient glow used behind hero + waitlist */
 .glow {
   background:
-    radial-gradient(60% 60% at 28% 20%, rgba(62, 225, 255, 0.32), transparent 70%),
-    radial-gradient(50% 50% at 80% 10%, rgba(89, 98, 255, 0.2), transparent 70%);
+    radial-gradient(60% 60% at 28% 20%, rgba(62, 225, 255, 0.2), transparent 70%),
+    radial-gradient(50% 50% at 80% 10%, rgba(212, 191, 148, 0.14), transparent 70%);
   filter: blur(32px);
 }
 
@@ -107,7 +107,7 @@ html[lang='ar'] body {
 }
 
 .text-gradient {
-  background: linear-gradient(105deg, #f5fbff 0%, #7deaff 50%, #9e9cff 100%);
+  background: linear-gradient(105deg, var(--ivory) 0%, var(--gold) 55%, var(--gold-deep) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -149,7 +149,7 @@ html[lang='ar'] body {
   border: 1px solid var(--gold-soft);
   background: rgba(10, 20, 36, 0.6);
   backdrop-filter: blur(14px);
-  color: #ecf3fa;
+  color: var(--ivory);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.02em;
@@ -167,13 +167,13 @@ html[lang='ar'] body {
 }
 .card3d:hover {
   background-color: rgba(15, 33, 57, 0.8);
-  border-color: rgba(62, 225, 255, 0.45);
+  border-color: rgba(212, 191, 148, 0.35);
   box-shadow: 0 18px 48px rgba(0, 0, 0, 0.24), inset 0 1px rgba(255, 255, 255, 0.05);
   transform: perspective(800px) rotateX(2deg) translateY(-5px);
 }
 
 .hero {
-  border-block-end: 1px solid rgba(137, 184, 221, 0.08);
+  border-block-end: 1px solid rgba(212, 191, 148, 0.1);
 }
 
 /* single ambient visual: the fine-dot sphere floats free, no card, no border */
@@ -199,7 +199,7 @@ html[lang='ar'] body {
 }
 
 .hero-nav {
-  border-block-end: 1px solid rgba(137, 184, 221, 0.06);
+  border-block-end: 1px solid rgba(212, 191, 148, 0.08);
 }
 
 .brand-mark {
@@ -208,6 +208,13 @@ html[lang='ar'] body {
 
 .brand-accent {
   color: var(--gold);
+}
+
+/* bg-brand token is repointed to gold (see tailwind.config.ts) — force
+   near-black text wherever it's used as a solid fill so contrast holds
+   even when the element has no explicit text-color utility applied. */
+.bg-brand {
+  color: var(--night);
 }
 
 .nav-cta,
@@ -353,7 +360,7 @@ html[lang='ar'] body {
 }
 
 .landing-section::before {
-  background: linear-gradient(90deg, transparent, rgba(62, 225, 255, 0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(212, 191, 148, 0.28), transparent);
   content: '';
   height: 1px;
   inset-block-start: 0;
@@ -368,7 +375,7 @@ html[lang='ar'] body {
 }
 
 .section-title {
-  text-shadow: 0 12px 42px rgba(62, 225, 255, 0.12);
+  text-shadow: 0 12px 42px rgba(212, 191, 148, 0.1);
 }
 
 .section-sub {
@@ -391,7 +398,7 @@ html[lang='ar'] body {
 }
 
 .feature-icon {
-  background: linear-gradient(145deg, rgba(62, 225, 255, 0.2), rgba(80, 96, 255, 0.15));
+  background: linear-gradient(145deg, rgba(212, 191, 148, 0.22), rgba(212, 191, 148, 0.1));
   box-shadow: inset 0 1px rgba(255, 255, 255, 0.12), 0 8px 20px rgba(0, 0, 0, 0.16);
 }
 
@@ -406,7 +413,7 @@ html[lang='ar'] body {
 }
 
 .team-card::before {
-  background: radial-gradient(circle, rgba(62, 225, 255, 0.16), transparent 66%);
+  background: radial-gradient(circle, rgba(212, 191, 148, 0.12), transparent 66%);
   content: '';
   inset-block-start: -4rem;
   inset-inline-start: 50%;
@@ -431,8 +438,8 @@ html[lang='ar'] body {
 }
 
 .step-index {
-  background: linear-gradient(135deg, #2ccbe7, #485ff0);
-  box-shadow: 0 8px 22px rgba(39, 170, 228, 0.22);
+  background: linear-gradient(135deg, var(--gold), var(--gold-deep));
+  box-shadow: 0 8px 22px rgba(212, 191, 148, 0.24);
 }
 
 .faq-panel {
@@ -443,18 +450,18 @@ html[lang='ar'] body {
 
 .faq-panel[open] {
   background: linear-gradient(140deg, rgba(20, 54, 83, 0.74), rgba(6, 18, 35, 0.8));
-  border-color: rgba(62, 225, 255, 0.38);
+  border-color: rgba(212, 191, 148, 0.32);
   box-shadow: inset 0 1px rgba(255, 255, 255, 0.07), 0 16px 36px rgba(0, 0, 0, 0.16);
 }
 
 .waitlist-panel {
-  border: 1px solid rgba(62, 225, 255, 0.2);
+  border: 1px solid rgba(212, 191, 148, 0.18);
   border-radius: 1.5rem;
   box-shadow: 0 28px 70px rgba(0, 0, 0, 0.3), inset 0 1px rgba(255, 255, 255, 0.07);
 }
 
 .waitlist-input {
-  color: #ecf8ff;
+  color: var(--ivory);
   transition-property: border-color, box-shadow, background-color;
   transition-duration: 180ms;
   transition-timing-function: var(--ease-out);
@@ -462,13 +469,13 @@ html[lang='ar'] body {
 
 .waitlist-input:focus {
   background-color: rgba(11, 35, 58, 0.9);
-  border-color: rgba(62, 225, 255, 0.7);
-  box-shadow: 0 0 0 4px rgba(62, 225, 255, 0.1);
+  border-color: rgba(212, 191, 148, 0.6);
+  box-shadow: 0 0 0 4px rgba(212, 191, 148, 0.14);
 }
 
 .waitlist-submit {
-  background: linear-gradient(120deg, #2ccbe7, #406cf1);
-  box-shadow: 0 12px 28px rgba(39, 170, 228, 0.24);
+  background: linear-gradient(120deg, var(--gold), var(--gold-deep));
+  box-shadow: 0 12px 28px rgba(212, 191, 148, 0.22);
   min-block-size: 48px;
   transition-property: transform, box-shadow, filter;
   transition-duration: 180ms;
@@ -476,7 +483,7 @@ html[lang='ar'] body {
 }
 
 .waitlist-submit:hover:not(:disabled) {
-  box-shadow: 0 16px 36px rgba(39, 170, 228, 0.34);
+  box-shadow: 0 16px 36px rgba(212, 191, 148, 0.3);
   filter: brightness(1.06);
   transform: translateY(-2px);
 }
@@ -499,7 +506,7 @@ html[lang='ar'] body {
 
 /* accessible focus rings (never removed, only styled) */
 :focus-visible {
-  outline: 2px solid #48cae4;
+  outline: 2px solid var(--gold);
   outline-offset: 3px;
   border-radius: 6px;
 }
@@ -593,6 +600,6 @@ html[lang='ar'] body {
 }
 .glass-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(62, 225, 255, 0.4);
-  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.42), 0 0 26px rgba(62, 225, 255, 0.14);
+  border-color: rgba(212, 191, 148, 0.35);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.32), 0 0 22px rgba(212, 191, 148, 0.1);
 }

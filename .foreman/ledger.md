@@ -30,6 +30,20 @@
 
 T6 write set: jarvis/auth_email.go (new), jarvis/auth.go, jarvis/schema.sql, pages/verify.vue (new), pages/reset.vue (new), pages/login.vue, i18n/locales/{en,fa,tr,ar}.json. MUST NOT touch jarvis/brain.go (user WIP), .env, no git commits.
 
+## MISSION: full-site premium-tech redesign (2026-07-15 evening, user mandate: "redesign all, sync everything, professional UI/UX")
+
+Design law: marketing/brand/DESIGN-SYSTEM.md (night/panel/ivory #f2efe8/gold #d4bf94/gold-deep #b39868/pulse cyan; jewelry-not-lightning; whitespace = luxury). Hero already done (commit pending sections).
+
+| Phase | Scope | Write set | Status |
+|---|---|---|---|
+| R1 | Foundation: tokens in tailwind+css, unified type scale, buttons, cards, inputs — VALUES not class names | assets/css/main.css, tailwind.config.ts | DISPATCHED |
+| R2a | Landing sections: Team/Features/How/Why/FAQ/Waitlist/Pricing/LangSwitcher | components/landing/* (not LandingHero/HeroScene) | after R1 |
+| R2b | Pages: services, login, signup, verify, reset, account, app(dashboard) | pages/* | after R1, parallel w/ R2a |
+| R2c | Email templates re-skin to match (gold/ivory) | jarvis/auth_email.go | after R1, parallel |
+| R3 | Verify all (build+visual fa/en), regenerate og.png+banner to match, deploy | — | last |
+
+Rule: R2a/R2b/R2c may NOT touch main.css (R1 owns it); section-scoped styles go in component <style> blocks if needed.
+
 ## Attempts (append-only)
 
 - 2026-07-15 T1 attempt 1 → DONE (report synthesized into T2 ticket)

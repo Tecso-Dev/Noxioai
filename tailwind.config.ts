@@ -8,9 +8,12 @@ export default {
         night: '#0b0b12',
         panel: '#14141f',
         line: '#262636',
-        snow: '#ece9f5',
+        snow: '#f2efe8',
+        ivory: '#f2efe8',
+        gold: '#d4bf94',
+        'gold-deep': '#b39868',
         dim: '#9a95b0',
-        brand: '#8E2DE2',
+        brand: '#d4bf94',
         brand2: '#48CAE4'
       },
       fontFamily: {
