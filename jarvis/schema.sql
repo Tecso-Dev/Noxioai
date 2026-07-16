@@ -101,6 +101,16 @@ CREATE TABLE IF NOT EXISTS invoices (
   created_at     TIMESTAMPTZ DEFAULT now()
 );
 
+-- Platform-global product waitlist; deliberately not tenant-owned CRM data.
+CREATE TABLE IF NOT EXISTS waitlist (
+  id         BIGSERIAL PRIMARY KEY,
+  email      TEXT NOT NULL UNIQUE,
+  name       TEXT,
+  locale     TEXT DEFAULT 'en',
+  source     TEXT,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
 -- ── multi-tenant ownership (PRODUCT-BUILD.md Phase P1) ──────────────────────
 -- Every CRM row belongs to exactly one platform user; per-owner uniques
 -- replace the old global ones so two tenants can target the same company.
