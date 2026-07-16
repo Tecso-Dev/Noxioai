@@ -58,13 +58,13 @@ The detailed product plan lives in [docs/ROADMAP.md](docs/ROADMAP.md). The appro
 ## Latest activity
 
 <!-- ACTIVITY:START -->
-_Auto-updated 2026-07-16 08:34 UTC_
+_Auto-updated 2026-07-16 08:46 UTC_
 
+- `6d8e36a` infra: point Vercel /api proxy at api.noxioai.com (own subdomain) instead of temporary nip.io host — removes third-party wildcard-DNS dependency — 2026-07-16
 - `2f6df7b` security: lock public edge — Caddy allowlists only /api/auth,/billing,/stripe; blocks HUD + agent-control endpoints (/send,/atlas,/oracle,/brief,/approve,/chat,/status) that were internet-reachable and unauthenticated — 2026-07-16
 - `4b03197` redesign R2+R3: full premium-tech system — landing sections (team/features/how/faq/pricing/waitlist) + all pages (services/auth/account/dashboard) to gold/ivory; unified single pulse-cyan (killed #3ee1ff family); fixed pre-existing bugs (text-red, cyan glow shadowing); luxury og image; complete design-system doc — 2026-07-16
 - `81ea730` email: gold/ivory template to match new brand — champagne top bar, gold button/links, gold-crest logo as circular medallion (fixes dark-square-on-white), utf-8 charset (fixes em-dash mojibake) — 2026-07-16
 - `d8be3c1` design system R1: premium-tech foundation — ivory text, champagne-gold primary accents (violet demoted), calmer glows/hairlines, bg-brand contrast safety rule; tailwind gold/ivory tokens — 2026-07-16
-- `9103ec2` hero: luxury-minimal redesign — remove HUD console box/grid/status-chips, headline with champagne-gold accent, ambient free-floating sphere, gold CTA, more whitespace; premium-tech design system applied — 2026-07-16
 <!-- ACTIVITY:END -->
 
 ## JARVIS command center
