@@ -2,6 +2,7 @@
 // palette-harmonized: charcoal hair + one accent shirt each from the
 // premium-tech system (gold / cyan-pulse / ivory / gold-deep) — no neon.
 const members = [
+  { key: 'kian', hair: '#b39868', shirt: '#48CAE4' },
   { key: 'nika', hair: '#2b2b3a', shirt: '#d4bf94' },
   { key: 'dara', hair: '#2b2b3a', shirt: '#48CAE4' },
   { key: 'sara', hair: '#b39868', shirt: '#f2efe8' },
@@ -14,7 +15,7 @@ const members = [
     <h2 class="section-title text-gradient text-center text-3xl sm:text-4xl font-extrabold">{{ $t('team.heading') }}</h2>
     <p class="section-sub mt-3 text-center text-dim max-w-xl mx-auto">{{ $t('team.sub') }}</p>
 
-    <div class="team-grid mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="team-grid mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
       <div
         v-for="(m, i) in members"
         :key="m.key"

@@ -22,6 +22,11 @@
     "heading": "Meet your team",
     "sub": "Every employee is a specialist with their own personality — all at desks in your office.",
     "members": {
+      "kian": {
+        "name": "Kian",
+        "role": "Sales agent",
+        "desc": "Finds qualified leads and writes outreach that sounds like you — nothing goes out without your approval."
+      },
       "nika": {
         "name": "Nika",
         "role": "Marketing manager",

@@ -1,12 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- ponytail: static sitemap; switch to @nuxtjs/sitemap when page count grows beyond a handful -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://noxioai.com/</loc></url>
-  <url><loc>https://noxioai.com/en/</loc></url>
-  <url><loc>https://noxioai.com/tr/</loc></url>
-  <url><loc>https://noxioai.com/ar/</loc></url>
-  <url><loc>https://noxioai.com/services/</loc></url>
-  <url><loc>https://noxioai.com/en/services/</loc></url>
-  <url><loc>https://noxioai.com/tr/services/</loc></url>
-  <url><loc>https://noxioai.com/ar/services/</loc></url>
+  <url><loc>https://noxioai.com/en</loc></url>
+  <url><loc>https://noxioai.com/tr</loc></url>
+  <url><loc>https://noxioai.com/ar</loc></url>
+
+  <url><loc>https://noxioai.com/services</loc></url>
+  <url><loc>https://noxioai.com/en/services</loc></url>
+  <url><loc>https://noxioai.com/tr/services</loc></url>
+  <url><loc>https://noxioai.com/ar/services</loc></url>
+
+  <url><loc>https://noxioai.com/about</loc></url>
+  <url><loc>https://noxioai.com/en/about</loc></url>
+  <url><loc>https://noxioai.com/tr/about</loc></url>
+  <url><loc>https://noxioai.com/ar/about</loc></url>
+
+  <url><loc>https://noxioai.com/privacy</loc></url>
+  <url><loc>https://noxioai.com/en/privacy</loc></url>
+  <url><loc>https://noxioai.com/tr/privacy</loc></url>
+  <url><loc>https://noxioai.com/ar/privacy</loc></url>
+
+  <url><loc>https://noxioai.com/terms</loc></url>
+  <url><loc>https://noxioai.com/en/terms</loc></url>
+  <url><loc>https://noxioai.com/tr/terms</loc></url>
+  <url><loc>https://noxioai.com/ar/terms</loc></url>
+
+  <url><loc>https://noxioai.com/login</loc></url>
+  <url><loc>https://noxioai.com/en/login</loc></url>
+  <url><loc>https://noxioai.com/tr/login</loc></url>
+  <url><loc>https://noxioai.com/ar/login</loc></url>
+
+  <url><loc>https://noxioai.com/signup</loc></url>
+  <url><loc>https://noxioai.com/en/signup</loc></url>
+  <url><loc>https://noxioai.com/tr/signup</loc></url>
+  <url><loc>https://noxioai.com/ar/signup</loc></url>
 </urlset>

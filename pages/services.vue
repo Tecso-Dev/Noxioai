@@ -24,6 +24,78 @@ const tiers = [
   { key: 'care', amount: 75, period: 'month', featured: false }
 ] as const
 
+const servicePageUrl = computed(() => new URL(localePath('/services'), 'https://noxioai.com').toString())
+const serviceSchema = computed(() => ({
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': `${servicePageUrl.value}#service`,
+  name: 'NOXIOAI AI Automation Services',
+  description: 'AI employees that work while you sleep',
+  url: servicePageUrl.value,
+  provider: {
+    '@id': 'https://noxioai.com/#organization'
+  },
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'NOXIOAI automation tiers',
+    itemListElement: [
+      {
+        '@type': 'Offer',
+        name: 'Starter Automation',
+        price: '490',
+        priceCurrency: 'EUR',
+        description: 'One-time payment',
+        url: servicePageUrl.value,
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Starter Automation'
+        }
+      },
+      {
+        '@type': 'Offer',
+        name: 'Business Autopilot',
+        price: '1490',
+        priceCurrency: 'EUR',
+        description: 'One-time payment',
+        url: servicePageUrl.value,
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Business Autopilot'
+        }
+      },
+      {
+        '@type': 'Offer',
+        name: 'Autopilot Care',
+        price: '75',
+        priceCurrency: 'EUR',
+        description: 'Monthly payment',
+        url: servicePageUrl.value,
+        priceSpecification: {
+          '@type': 'UnitPriceSpecification',
+          price: '75',
+          priceCurrency: 'EUR',
+          unitText: 'month'
+        },
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Autopilot Care'
+        }
+      }
+    ]
+  }
+}))
+
+useHead(() => ({
+  script: [
+    {
+      key: 'schema-org-services',
+      id: 'schema-org-services',
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(serviceSchema.value)
+    }
+  ]
+}))
+
 const formEl = ref<HTMLElement | null>(null)
 const selectedTier = ref<string>('business')
 function pickTier(key: string) {

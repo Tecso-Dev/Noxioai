@@ -22,6 +22,11 @@
     "heading": "Ekibinizle tanışın",
     "sub": "Her çalışan kendi kişiliğine sahip bir uzmandır — hepsi ofisinizdeki masalarında.",
     "members": {
+      "kian": {
+        "name": "Kian",
+        "role": "Satış temsilcisi",
+        "desc": "Nitelikli olası müşterileri bulur ve size özel mesajlar yazar — onayınız olmadan hiçbir şey göndermez."
+      },
       "nika": {
         "name": "Nika",
         "role": "Pazarlama müdürü",

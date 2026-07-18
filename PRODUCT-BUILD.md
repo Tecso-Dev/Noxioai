@@ -26,10 +26,15 @@ and smoke test remain approval-gated; P2 has not started.
 - `ownerFromSession(r)` helper: every CRM query takes an owner_id; add a lint/test that fails if a CRM query lacks an owner filter.
 - **DoD:** two test users each see only their own (empty) pipeline; Sobhan's data intact under his account; isolation test passes.
 
-### Phase P2 — Onboarding + real pipeline view
-- After signup/verify: a business-profile step (what you sell, ideal customer, target city/country, language) → stored per user.
-- Dashboard `/app` becomes a real, tenant-isolated pipeline: leads table (empty at first), lead detail, status column. Locale-aware, RTL.
-- **DoD:** new user completes profile, sees their own empty pipeline; no cross-tenant leakage.
+### Phase P2 — Confirm-gate + guided onboarding + real pipeline view
+- **Hard email-confirm gate (owner asked 2026-07-18):** signup creates the account but grants NO app access until the emailed confirm code/link is used. `/app` and onboarding redirect unverified users to a "check your email" state; verify sets users.verified_at and unlocks.
+- **Guided business-profile onboarding** (new `/onboarding` page, shown once after first verified login, then editable in account): multi-step form collecting everything we need about their business — what they sell, ideal customer, target city/country, primary language, website, current channels, goals, monthly lead target. EACH question has a short helper line explaining WHY we ask (sets expectation + improves answer quality). Store in a new `business_profiles` table (owner_id FK, one row per user). Data saved for future agent use AND flagged for founder review to improve the product (this is the feedback loop the owner wants).
+- Dashboard `/app` becomes a real, tenant-isolated pipeline: leads table (empty at first), lead detail, status column. Locale-aware, RTL. Uses the profile to personalize.
+- **DoD:** unverified user cannot reach /app; verified new user completes the guided profile, it persists, they see their own empty pipeline; no cross-tenant leakage; RTL + all 4 locales.
+
+### Decisions 2026-07-18
+- **JARVIS cockpit HUD:** expose behind ADMIN login only (users.is_admin + session), restyled to the premium-tech theme (currently sci-fi cyan). Not public. Scoped/served carefully re: which data it shows under the multi-tenant model. Do AFTER P2 (auth/tenant model matures first).
+- **Light theme:** DEFERRED by owner — dark luxury is the brand identity; revisit after paying customers. Do not build now.
 
 ### Phase P3 — Agent actions in the dashboard
 - "Find leads" button → ORACLE runs scoped to the user's profile → their leads appear in their pipeline.
