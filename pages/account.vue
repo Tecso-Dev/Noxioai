@@ -40,6 +40,9 @@ async function logout() {
           <div class="text-xs text-dim uppercase tracking-wide">{{ $t('auth.account.locale') }}</div>
           <div class="mt-1.5 font-semibold uppercase">{{ me?.locale || '—' }}</div>
         </div>
+        <NuxtLink :to="localePath('/onboarding')" class="block border-t border-line pt-6 text-sm font-semibold text-gold transition hover:text-gold-deep">
+          {{ $t('onboarding.editProfile') }}
+        </NuxtLink>
       </div>
 
       <button class="mt-6 w-full rounded-full border border-line bg-panel px-5 py-3 font-bold transition hover:border-gold hover:text-gold" @click="logout">

@@ -67,6 +67,26 @@ CREATE TABLE IF NOT EXISTS users (
   created_at    TIMESTAMPTZ DEFAULT now()
 );
 ALTER TABLE users ADD COLUMN IF NOT EXISTS verified_at TIMESTAMPTZ;
+-- Existing accounts predate confirm-gating. Only accounts created after this
+-- migration should enter the unverified state.
+UPDATE users SET verified_at = now() WHERE verified_at IS NULL;
+
+CREATE TABLE IF NOT EXISTS business_profiles (
+  id             BIGSERIAL PRIMARY KEY,
+  owner_id       BIGINT UNIQUE REFERENCES users(id),
+  business_name  TEXT,
+  sells          TEXT,
+  ideal_customer TEXT,
+  city           TEXT,
+  country        TEXT,
+  language       TEXT,
+  website        TEXT,
+  telegram       TEXT,
+  knowledge      TEXT,
+  goals          TEXT,
+  created_at     TIMESTAMPTZ DEFAULT now(),
+  updated_at     TIMESTAMPTZ DEFAULT now()
+);
 CREATE TABLE IF NOT EXISTS sessions (
   token      TEXT PRIMARY KEY,
   user_id    BIGINT REFERENCES users(id),

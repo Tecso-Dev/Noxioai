@@ -166,6 +166,63 @@
       }
     }
   },
+  "onboarding": {
+    "title": "Yapay zekânıza işletmenizi öğretin",
+    "subtitle": "NOXIOAI'ın müşterilerinize doğru, sizin üslubunuzla ve bilgi tabanınıza dayanarak yanıt vermesi için gereken bağlamı paylaşın.",
+    "backToApp": "Panele dön",
+    "submit": "Kaydet ve devam et",
+    "saved": "İşletme profiliniz kaydedildi.",
+    "loadError": "İşletme profiliniz yüklenemedi. Lütfen tekrar deneyin.",
+    "saveError": "İşletme profiliniz kaydedilemedi. Lütfen tekrar deneyin.",
+    "verifyGateTitle": "Hesabınızı etkinleştirmek için e-postanızı doğrulayın",
+    "verifyGateBody": "Size gönderdiğimiz doğrulama bağlantısını açın. Lütfen gelen kutunuzu ve spam klasörünüzü kontrol edin.",
+    "setupTitle": "Kurulumu tamamlayın",
+    "setupDescription": "Yapay zekânızın müşterilere doğru yanıt vermesi için işletme bilgilerinizi ve bilgi tabanınızı ekleyin.",
+    "setupCta": "Kuruluma başla",
+    "editProfile": "İşletme profilini düzenle",
+    "fields": {
+      "businessName": {
+        "label": "İşletme adı",
+        "helper": "Asistanınızın hangi işletmeyi temsil ettiğini bilmesi için."
+      },
+      "sells": {
+        "label": "Ne satıyorsunuz?",
+        "helper": "Yanıtların ürün ve hizmetlerinizi doğru şekilde yansıtması için."
+      },
+      "idealCustomer": {
+        "label": "İdeal müşteriniz kim?",
+        "helper": "Asistanınızın doğru üslubu ve önerileri kullanması için."
+      },
+      "city": {
+        "label": "Şehir",
+        "helper": "Yanıtların yararlı yerel bağlam içerebilmesi için."
+      },
+      "country": {
+        "label": "Ülke",
+        "helper": "Asistanınızın pazarınızı ve bölgesel koşulları anlaması için."
+      },
+      "language": {
+        "label": "Müşteri dili",
+        "helper": "Asistanınızın müşterilerinizin beklediği dilde yanıt vermesi için."
+      },
+      "website": {
+        "label": "Web sitesi",
+        "helper": "İşletme profilinizde resmî çevrim içi adresinizin bulunması için."
+      },
+      "telegram": {
+        "label": "Telegram",
+        "helper": "Yapay zekâ asistanınızın Telegram müşterilerinize yanıt verebilmesi için."
+      },
+      "knowledge": {
+        "label": "Müşteri bilgi tabanı",
+        "helper": "Müşterilerin sorduğu soruları ve verdiğiniz yanıtları yazın. Yapay zekânız bu bilgiden yanıt verecek."
+      },
+      "goals": {
+        "label": "İşletme hedefleri",
+        "helper": "Asistanınızın sizin için önemli sonuçlara öncelik vermesi için."
+      }
+    }
+  },
   "auth": {
     "login": {
       "title": "Tekrar hoş geldiniz",

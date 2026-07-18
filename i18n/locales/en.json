@@ -166,6 +166,63 @@
       }
     }
   },
+  "onboarding": {
+    "title": "Teach your AI about your business",
+    "subtitle": "Give NOXIOAI the context it needs to answer customers accurately, in your voice, from your knowledge base.",
+    "backToApp": "Back to dashboard",
+    "submit": "Save and continue",
+    "saved": "Your business profile has been saved.",
+    "loadError": "We could not load your business profile. Please try again.",
+    "saveError": "We could not save your business profile. Please try again.",
+    "verifyGateTitle": "Confirm your email to activate your account",
+    "verifyGateBody": "Open the confirmation link we sent you. Please check your inbox and spam folder.",
+    "setupTitle": "Complete your setup",
+    "setupDescription": "Add your business details and knowledge base so your AI can answer customers accurately.",
+    "setupCta": "Start setup",
+    "editProfile": "Edit business profile",
+    "fields": {
+      "businessName": {
+        "label": "Business name",
+        "helper": "So your assistant knows which business it represents."
+      },
+      "sells": {
+        "label": "What do you sell?",
+        "helper": "So replies accurately reflect your products and services."
+      },
+      "idealCustomer": {
+        "label": "Who is your ideal customer?",
+        "helper": "So your assistant can use the right tone and recommendations."
+      },
+      "city": {
+        "label": "City",
+        "helper": "So answers can include useful local context."
+      },
+      "country": {
+        "label": "Country",
+        "helper": "So your assistant understands your market and regional context."
+      },
+      "language": {
+        "label": "Customer language",
+        "helper": "So your assistant answers in the language your customers expect."
+      },
+      "website": {
+        "label": "Website",
+        "helper": "So your business profile includes your official online home."
+      },
+      "telegram": {
+        "label": "Telegram",
+        "helper": "So your AI assistant can answer your Telegram customers."
+      },
+      "knowledge": {
+        "label": "Customer knowledge base",
+        "helper": "Write the questions customers ask and how you answer them. Your AI will reply from this knowledge."
+      },
+      "goals": {
+        "label": "Business goals",
+        "helper": "So your assistant can prioritize the outcomes that matter to you."
+      }
+    }
+  },
   "auth": {
     "login": {
       "title": "Welcome back",

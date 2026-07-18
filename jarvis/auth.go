@@ -36,6 +36,7 @@ type User struct {
 	Locale           string
 	IsAdmin          bool
 	StripeCustomerID string
+	Verified         bool
 }
 
 func hashPassword(pw string) (string, error) {
@@ -96,10 +97,10 @@ func currentUser(ctx context.Context, db *sql.DB, r *http.Request) (*User, error
 	}
 	var user User
 	err = db.QueryRowContext(ctx, `
-		SELECT u.id, u.email, COALESCE(u.name,''), COALESCE(u.locale,'en'), COALESCE(u.is_admin,false), COALESCE(u.stripe_customer_id,'')
+		SELECT u.id, u.email, COALESCE(u.name,''), COALESCE(u.locale,'en'), COALESCE(u.is_admin,false), COALESCE(u.stripe_customer_id,''), u.verified_at IS NOT NULL
 		FROM sessions s JOIN users u ON u.id = s.user_id
 		WHERE s.token = $1 AND s.expires_at > now()`, cookie.Value).
-		Scan(&user.ID, &user.Email, &user.Name, &user.Locale, &user.IsAdmin, &user.StripeCustomerID)
+		Scan(&user.ID, &user.Email, &user.Name, &user.Locale, &user.IsAdmin, &user.StripeCustomerID, &user.Verified)
 	if errors.Is(err, sql.ErrNoRows) {
 		return nil, nil
 	}
@@ -245,6 +246,7 @@ func registerAuth(mux *http.ServeMux, db *sql.DB) {
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]any{
 			"email": user.Email, "name": user.Name, "locale": user.Locale, "is_admin": user.IsAdmin,
+			"verified": user.Verified,
 		})
 	})
 
