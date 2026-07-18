@@ -13,7 +13,10 @@ Today the CRM tables (`companies`, `contacts`, `leads`, `outreach`, `experiences
 ## THE security boundary (non-negotiable)
 Tenant isolation is the #1 requirement. Customer A must NEVER see customer B's leads. Every CRM read/write filters by the authenticated session's `owner_id`. A bug here is a data breach. This is designed in from line 1, not bolted on.
 
-## Milestone 1 — "Your AI Sales Employee" (demoable, sellable)
+## ⚑ STRATEGY PIVOT 2026-07-18 — Iran-first wedge (see ~/Documents/noxioai-GTM.md)
+First market = **Iran + region** (Turkey, Iraq/Afghanistan, Gulf — all 4 product locales already exist). Iranian SMBs live on **Telegram & Instagram**, not email/LinkedIn. So the WEDGE agent we sell first is the **Customer-Response agent** (Telegram-first: answers customers 24/7, captures leads, drafts content) — NOT the Sales/outreach agent (that stays the tool Sobhan uses to get his OWN customers). Seed already built = the Telegram support agent. Model = agent marketplace: launch with this ONE agent working, rest "coming soon". Pricing = simple flat tiers, **Toman via Zarinpal** for Iran + USD/crypto international. Billing bottleneck = customers/distribution, not tech.
+
+## Milestone 1 — "Your AI Sales Employee" (SUPERSEDED as the wedge — see pivot above; multi-tenant foundation P1 still valid & done)
 
 ### Phase P1 — Multi-tenant foundation (invisible, load-bearing)
 **Status 2026-07-16:** Local implementation and verification complete on the
@@ -43,8 +46,16 @@ and smoke test remain approval-gated; P2 has not started.
 - Approved drafts: copy-to-send for v1 (defer per-tenant email deliverability to M2).
 - **DoD:** a customer signs up → profile → find leads → draft → approve, entirely in the browser, seeing only their data.
 
-## Milestone 2 (after M1 ships + first users)
-Sending infrastructure per tenant, billing gates (features require active subscription), usage metering, the other employees (social/support/dev). Not built until M1 has real users telling us what they need.
+## Milestone W (the Iran wedge — the sellable product) — supersedes M1 as launch target
+Build order on top of P1 (done):
+- **PW-a (NEXT BUILD): per-tenant business profile + knowledge base.** Confirm-gated /onboarding page: guided form (business name, what they sell, ideal customer, city/country, language, website, Telegram handle, and a KNOWLEDGE box = the FAQ/answers the customer-agent will reply from), each field with a "why we ask" helper. Stored in new `business_profiles` table (owner_id FK). Persian-first, RTL, 4 locales. Editable in /account.
+- **PW-b: per-tenant Customer-Response agent.** Each customer connects their own Telegram bot (their BotFather token, stored per-tenant) → the agent answers their customers from their knowledge base (DeepSeek), captures leads, escalates to them. Anything it SENDS is gated. This is the productized, multi-tenant version of the existing support agent.
+- **PW-c: Persian AI concierge** in the dashboard — helps them set up + connect (a scoped support-bot on the site).
+- **PW-d: Zarinpal billing** (Toman) for Iran + gate the agent behind active subscription; USD/crypto for international.
+- Marketplace UI: show the catalog (Customer-Response = live; Sales/SEO/Social = "coming soon").
+
+## Milestone 2 (later — after wedge has paying customers)
+Sales/SEO/Social agents as self-serve, usage metering, expansion tooling. Not built until the wedge has real paying customers telling us what they need.
 
 ## What NOXIOAI needs from Sobhan
 - **Now:** approval of this plan + P1 start.
