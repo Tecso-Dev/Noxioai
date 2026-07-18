@@ -1,6 +1,6 @@
 (appapi) {
 	# ONLY the genuinely-public app endpoints reach the backend.
-	@public path /api/auth/* /api/billing/* /api/stripe/* /api/waitlist
+	@public path /api/auth/* /api/billing/* /api/stripe/* /api/waitlist /api/profile
 	handle @public {
 		reverse_proxy 127.0.0.1:7700
 	}
