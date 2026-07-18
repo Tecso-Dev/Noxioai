@@ -58,13 +58,13 @@ The detailed product plan lives in [docs/ROADMAP.md](docs/ROADMAP.md). The appro
 ## Latest activity
 
 <!-- ACTIVITY:START -->
-_Auto-updated 2026-07-18 10:52 UTC_
+_Auto-updated 2026-07-18 11:00 UTC_
 
+- `663cbfb` deploy: add /api/profile to Caddy edge allowlist (was 404 at edge; session-gated so safe) — 2026-07-18
 - `97d44fa` PW-a: per-tenant business profile + knowledge-base onboarding — /onboarding guided Persian-first form (4 locales), business_profiles table (owner-isolated), email-confirm gate (existing users grandfathered), /api/profile + verified flag on /api/auth/me (Codex-built, Claude-verified) — 2026-07-18
 - `5542fac` spec: strategy pivot to Iran-first wedge (customer-response agent, marketplace, Zarinpal, Persian concierge); Milestone W build order — 2026-07-18
 - `a366cb2` SEO agent: autonomous Go — weekly Google Search Console pull → DeepSeek analysis → drafts blog topic + SEO fixes → Telegram; seo_reports table; graceful guard (dormant until JARVIS_GSC_SA_JSON set); jarvis seo subcommand (Codex-built, Claude-verified) — 2026-07-18
 - `c99d4a8` SEO: JSON-LD structured data (Organization, WebSite, Service/OfferCatalog), sitemap all-locales (Codex); landing: Kian added as 5th employee (Sales) with descriptions for all 5 (Claude); P2 spec enriched — 2026-07-18
-- `c2e851e` landing: harmonize agent avatars to premium palette (gold/cyan/ivory/gold-deep, no neon); add missing Log in nav link → /login (4 locales) — 2026-07-18
 <!-- ACTIVITY:END -->
 
 ## JARVIS command center
