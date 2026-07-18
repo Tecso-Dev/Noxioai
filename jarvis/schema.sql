@@ -122,6 +122,19 @@ CREATE TABLE IF NOT EXISTS support_messages (
   created_at   TIMESTAMPTZ DEFAULT now()
 );
 
+-- Platform-global reporting for NOXIOAI's own website; deliberately not
+-- tenant-owned and never used as a publishing queue.
+CREATE TABLE IF NOT EXISTS seo_reports (
+  id           BIGSERIAL PRIMARY KEY,
+  created_at   TIMESTAMPTZ DEFAULT now(),
+  period       TEXT,
+  clicks       INT,
+  impressions  INT,
+  avg_position NUMERIC,
+  analysis     TEXT,
+  blog_draft   TEXT
+);
+
 -- ── multi-tenant ownership (PRODUCT-BUILD.md Phase P1) ──────────────────────
 -- Every CRM row belongs to exactly one platform user; per-owner uniques
 -- replace the old global ones so two tenants can target the same company.

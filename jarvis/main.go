@@ -6,6 +6,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -35,6 +36,26 @@ func mustOwnerID(db *sql.DB) int64 {
 
 func main() {
 	loadDotEnv()
+
+	if len(os.Args) > 1 && os.Args[1] == "seo" {
+		_, enabled, err := seoServiceAccountPath()
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "✗ seo:", err)
+			os.Exit(1)
+		}
+		if !enabled {
+			log.Print(seoGuardMessage)
+			return
+		}
+		db := mustDB()
+		defer db.Close()
+		if err := RunSEO(context.Background(), db); err != nil {
+			fmt.Fprintln(os.Stderr, "✗ seo:", err)
+			os.Exit(1)
+		}
+		fmt.Println("✓ SEO report stored and delivered to Telegram")
+		return
+	}
 
 	if len(os.Args) > 1 && os.Args[1] == "support" {
 		if strings.TrimSpace(os.Getenv("JARVIS_SUPPORT_BOT_TOKEN")) == "" {
