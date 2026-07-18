@@ -5,7 +5,8 @@
   },
   "nav": {
     "waitlist": "Bekleme listesi",
-    "services": "Hizmetler"
+    "services": "Hizmetler",
+    "login": "Giriş"
   },
   "hero": {
     "badge": "Çok yakında — v1",

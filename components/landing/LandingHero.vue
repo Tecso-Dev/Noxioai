@@ -17,6 +17,9 @@ const localePath = useLocalePath()
         <NuxtLink :to="localePath('/services')" class="nav-link text-sm font-semibold text-dim transition hover:text-snow">
           {{ $t('nav.services') }}
         </NuxtLink>
+        <NuxtLink :to="localePath('/login')" class="nav-link text-sm font-semibold text-dim transition hover:text-snow">
+          {{ $t('nav.login') }}
+        </NuxtLink>
         <LandingLangSwitcher />
         <a href="#waitlist" class="nav-cta rounded-full px-4 py-2 text-sm font-semibold">
           {{ $t('nav.waitlist') }}

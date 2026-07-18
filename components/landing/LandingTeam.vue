@@ -1,9 +1,11 @@
 <script setup lang="ts">
+// palette-harmonized: charcoal hair + one accent shirt each from the
+// premium-tech system (gold / cyan-pulse / ivory / gold-deep) — no neon.
 const members = [
-  { key: 'nika', hair: '#e85d9a', shirt: '#8E2DE2' },
+  { key: 'nika', hair: '#2b2b3a', shirt: '#d4bf94' },
   { key: 'dara', hair: '#2b2b3a', shirt: '#48CAE4' },
-  { key: 'sara', hair: '#a05a2c', shirt: '#22c55e' },
-  { key: 'avisa', hair: '#f4c430', shirt: '#fb7185' }
+  { key: 'sara', hair: '#b39868', shirt: '#f2efe8' },
+  { key: 'avisa', hair: '#2b2b3a', shirt: '#b39868' }
 ]
 </script>
 
