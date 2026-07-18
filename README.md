@@ -58,13 +58,13 @@ The detailed product plan lives in [docs/ROADMAP.md](docs/ROADMAP.md). The appro
 ## Latest activity
 
 <!-- ACTIVITY:START -->
-_Auto-updated 2026-07-18 09:47 UTC_
+_Auto-updated 2026-07-18 10:04 UTC_
 
+- `c99d4a8` SEO: JSON-LD structured data (Organization, WebSite, Service/OfferCatalog), sitemap all-locales (Codex); landing: Kian added as 5th employee (Sales) with descriptions for all 5 (Claude); P2 spec enriched — 2026-07-18
 - `c2e851e` landing: harmonize agent avatars to premium palette (gold/cyan/ivory/gold-deep, no neon); add missing Log in nav link → /login (4 locales) — 2026-07-18
 - `43f18fe` support: Telegram AI support agent — auto-answers NOXIOAI questions via Brain, escalates to owner's private chat on human-request (EN+FA), logs to support_messages; jarvis support subcommand (Codex-built, Claude-verified) — 2026-07-16
 - `6057d32` deploy: sync Caddyfile — /api/waitlist added to public edge allowlist — 2026-07-16
 - `ce2e8b6` waitlist: real backend — /api/waitlist stores signups in project DB + sends branded welcome email; landing form posts to it (replaces web3forms); waitlist table (Codex-built, Claude-verified) — 2026-07-16
-- `01eb519` legal + about: Privacy Policy, Terms of Service (GDPR/UODO-checked), About page + shared footer with links, all 4 locales (Codex-built, Claude-verified) — 2026-07-16
 <!-- ACTIVITY:END -->
 
 ## JARVIS command center
