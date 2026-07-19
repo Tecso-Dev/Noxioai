@@ -15,6 +15,11 @@ type TenantMessage = {
   created_at: string
 }
 
+type ConciergeChatMessage = {
+  role: 'user' | 'assistant'
+  content: string
+}
+
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const api = useRuntimeConfig().public.apiBase
@@ -32,6 +37,12 @@ const botNotice = ref('')
 const messages = ref<TenantMessage[]>([])
 const messagesLoading = ref(false)
 const messagesError = ref('')
+const conciergeOpen = ref(false)
+const conciergeMessages = ref<ConciergeChatMessage[]>([])
+const conciergeInput = ref('')
+const conciergeBusy = ref(false)
+const conciergeError = ref('')
+const conciergeMessageList = ref<HTMLElement | null>(null)
 
 onMounted(async () => {
   try {
@@ -135,6 +146,39 @@ function formatMessageDate(value: string) {
   }).format(date)
 }
 
+async function scrollConciergeToBottom() {
+  await nextTick()
+  if (conciergeMessageList.value) {
+    conciergeMessageList.value.scrollTop = conciergeMessageList.value.scrollHeight
+  }
+}
+
+async function sendConciergeMessage() {
+  const message = conciergeInput.value.trim()
+  if (!message || conciergeBusy.value) return
+
+  const history = conciergeMessages.value.slice(-8)
+  conciergeMessages.value.push({ role: 'user', content: message })
+  conciergeInput.value = ''
+  conciergeError.value = ''
+  conciergeBusy.value = true
+  await scrollConciergeToBottom()
+
+  try {
+    const response = await $fetch<{ reply: string }>(`${api}/api/concierge`, {
+      method: 'POST',
+      credentials: 'include',
+      body: { message, history }
+    })
+    conciergeMessages.value.push({ role: 'assistant', content: response.reply })
+  } catch {
+    conciergeError.value = t('concierge.error')
+  } finally {
+    conciergeBusy.value = false
+    await scrollConciergeToBottom()
+  }
+}
+
 const cards = [
   { key: 'leads', icon: '◎' },
   { key: 'outreach', icon: '✎' },
@@ -182,7 +226,69 @@ const cards = [
           </NuxtLink>
         </div>
 
-        <section class="glass-card tenantbot-card mt-10 rounded-3xl p-6 sm:p-8">
+        <section class="glass-card concierge-card mt-10 overflow-hidden rounded-3xl">
+          <button
+            type="button"
+            class="concierge-toggle flex w-full items-center justify-between gap-5 p-6 text-start sm:p-8"
+            :aria-expanded="conciergeOpen"
+            aria-controls="concierge-chat"
+            @click="conciergeOpen = !conciergeOpen"
+          >
+            <span class="flex min-w-0 items-center gap-4">
+              <span class="concierge-mark flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-xl text-gold" aria-hidden="true">✦</span>
+              <span>
+                <span class="block text-xs font-bold uppercase tracking-widest text-gold">{{ $t('concierge.eyebrow') }}</span>
+                <span class="mt-2 block text-xl font-extrabold text-ivory">{{ $t('concierge.title') }}</span>
+                <span class="mt-1.5 block text-sm leading-6 text-dim">{{ $t('concierge.description') }}</span>
+              </span>
+            </span>
+            <span class="shrink-0 text-xs font-bold text-gold">
+              {{ conciergeOpen ? $t('concierge.close') : $t('concierge.open') }}
+            </span>
+          </button>
+
+          <div v-if="conciergeOpen" id="concierge-chat" class="concierge-panel border-t border-line px-4 pb-5 pt-4 sm:px-6 sm:pb-6">
+            <div ref="conciergeMessageList" class="concierge-message-list grid max-h-96 min-h-56 gap-3 overflow-y-auto rounded-2xl p-4 sm:p-5" role="log" aria-live="polite">
+              <p v-if="conciergeMessages.length === 0 && !conciergeBusy" class="m-auto max-w-md px-4 text-center text-sm leading-7 text-dim">
+                {{ $t('concierge.empty') }}
+              </p>
+              <div v-for="(chatMessage, index) in conciergeMessages" :key="index" class="flex" :class="chatMessage.role === 'user' ? 'justify-end' : 'justify-start'">
+                <div class="concierge-bubble rounded-2xl px-4 py-3" :class="`concierge-bubble--${chatMessage.role}`">
+                  <p class="concierge-speaker">{{ $t(`concierge.${chatMessage.role}`) }}</p>
+                  <p class="mt-1.5 whitespace-pre-wrap text-sm leading-7" dir="auto">{{ chatMessage.content }}</p>
+                </div>
+              </div>
+              <div v-if="conciergeBusy" class="flex justify-start">
+                <div class="concierge-bubble concierge-bubble--assistant rounded-2xl px-4 py-3 text-sm text-dim" role="status">
+                  {{ $t('concierge.sending') }}
+                </div>
+              </div>
+            </div>
+
+            <form class="mt-4" @submit.prevent="sendConciergeMessage">
+              <label for="concierge-message" class="sr-only">{{ $t('concierge.placeholder') }}</label>
+              <textarea
+                id="concierge-message"
+                v-model="conciergeInput"
+                rows="3"
+                maxlength="2000"
+                dir="auto"
+                class="concierge-input w-full resize-none rounded-2xl px-4 py-3 text-sm leading-7"
+                :placeholder="$t('concierge.placeholder')"
+                @keydown.enter.exact.prevent="sendConciergeMessage"
+              />
+              <div class="mt-3 flex flex-wrap items-center justify-between gap-3">
+                <span class="text-xs text-dim">{{ $t('concierge.inputHint') }}</span>
+                <button type="submit" :disabled="conciergeBusy || !conciergeInput.trim()" class="rounded-full bg-brand px-6 py-2.5 text-sm font-bold text-night transition hover:bg-gold-deep disabled:opacity-50">
+                  {{ conciergeBusy ? $t('concierge.sending') : $t('concierge.send') }}
+                </button>
+              </div>
+            </form>
+            <p v-if="conciergeError" class="mt-4 text-sm text-red-300" role="alert">{{ conciergeError }}</p>
+          </div>
+        </section>
+
+        <section class="glass-card tenantbot-card mt-6 rounded-3xl p-6 sm:p-8">
           <div class="flex flex-wrap items-start justify-between gap-4">
             <div class="max-w-2xl">
               <p class="text-xs font-bold uppercase tracking-widest text-gold">TELEGRAM · 24/7</p>
@@ -277,6 +383,59 @@ const cards = [
 .coming-soon {
   opacity: 0.88;
 }
+.concierge-card {
+  border-block-start: 2px solid var(--gold);
+}
+.concierge-toggle {
+  transition: background 160ms ease;
+}
+.concierge-toggle:hover {
+  background: rgba(212, 191, 148, 0.035);
+}
+.concierge-mark {
+  background: rgba(212, 191, 148, 0.08);
+  border: 1px solid rgba(212, 191, 148, 0.24);
+  box-shadow: inset 0 0 1.5rem rgba(212, 191, 148, 0.04);
+}
+.concierge-panel {
+  background: rgba(3, 8, 18, 0.24);
+}
+.concierge-message-list {
+  background: rgba(5, 10, 22, 0.64);
+  border: 1px solid var(--line-soft);
+  scroll-behavior: smooth;
+}
+.concierge-bubble {
+  max-width: min(88%, 38rem);
+}
+.concierge-bubble--assistant {
+  background: rgba(212, 191, 148, 0.07);
+  border: 1px solid rgba(212, 191, 148, 0.2);
+  color: var(--ivory);
+}
+.concierge-bubble--user {
+  background: linear-gradient(135deg, var(--gold), var(--gold-deep));
+  color: var(--night);
+}
+.concierge-speaker {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  opacity: 0.72;
+  text-transform: uppercase;
+}
+.concierge-input {
+  background: rgba(5, 10, 22, 0.74);
+  border: 1px solid var(--line-soft);
+  color: var(--ivory);
+  outline: none;
+  text-align: start;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+.concierge-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(212, 191, 148, 0.14);
+}
 .tenantbot-card {
   border-block-start: 2px solid var(--gold);
 }
@@ -319,7 +478,9 @@ const cards = [
   border-inline-start: 2px solid rgba(212, 191, 148, 0.5);
 }
 :global(html[lang='fa']) .message-label,
-:global(html[lang='ar']) .message-label {
+:global(html[lang='ar']) .message-label,
+:global(html[lang='fa']) .concierge-speaker,
+:global(html[lang='ar']) .concierge-speaker {
   letter-spacing: 0;
 }
 </style>

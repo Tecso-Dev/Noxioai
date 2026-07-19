@@ -251,6 +251,21 @@
     "escalated": "متابعة بشرية",
     "unknownCustomer": "عميل Telegram"
   },
+  "concierge": {
+    "eyebrow": "الإعداد · ذكاء اصطناعي موثوق",
+    "title": "مساعد إعداد NOXIOAI",
+    "description": "اسأل عن إنشاء بوت Telegram وربطه أو تحسين قاعدة المعرفة الخاصة بك.",
+    "open": "فتح المحادثة",
+    "close": "إغلاق المحادثة",
+    "empty": "اطرح أول سؤال عن الإعداد. يمكنني إرشادك في BotFather وربط البوت وكتابة قاعدة معرفة مفيدة.",
+    "user": "أنت",
+    "assistant": "مساعد NOXIOAI",
+    "placeholder": "اسأل عن BotFather أو ربط البوت أو قاعدة المعرفة…",
+    "inputHint": "Enter للإرسال · Shift+Enter لسطر جديد",
+    "send": "إرسال",
+    "sending": "جارٍ التفكير…",
+    "error": "تعذر عليّ الرد الآن. يرجى المحاولة مرة أخرى."
+  },
   "auth": {
     "login": {
       "title": "مرحبًا بعودتك",

@@ -251,6 +251,21 @@
     "escalated": "Human follow-up",
     "unknownCustomer": "Telegram customer"
   },
+  "concierge": {
+    "eyebrow": "Setup · grounded AI",
+    "title": "Setup concierge",
+    "description": "Ask how to create and connect your Telegram bot or improve your knowledge base.",
+    "open": "Open chat",
+    "close": "Close chat",
+    "empty": "Ask your first setup question. I can guide you through BotFather, bot connection, and a useful knowledge base.",
+    "user": "You",
+    "assistant": "NOXIOAI concierge",
+    "placeholder": "Ask about BotFather, connecting your bot, or your knowledge base…",
+    "inputHint": "Enter to send · Shift+Enter for a new line",
+    "send": "Send",
+    "sending": "Thinking…",
+    "error": "I couldn't answer right now. Please try again."
+  },
   "auth": {
     "login": {
       "title": "Welcome back",

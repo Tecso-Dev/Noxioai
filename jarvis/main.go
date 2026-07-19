@@ -307,6 +307,7 @@ func serveHTTP(brain *Brain, memory *MemoryStore) {
 	registerAuth(mux, db)
 	registerProfile(mux, db)
 	registerTenantBot(mux, db, brain)
+	registerConcierge(mux, db, brain)
 	registerWaitlist(mux, db)
 	registerBilling(mux, db)
 	registerChat(mux, brain, db)

@@ -251,6 +251,21 @@
     "escalated": "İnsan takibi",
     "unknownCustomer": "Telegram müşterisi"
   },
+  "concierge": {
+    "eyebrow": "Kurulum · güvenilir yapay zekâ",
+    "title": "Kurulum danışmanı",
+    "description": "Telegram botunuzu oluşturup bağlamayı veya bilgi tabanınızı geliştirmeyi sorun.",
+    "open": "Sohbeti aç",
+    "close": "Sohbeti kapat",
+    "empty": "İlk kurulum sorunuzu sorun. BotFather, bot bağlantısı ve yararlı bir bilgi tabanı konusunda size yol gösterebilirim.",
+    "user": "Siz",
+    "assistant": "NOXIOAI danışmanı",
+    "placeholder": "BotFather, bot bağlantısı veya bilgi tabanınız hakkında sorun…",
+    "inputHint": "Göndermek için Enter · Yeni satır için Shift+Enter",
+    "send": "Gönder",
+    "sending": "Düşünüyor…",
+    "error": "Şu anda yanıt veremedim. Lütfen tekrar deneyin."
+  },
   "auth": {
     "login": {
       "title": "Tekrar hoş geldiniz",
