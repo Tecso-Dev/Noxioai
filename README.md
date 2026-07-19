@@ -1,162 +1,109 @@
 <div align="center">
 
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:4A00E0,50:8E2DE2,100:48CAE4&height=220&section=header&text=NOXIOAI&fontSize=76&fontAlignY=35&animation=twinkling&fontColor=ffffff" />
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b0b12,50:b39868,100:d4bf94&height=220&section=header&text=NOXIOAI&fontSize=76&fontAlignY=35&animation=twinkling&fontColor=f2efe8" />
 
-  **AI employees for Iranian businesses — a visual office, one shared business brain, and real work getting done.**
+  **AI employees for Persian-speaking businesses — they answer your customers 24/7 while you sleep.**
 
-  [![Landing](https://img.shields.io/badge/Live-noxioai.com-48CAE4?style=for-the-badge)](https://noxioai.com)
-  [![Roadmap](https://img.shields.io/badge/Roadmap-docs%2FROADMAP.md-8E2DE2?style=for-the-badge)](docs/ROADMAP.md)
-  [![JARVIS](https://img.shields.io/badge/Internal_engine-JARVIS-3ee1ff?style=for-the-badge)](jarvis/README.md)
+  [![Live](https://img.shields.io/badge/Live-noxioai.com-d4bf94?style=for-the-badge)](https://noxioai.com)
+  [![Market](https://img.shields.io/badge/First_market-Iran_%2B_region-48CAE4?style=for-the-badge)](#market--strategy)
 
 </div>
 
 ---
 
-NOXIOAI is building a Persian-first workspace where named AI employees help a business with marketing, development, support, and social operations. The product is designed for the channels that matter to its market, especially Telegram and Instagram, while keeping the business context shared through one **Brain**.
+NOXIOAI is a **multi-tenant SaaS** where a business signs up, tells its AI about itself, and connects its own Telegram bot — then the AI answers that business's customers 24/7 from its knowledge base, captures leads, and escalates to a human when needed. Persian-first, built for the channels Iranian and MENA businesses actually use (Telegram, Instagram), expanding across four languages (FA · EN · TR · AR).
 
-## What is working today
+The whole company runs on its own product: **JARVIS**, an autonomous Go sales engine, runs NOXIOAI's own outreach — customer #1 is us.
 
-| Surface | Status | What it proves |
+## What's live today
+
+| Capability | Status | What it is |
 |---|---|---|
-| [Noxioai landing](https://noxioai.com) | 🟢 Live | Bilingual FA-first landing (EN/FA/TR/AR), waitlist, brand identity |
-| [Noxio Autopilot services](https://noxioai.com/services) | 🟢 Live | Fixed-price automation offer, 3 tiers, contact CTA |
-| Signup / login / dashboard | 🟢 Live on Vercel | Session auth, verified end-to-end in production (signup → login → command center) |
-| Transactional email | 🟢 Live | Verification + password-reset from `hi@noxioai.com` via Resend (domain-authenticated, inboxing) |
-| [JARVIS engine](jarvis/README.md) | 🟢 24/7 in production | Go/Postgres sales OS on a dedicated VPS — briefing, inbox, outreach, nightly backups |
-| Public Noxioai Office | ⬜ Planned | Shared Brain and pixel-office workflow |
+| Landing + services | 🟢 Live | Premium-tech FA-first site, 4 locales, legal pages, SEO |
+| Auth (multi-tenant) | 🟢 Live | Session auth, email verification, per-tenant data isolation (test-enforced) |
+| **Auth security** | 🟢 Live | Breached-password screening (HaveIBeenPwned), brute-force rate-limiting, CSRF origin checks, security headers, audit log, passkeys/WebAuthn |
+| Guided onboarding | 🟢 Live | Business profile + knowledge base per tenant, confirm-gated |
+| **Customer-response agent** | 🟢 Live | Each tenant connects its own Telegram bot → AI answers its customers from its knowledge base via secure webhook (constant-time secret, tenant-isolated), with human-escalation |
+| Setup concierge | 🟢 Live | In-dashboard Persian AI helper for connecting bots |
+| Social content agent | 🟢 Live | Autonomous Persian posts + branded images → owner approval → auto-post to Telegram channel |
+| Transactional email | 🟢 Live | Verify + reset from `hi@noxioai.com` via Resend (domain-authenticated) |
+| JARVIS sales engine | 🟢 24/7 | Go/Postgres ops: lead research/scoring, drafted outreach (approval-gated), daily Telegram briefing, weekly SEO agent, encrypted nightly backups |
+| Admin cockpit · onboarding wizard · billing paywall · analytics | 🔨 Building | See [PRODUCT-BUILD.md](PRODUCT-BUILD.md) |
 
-JARVIS is the internal system that validates the useful parts first: research, personalized drafts, approval gates, delivery, daily briefings, and learning from outcomes. It now runs on the production server, not a laptop.
+_No fabricated metrics: this documents architecture and capabilities, not traction._
 
-## Current product status
+## Market & strategy
 
-| Phase | Goal | Status |
-|---|---|---|
-| A — Launch | Landing and waitlist | 🟢 Live |
-| B — The Office | Public visual office and shared Brain | 🔨 In progress — auth, billing, dashboard shell live; office UI next |
-| C — Business | Automations, social tools, first outside users | 🔨 Noxio Autopilot offer live; first outreach in flight |
-| D — Commercial | Billing, plans, PWA | 🟡 Stripe checkout/portal/webhooks built; needs live keys |
+First market: **Iran + region** (Turkey, Iraq/Afghanistan, Gulf — all four product locales exist). The moat is that global incumbents (Zapier, Sintra, HubSpot) **can't serve this market** — sanctions + no Persian + no local payment. Strategy and go-to-market: sell the customer-response agent as the wedge, own the niche, add agents as customers pay. Full plan lives outside the repo (private).
 
-**Infrastructure (built 2026-07-15):**
-- **Frontend:** Nuxt on Vercel (`noxioai.vercel.app`; apex cutover pending). `/api/*` reverse-proxied to the backend, so auth works same-origin.
-- **Backend + engine:** Go API + JARVIS on a hardened Ubuntu VPS (key-only SSH, ufw, fail2ban, auto-updates), behind Caddy/TLS.
-- **Database:** PostgreSQL on the VPS; nightly encrypted backups pushed to Telegram + 14-day local rotation.
-- **Email:** Resend HTTPS API (the datacenter blocks SMTP), branded HTML template, `hi@noxioai.com`.
-- **DR:** full rebuild runbook + server configs in [deploy/](deploy/) — any fresh VPS becomes production in ~20 min.
+## AI brains
 
-## What is left
+- **Gemini (via OpenRouter)** — customer-facing agents (sharp Persian).
+- **DeepSeek** — reserved for internal/simple tasks and future high-volume surfaces.
+- **fal.ai** — branded post images for the social agent.
+- Never Claude/GPT at runtime: the agents think with the models above, on the project's own keys. Claude Code + Codex build the agents; they don't *run* them.
 
-- **DNS:** add `api.noxioai.com` A-record and point the apex domain `noxioai.com` at Vercel (currently GitHub Pages).
-- **Rotate credentials** shared during setup (Resend key, xAI key, Gmail app password).
-- **Stripe:** swap test keys for live keys to accept real payments.
-- **CI/CD:** GitHub Action to auto-build and deploy the JARVIS binary on push.
-- **Product:** the public Office UI (Phase B) and first outside users (Phase C).
+## Architecture
 
-**Platform build** ([PLATFORM-SPEC.md](PLATFORM-SPEC.md)): session auth ✅ · dashboard shell ✅ · Stripe billing (checkout, portal, webhooks) ✅ · auth emails ✅ · production deploy ✅ (Vercel + VPS) · apex DNS cutover 🔨
+```mermaid
+flowchart LR
+  U[Business owner] -->|signup + onboarding| K[(Business profile + knowledge base)]
+  U -->|connects own Telegram bot| W[Webhook /api/tg/secret]
+  C[Their customers] --> W
+  W -->|tenant-isolated| BR[Gemini brain]
+  BR --> A[Auto-answer + lead capture]
+  A -->|needs human| ES[Escalate to owner]
+  K --> BR
+  subgraph Internal ops (NOXIOAI's own)
+    J[JARVIS] --> OR[ORACLE research/score] --> AT[ATLAS drafts] --> G[Approval gate] --> HE[HERALD send]
+  end
+```
 
-The detailed product plan lives in [docs/ROADMAP.md](docs/ROADMAP.md). The approved technology decisions live in [docs/TECH-STACK.md](docs/TECH-STACK.md).
+## Technology
+
+| Area | Implementation |
+|---|---|
+| Frontend | Nuxt 3, Vue 3, TypeScript, Tailwind, `@nuxtjs/i18n` (FA/EN/TR/AR), `@vueuse/motion` — Vercel |
+| Backend | Go, `database/sql` + pgx, PostgreSQL, OpenAI-compatible model interface, session auth |
+| Multi-tenancy | `owner_id` on every CRM row, per-owner uniqueness, isolation enforced by test |
+| Agents | Go services + systemd timers: customer-response (webhook), support concierge, JARVIS sales, social content, SEO, briefing, inbox, uptime |
+| Email | Resend HTTPS API, branded template, `hi@noxioai.com` |
+| Payments | Stripe (international) + Zarinpal (Iran/Toman) — location-based (in progress) |
+| Ops | Hardened Ubuntu VPS (key-only SSH, ufw, fail2ban, auto-updates), Caddy/TLS with an edge allowlist, encrypted nightly Telegram backups, DR runbook in [deploy/](deploy/) |
+| Deploy | Vercel (frontend) + VPS (API/agents/DB); `vercel.json` proxies `/api/*` to `api.noxioai.com` |
 
 ## Latest activity
 
 <!-- ACTIVITY:START -->
 _Auto-updated 2026-07-19 11:06 UTC_
 
-- `a9d2df0` Social Content agent: autonomous Persian post generation (DeepSeek + optional fal.ai images) → owner Telegram approval → auto-post to Telegram channel; Instagram = manual hand-off (no unofficial auto-post); social_posts table (Codex-built, Claude-verified + security-reviewed) — 2026-07-19
-- `1e2475a` PW-c: Persian AI setup concierge — in-dashboard chat helper (session-gated, owner-scoped, grounded to product help + BotFather steps), 4 locales (Codex-built, Claude-verified) — 2026-07-19
-- `f8ac353` PW-b: per-tenant Telegram customer-response agent — customers connect their own bot, AI answers their customers 24/7 from their knowledge base via secure webhook (constant-time secret auth, tenant-isolated), human-escalation flagging, dashboard connect+message-log (Codex-built, Claude-verified + security-reviewed) — 2026-07-19
-- `663cbfb` deploy: add /api/profile to Caddy edge allowlist (was 404 at edge; session-gated so safe) — 2026-07-18
-- `97d44fa` PW-a: per-tenant business profile + knowledge-base onboarding — /onboarding guided Persian-first form (4 locales), business_profiles table (owner-isolated), email-confirm gate (existing users grandfathered), /api/profile + verified flag on /api/auth/me (Codex-built, Claude-verified) — 2026-07-18
+- `a9d2df0` Social Content agent: autonomous Persian post generation → owner Telegram approval → auto-post to channel — 2026-07-19
+- `1e2475a` PW-c: Persian AI setup concierge (session-gated, owner-scoped) — 2026-07-19
+- `f8ac353` PW-b: per-tenant Telegram customer-response agent (secure webhook, tenant-isolated, escalation) — 2026-07-19
+- `97d44fa` PW-a: per-tenant business profile + knowledge-base onboarding, email-confirm gate — 2026-07-18
 <!-- ACTIVITY:END -->
-
-## JARVIS command center
-
-JARVIS is a local-first agent system for Sobhan's own sales operations. It discovers and scores companies, drafts personalized outreach, requires human approval before outbound delivery, sends approved email through HERALD, and delivers a daily Telegram briefing with CALEB's pipeline memo.
-
-![JARVIS command center — local demo data](jarvis/docs/screenshots/command-center.png)
-
-The HUD includes a reactive Three.js data sphere, a live agent network, voice interaction, a startup sequence, a lead board, a human approval gate, and per-agent activity. Screenshots use sample data; no operational CRM data is documented here.
-
-<details>
-<summary><strong>Agent dossier</strong></summary>
-
-<br>
-
-![JARVIS agent dossier — local demo data](jarvis/docs/screenshots/agent-dossier.png)
-
-</details>
-
-Read the [JARVIS guide](jarvis/README.md) for commands, architecture, environment variables, safety constraints, and deployment details.
-
-## Architecture
-
-```mermaid
-flowchart LR
-  B[Business context / Brain] --> E[AI employees]
-  E --> O[Public Noxioai Office\nPhase B]
-  E --> J[JARVIS internal engine]
-  J --> R[ORACLE\nresearch + scoring]
-  R --> P[(PostgreSQL CRM)]
-  P --> A[ATLAS\npersonalized drafts]
-  A --> G[Human approval gate]
-  G --> H[HERALD\napproved email only]
-  P --> F[FRIDAY + CALEB\ndaily briefing]
-```
-
-## Repository map
-
-```text
-Noxioai/
-├── pages/ and components/     Nuxt landing page
-├── i18n/locales/              Persian-first and English copy
-├── assets/                    Landing styles
-├── docs/                      Product roadmap and approved stack
-├── jarvis/                    Internal Go/Postgres agent engine
-│   ├── web/                   Embedded local HUD and startup audio
-│   ├── docs/screenshots/      Redacted documentation screenshots
-│   ├── SPEC.md                Product contract for JARVIS
-│   └── README.md              Operating guide and command reference
-└── .github/workflows/         Landing deployment workflow
-```
-
-## Technology
-
-| Area | Current implementation |
-|---|---|
-| Frontend | Nuxt 3, Vue 3, TypeScript, Tailwind, `@nuxtjs/i18n` (EN/FA/TR/AR), `@vueuse/motion`, deployed on Vercel |
-| Languages | TypeScript, Go, SQL, Bash, YAML |
-| Backend / engine | Go, `database/sql` + pgx, PostgreSQL, OpenAI-compatible model interface, session auth |
-| Email | Resend HTTPS API, branded MIME template (HTTP transport — datacenter blocks SMTP) |
-| JARVIS HUD | Embedded HTML, vendored Three.js, browser-native Web Speech API |
-| Operations | Ubuntu VPS, systemd services + timers, Caddy/TLS reverse proxy, ufw + fail2ban, encrypted Telegram backups |
-| Deploy | Vercel (frontend) + VPS (API/engine/DB); `vercel.json` proxies `/api/*` to the backend |
 
 ## Run locally
 
-### Landing
-
 ```bash
-npm install
-npm run dev
-```
+# frontend
+npm install && npm run dev
 
-### JARVIS
-
-```bash
+# backend + JARVIS
 cd jarvis
 docker compose up -d
-go build -o jarvis .
-./jarvis db init
-./jarvis serve
+go build -o jarvis . && ./jarvis db init && ./jarvis serve   # http://127.0.0.1:7700
 ```
 
-Open `http://127.0.0.1:7700`. See [jarvis/README.md](jarvis/README.md) for configuration and every available command.
+See [jarvis/README.md](jarvis/README.md) for every agent command and configuration.
 
-## Safety and operating rules
+## Safety & operating rules
 
-- No outbound message or email is sent before a human approves it.
-- Secrets live in local environment files; they are never committed.
-- JARVIS binds locally by default and keeps its private memory on the local machine.
-- The public product starts only from an approved plan; the internal engine is deliberately small and evidence-driven.
+- Tenant isolation is a security boundary: a customer can only ever touch its own data (enforced by test on every change).
+- Nothing outbound (outreach, public posts) is sent before a human approves it.
+- Secrets live in environment files, never committed. Webhooks verify a constant-time secret.
+- Agents run on the project's own model keys — never on the tools that build them.
 
 ---
 
-Built by [Sobhan Azimzadeh](https://github.com/sobhanaz) × [TECSO](https://github.com/Tecso-Dev).
+Built by [Sobhan Azimzadeh](https://github.com/sobhanaz) · dual-national (Iran/Poland), full-stack.
