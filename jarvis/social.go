@@ -115,13 +115,13 @@ func generateSocialDrafts(ctx context.Context, brain *Brain) ([]socialDraft, err
 	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
-	prompt := `Create exactly three Persian social posts in this exact order:
-1. NOXIOAI AI employees answering customers 24/7.
-2. Practical advice for Iranian shops or clinics handling customers on Instagram and Telegram.
-3. The honest "your business never sleeps" angle: automation keeps routine customer responses moving while the owner rests.
+	prompt := `Create exactly three Persian social posts for Iranian small-business owners (shops, clinics, salons, real-estate offices). The goal is to EARN TRUST with genuinely useful content, not to sell. Value-first mix, in this exact order:
+1. A purely useful, actionable tip they can apply TODAY to handle customers better on Instagram/Telegram (e.g. faster replies, saved-reply templates, capturing leads from DMs, a simple customer-service habit). Do NOT mention NOXIOAI at all — pure value.
+2. Another purely useful tip about running their small business or serving customers better. Do NOT mention NOXIOAI — pure value.
+3. Only this one may softly mention NOXIOAI: how an AI assistant can answer customers 24/7 so nothing is missed, ending with a gentle, non-pushy invitation including "noxioai.com". No hard sell.
 
 For every post:
-- Write a natural Persian caption of roughly 250-600 characters.
+- Write a natural, warm Persian caption of roughly 250-600 characters.
 - Keep claims honest; use no fabricated stats, clients, testimonials, or guaranteed outcomes.
 - Supply 2-3 relevant Persian hashtags separately from the caption.
 - Supply one detailed English image prompt for a clean, modern square social visual. Avoid logos, UI screenshots, and text inside the image.
