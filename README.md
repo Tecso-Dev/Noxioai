@@ -58,13 +58,13 @@ The detailed product plan lives in [docs/ROADMAP.md](docs/ROADMAP.md). The appro
 ## Latest activity
 
 <!-- ACTIVITY:START -->
-_Auto-updated 2026-07-19 08:34 UTC_
+_Auto-updated 2026-07-19 11:06 UTC_
 
+- `a9d2df0` Social Content agent: autonomous Persian post generation (DeepSeek + optional fal.ai images) → owner Telegram approval → auto-post to Telegram channel; Instagram = manual hand-off (no unofficial auto-post); social_posts table (Codex-built, Claude-verified + security-reviewed) — 2026-07-19
 - `1e2475a` PW-c: Persian AI setup concierge — in-dashboard chat helper (session-gated, owner-scoped, grounded to product help + BotFather steps), 4 locales (Codex-built, Claude-verified) — 2026-07-19
 - `f8ac353` PW-b: per-tenant Telegram customer-response agent — customers connect their own bot, AI answers their customers 24/7 from their knowledge base via secure webhook (constant-time secret auth, tenant-isolated), human-escalation flagging, dashboard connect+message-log (Codex-built, Claude-verified + security-reviewed) — 2026-07-19
 - `663cbfb` deploy: add /api/profile to Caddy edge allowlist (was 404 at edge; session-gated so safe) — 2026-07-18
 - `97d44fa` PW-a: per-tenant business profile + knowledge-base onboarding — /onboarding guided Persian-first form (4 locales), business_profiles table (owner-isolated), email-confirm gate (existing users grandfathered), /api/profile + verified flag on /api/auth/me (Codex-built, Claude-verified) — 2026-07-18
-- `5542fac` spec: strategy pivot to Iran-first wedge (customer-response agent, marketplace, Zarinpal, Persian concierge); Milestone W build order — 2026-07-18
 <!-- ACTIVITY:END -->
 
 ## JARVIS command center
