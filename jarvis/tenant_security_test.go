@@ -93,7 +93,7 @@ func TestOwnerFromSessionRejectsAnonymousRequests(t *testing.T) {
 		db.ExecContext(req.Context(), `DELETE FROM sessions WHERE user_id=$1`, userID)
 		db.ExecContext(req.Context(), `DELETE FROM users WHERE id=$1`, userID)
 	})
-	token, err := newSession(req.Context(), db, userID)
+	token, _, err := newSession(req.Context(), db, userID, req, sessionOptions{AuthMethod: "password"})
 	if err != nil {
 		t.Fatalf("newSession: %v", err)
 	}

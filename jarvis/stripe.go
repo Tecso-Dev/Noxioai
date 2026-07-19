@@ -127,7 +127,7 @@ func registerBilling(mux *http.ServeMux, db *sql.DB) {
 			http.Error(w, "could not get current user", http.StatusInternalServerError)
 			return
 		}
-		if user == nil {
+		if user == nil || !user.Verified {
 			http.Error(w, "unauthorized", http.StatusUnauthorized)
 			return
 		}
@@ -150,7 +150,7 @@ func registerBilling(mux *http.ServeMux, db *sql.DB) {
 			http.Error(w, "could not get current user", http.StatusInternalServerError)
 			return
 		}
-		if user == nil {
+		if user == nil || !user.Verified {
 			http.Error(w, "unauthorized", http.StatusUnauthorized)
 			return
 		}

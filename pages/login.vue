@@ -2,59 +2,120 @@
 const { t } = useI18n()
 const localePath = useLocalePath()
 const api = useRuntimeConfig().public.apiBase
+const { supported, capabilities, login: passkeyLogin } = usePasskeys()
+
 useSeoMeta({ title: () => `${t('auth.login.title')} — NOXIOAI` })
 
-const email = ref('')
+const identifier = ref('')
 const password = ref('')
+const remember = ref(false)
 const err = ref('')
 const busy = ref(false)
+const passkeyBusy = ref(false)
+const authCapabilities = ref<AuthCapabilities | null>(null)
+
+const passkeyAvailable = computed(() => supported.value && authCapabilities.value?.passkeys === true)
+
+onMounted(async () => {
+  try {
+    authCapabilities.value = await capabilities()
+  } catch {
+    authCapabilities.value = null
+  }
+})
 
 async function submit() {
   err.value = ''
   busy.value = true
   try {
-    await $fetch(`${api}/api/auth/login`, {
+    const response = await $fetch<{ verified: boolean }>(`${api}/api/auth/login`, {
       method: 'POST', credentials: 'include',
-      body: { email: email.value, password: password.value }
+      body: { identifier: identifier.value, password: password.value, remember: remember.value }
     })
+    if (!response.verified) {
+      err.value = t('auth.login.verifyEmail')
+      return
+    }
     await navigateTo(localePath('/app'))
-  } catch (e: any) {
-    err.value = e?.data || t('auth.error')
+  } catch {
+    err.value = t('auth.login.invalidCredentials')
   } finally {
     busy.value = false
+  }
+}
+
+async function usePasskey() {
+  err.value = ''
+  passkeyBusy.value = true
+  try {
+    await passkeyLogin(remember.value)
+    await navigateTo(localePath('/app'))
+  } catch {
+    err.value = t('auth.login.passkeyError')
+  } finally {
+    passkeyBusy.value = false
   }
 }
 </script>
 
 <template>
-  <main class="auth-wrap min-h-dvh flex items-center justify-center px-6 py-16">
-    <div class="site-grid" aria-hidden="true" />
-    <form class="glass-card auth-card relative z-10 w-full max-w-sm rounded-2xl p-10" @submit.prevent="submit">
-      <NuxtLink :to="localePath('/')" class="brand-mark flex items-center justify-center gap-2 text-lg font-extrabold tracking-tight mb-8"><img src="/brand/mark-dark.png" alt="" class="h-7 w-7 rounded-full" />NOXIO<span class="brand-accent">AI</span></NuxtLink>
-      <h1 class="text-2xl font-bold text-center">{{ $t('auth.login.title') }}</h1>
+  <AuthShell
+    :eyebrow="$t('auth.login.eyebrow')"
+    :title="$t('auth.login.title')"
+    :description="$t('auth.login.description')"
+  >
+    <form class="auth-form" novalidate @submit.prevent="submit">
+      <div class="auth-field">
+        <label for="login-identifier">{{ $t('auth.login.identifier') }}</label>
+        <input
+          id="login-identifier"
+          v-model.trim="identifier"
+          name="username"
+          type="text"
+          required
+          autocomplete="username"
+          autocapitalize="none"
+          spellcheck="false"
+          autofocus
+          :aria-invalid="!!err || undefined"
+        >
+      </div>
 
-      <label class="block mt-8 text-sm text-dim">{{ $t('auth.login.email') }}
-        <input v-model="email" type="email" required autocomplete="email"
-          class="mt-1.5 w-full rounded-xl border border-line bg-panel px-4 py-3 outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/20" />
-      </label>
-      <label class="block mt-4 text-sm text-dim">{{ $t('auth.login.password') }}
-        <input v-model="password" type="password" required autocomplete="current-password" minlength="8"
-          class="mt-1.5 w-full rounded-xl border border-line bg-panel px-4 py-3 outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/20" />
-      </label>
-      <p class="mt-3 text-end">
-        <NuxtLink :to="localePath('/reset')" class="text-sm text-dim font-semibold transition hover:text-gold">{{ $t('authmail.forgotPassword') }}</NuxtLink>
-      </p>
+      <AuthPasswordField
+        id="login-password"
+        v-model="password"
+        :label="$t('auth.login.password')"
+        autocomplete="current-password"
+        :invalid="!!err"
+      />
 
-      <p v-if="err" class="mt-4 text-sm text-red-400" role="alert">{{ err }}</p>
+      <div class="auth-form__options">
+        <label class="auth-check">
+          <input v-model="remember" type="checkbox">
+          <span><strong>{{ $t('auth.login.remember') }}</strong><small>{{ $t('auth.login.privateDevice') }}</small></span>
+        </label>
+        <NuxtLink :to="localePath('/reset')" class="auth-text-link">{{ $t('authmail.forgotPassword') }}</NuxtLink>
+      </div>
 
-      <button type="submit" :disabled="busy"
-        class="mt-7 w-full rounded-full bg-brand px-5 py-3 font-bold text-night transition hover:bg-gold-deep disabled:opacity-50">
-        {{ busy ? '…' : $t('auth.login.submit') }}
+      <p v-if="err" class="auth-alert" role="alert">{{ err }}</p>
+
+      <button class="auth-primary" type="submit" :disabled="busy || passkeyBusy">
+        <span>{{ busy ? $t('auth.working') : $t('auth.login.submit') }}</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M14 7l5 5-5 5"/></svg>
       </button>
-      <p class="mt-6 text-center text-sm text-dim">
+
+      <template v-if="passkeyAvailable">
+        <div class="auth-divider"><span>{{ $t('auth.or') }}</span></div>
+        <button class="auth-secondary" type="button" :disabled="busy || passkeyBusy" @click="usePasskey">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="15" r="3"/><path d="M10.5 13.3 20 4m-3 3 2 2m-5-5 2 2"/></svg>
+          {{ passkeyBusy ? $t('auth.working') : $t('auth.login.passkey') }}
+        </button>
+      </template>
+
+      <p class="auth-switch">
         {{ $t('auth.login.noAccount') }}
-        <NuxtLink :to="localePath('/signup')" class="text-gold font-semibold transition hover:text-gold-deep">{{ $t('auth.login.signupLink') }}</NuxtLink>
+        <NuxtLink :to="localePath('/signup')">{{ $t('auth.login.signupLink') }}</NuxtLink>
       </p>
     </form>
-  </main>
+  </AuthShell>
 </template>

@@ -2,7 +2,15 @@
 	# ONLY the genuinely-public app endpoints reach the backend.
 	@public path /api/auth/* /api/billing/* /api/stripe/* /api/waitlist /api/profile
 	handle @public {
-		reverse_proxy 127.0.0.1:7700
+		header {
+			Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+			X-Content-Type-Options "nosniff"
+			X-Frame-Options "DENY"
+			Referrer-Policy "strict-origin-when-cross-origin"
+		}
+		reverse_proxy 127.0.0.1:7700 {
+			header_up X-Real-IP {remote_host}
+		}
 	}
 	# HUD, agent controls (/api/send /atlas /oracle /brief /inbox /pixel /approve),
 	# /chat, /api/status, /api/agent, static HUD assets → blocked from the internet.

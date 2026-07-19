@@ -48,8 +48,42 @@ ownership of work, and record a concise handoff when stopping.
 | Owner/session | Scope | Files or area | Branch | Status | Notes |
 | --- | --- | --- | --- | --- | --- |
 | Codex | Product M1 / P1 multi-tenant foundation | Current dirty P1 files listed above | `main` | Local verification complete | Awaiting Sobhan's decision on commit and production rollout. P2 has not started. |
+| Codex `/root` | Authentication security and UX refresh | `pages/login.vue`, `pages/signup.vue`, related auth UI/i18n, `jarvis/auth*.go`, auth tests, edge headers | `codex/auth-security-refresh` | Local implementation complete | Production rollout is gated on DB migration/backup and `JARVIS_AUTH_DATA_KEY`; OAuth/TOTP remain optional follow-up work. Preserve unrelated P1 and marketing work. |
 
 ## Handoff log
+
+### 2026-07-19 — Codex `/root`
+
+- **Completed:** Rebuilt login, sign-up, recovery, verification, and account
+  security UI in EN/FA/TR/AR. Added email-or-username login, accessible password
+  visibility controls, private-device remembrance, email verification, server-
+  recorded legal consent, Argon2id parameter upgrades, breached/common password
+  screening, enumeration-resistant responses, progressive throttling, hashed
+  session/reset tokens, CSRF/origin checks, security headers, encrypted WebAuthn
+  passkeys, active-session termination, audit events, and authentication-change
+  notifications.
+- **Files changed:** Auth pages/components/composable and global styles; all four
+  locale files; `jarvis/auth.go`, `auth_email.go`, `auth_security.go`,
+  `passkeys.go`, schema/tests and verified-only API guards; edge header configs;
+  Nuxt TypeScript tooling. Existing landing showcase and marketing assets were
+  preserved and are not part of this auth scope.
+- **Commit/branch:** Uncommitted on `codex/auth-security-refresh`; baseline is
+  `a9d2df0` with unrelated dirty work still present.
+- **Verified:** `go test -race ./...`, `go vet ./...`, Nuxt type-check and
+  production build, npm audit (0 reported vulnerabilities), JSON/key parity for
+  503 locale keys, `git diff --check`, local API capability/header smoke test,
+  and headless Chromium desktop/mobile/RTL form, keyboard, semantics, target-
+  size, reduced-motion, and 320px reflow checks. PostgreSQL integration was not
+  run because the local Docker daemon/database were unavailable. The optional
+  exhaustive Codex Security workspace was opened but not started.
+- **Remaining work:** Before production, back up PostgreSQL, run the idempotent
+  schema migration, provision a random 32-byte `JARVIS_AUTH_DATA_KEY`, deploy
+  backend plus Vercel/Caddy changes together, and smoke-test real email/passkey
+  ceremonies. Configure trusted OIDC provider credentials and TOTP only if the
+  product chooses those optional methods. Tighten CSP with per-request nonces in
+  a future server-rendering pass; Nuxt currently needs `script-src 'unsafe-inline'`.
+- **Decision needed from Sobhan:** Approve the separately gated production
+  migration/deployment and provide the intended OAuth providers, if any.
 
 ### 2026-07-16 — Codex
 

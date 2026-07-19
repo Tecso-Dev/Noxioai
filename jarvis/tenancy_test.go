@@ -156,7 +156,7 @@ func mustTestUser(t *testing.T, ctx context.Context, db *sql.DB, email string) i
 	t.Helper()
 	var id int64
 	err := db.QueryRowContext(ctx, `
-		INSERT INTO users (email, password_hash, name) VALUES ($1, 'unused-test-hash', 'tenancy-test')
+		INSERT INTO users (email, password_hash, name, verified_at) VALUES ($1, 'unused-test-hash', 'tenancy-test', now())
 		RETURNING id`, email).Scan(&id)
 	if err != nil {
 		t.Fatalf("create test user %s: %v", email, err)

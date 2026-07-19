@@ -66,10 +66,25 @@ CREATE TABLE IF NOT EXISTS users (
   stripe_customer_id TEXT,
   created_at    TIMESTAMPTZ DEFAULT now()
 );
-ALTER TABLE users ADD COLUMN IF NOT EXISTS verified_at TIMESTAMPTZ;
--- Existing accounts predate confirm-gating. Only accounts created after this
--- migration should enter the unverified state.
-UPDATE users SET verified_at = now() WHERE verified_at IS NULL;
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns
+    WHERE table_schema = current_schema() AND table_name = 'users' AND column_name = 'verified_at'
+  ) THEN
+    ALTER TABLE users ADD COLUMN verified_at TIMESTAMPTZ;
+    -- Accounts that existed before verification was introduced are grandfathered.
+    UPDATE users SET verified_at = now();
+  END IF;
+END $$;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS username TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS webauthn_id BYTEA;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS terms_accepted_at TIMESTAMPTZ;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS privacy_accepted_at TIMESTAMPTZ;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS legal_version TEXT;
+CREATE UNIQUE INDEX IF NOT EXISTS users_email_lower_key ON users (lower(email));
+CREATE UNIQUE INDEX IF NOT EXISTS users_username_lower_key ON users (lower(username)) WHERE username IS NOT NULL;
+CREATE UNIQUE INDEX IF NOT EXISTS users_webauthn_id_key ON users (webauthn_id) WHERE webauthn_id IS NOT NULL;
 
 CREATE TABLE IF NOT EXISTS business_profiles (
   id             BIGSERIAL PRIMARY KEY,
@@ -112,6 +127,14 @@ CREATE TABLE IF NOT EXISTS sessions (
   expires_at TIMESTAMPTZ NOT NULL,
   created_at TIMESTAMPTZ DEFAULT now()
 );
+ALTER TABLE sessions ADD COLUMN IF NOT EXISTS session_id TEXT;
+ALTER TABLE sessions ADD COLUMN IF NOT EXISTS last_seen_at TIMESTAMPTZ DEFAULT now();
+ALTER TABLE sessions ADD COLUMN IF NOT EXISTS user_agent TEXT;
+ALTER TABLE sessions ADD COLUMN IF NOT EXISTS ip_hint TEXT;
+ALTER TABLE sessions ADD COLUMN IF NOT EXISTS remembered BOOLEAN DEFAULT FALSE;
+ALTER TABLE sessions ADD COLUMN IF NOT EXISTS auth_method TEXT DEFAULT 'password';
+CREATE UNIQUE INDEX IF NOT EXISTS sessions_session_id_key ON sessions (session_id) WHERE session_id IS NOT NULL;
+CREATE INDEX IF NOT EXISTS sessions_user_id_idx ON sessions (user_id);
 CREATE TABLE IF NOT EXISTS auth_tokens (
   token      TEXT PRIMARY KEY,
   user_id    BIGINT REFERENCES users(id),
@@ -120,6 +143,35 @@ CREATE TABLE IF NOT EXISTS auth_tokens (
   used_at    TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT now()
 );
+CREATE TABLE IF NOT EXISTS passkeys (
+  id              BIGSERIAL PRIMARY KEY,
+  user_id         BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  credential_id   BYTEA NOT NULL UNIQUE,
+  credential_data BYTEA NOT NULL,
+  name             TEXT NOT NULL,
+  created_at       TIMESTAMPTZ DEFAULT now(),
+  last_used_at     TIMESTAMPTZ
+);
+CREATE INDEX IF NOT EXISTS passkeys_user_id_idx ON passkeys (user_id);
+CREATE TABLE IF NOT EXISTS webauthn_challenges (
+  challenge_hash TEXT PRIMARY KEY,
+  user_id        BIGINT REFERENCES users(id) ON DELETE CASCADE,
+  purpose        TEXT NOT NULL CHECK (purpose IN ('register','login')),
+  session_data   BYTEA NOT NULL,
+  remember       BOOLEAN DEFAULT FALSE,
+  expires_at     TIMESTAMPTZ NOT NULL,
+  created_at     TIMESTAMPTZ DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS webauthn_challenges_expiry_idx ON webauthn_challenges (expires_at);
+CREATE TABLE IF NOT EXISTS auth_audit_log (
+  id          BIGSERIAL PRIMARY KEY,
+  user_id     BIGINT REFERENCES users(id) ON DELETE SET NULL,
+  event       TEXT NOT NULL,
+  ip_hint     TEXT,
+  user_agent  TEXT,
+  created_at  TIMESTAMPTZ DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS auth_audit_user_idx ON auth_audit_log (user_id, created_at DESC);
 CREATE TABLE IF NOT EXISTS subscriptions (
   id            BIGSERIAL PRIMARY KEY,
   user_id       BIGINT REFERENCES users(id),

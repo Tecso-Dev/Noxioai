@@ -16,5 +16,9 @@
     "parsi-text": "^0.2.0",
     "three": "^0.160.0",
     "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@types/three": "^0.160.0",
+    "vue-tsc": "^3.3.7"
   }
 }

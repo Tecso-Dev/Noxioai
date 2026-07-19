@@ -44,6 +44,7 @@ useHead(() => ({
     <div class="site-glow site-glow--one" aria-hidden="true" />
     <div class="site-glow site-glow--two" aria-hidden="true" />
     <LandingHero />
+    <LandingShowcase />
     <LandingTeam />
     <LandingFeatures />
     <LandingHow />

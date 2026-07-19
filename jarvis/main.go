@@ -11,6 +11,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 const systemPrompt = `You are JARVIS, Sobhan's personal AI assistant — calm, precise,
@@ -383,7 +384,18 @@ func serveHTTP(brain *Brain, memory *MemoryStore) {
 
 	addr := envOr("JARVIS_ADDR", "127.0.0.1:7700")
 	fmt.Printf("⚡ JARVIS HUD on http://%s  (dashboard, POST /chat, GET /health)\n", addr)
-	if err := http.ListenAndServe(addr, mux); err != nil {
+	server := &http.Server{
+		Addr:              addr,
+		Handler:           authSecurityHeaders(mux),
+		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       20 * time.Second,
+		// Chat responses stream over SSE, so keep the write timeout long enough
+		// for model output while still bounding abandoned connections.
+		WriteTimeout:   2 * time.Minute,
+		IdleTimeout:    90 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+	if err := server.ListenAndServe(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}

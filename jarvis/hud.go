@@ -75,7 +75,7 @@ func ownerFromSession(ctx context.Context, db *sql.DB, r *http.Request) (int64, 
 	if err != nil {
 		return 0, err
 	}
-	if user == nil {
+	if user == nil || !user.Verified {
 		return 0, errAuthenticationRequired
 	}
 	return user.ID, nil

@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"strings"
 	"time"
 )
 
@@ -20,6 +19,7 @@ const (
 )
 
 var errInvalidToken = errors.New("invalid_token")
+var minimumResetResponseDelay = 350 * time.Millisecond
 
 // generateAuthToken returns a random 32-byte hex token, same shape as session tokens.
 func generateAuthToken() (string, error) {
@@ -41,10 +41,22 @@ func issueAuthToken(ctx context.Context, db *sql.DB, userID int64, purpose strin
 	if err != nil {
 		return "", err
 	}
-	_, err = db.ExecContext(ctx, `
-		INSERT INTO auth_tokens (token, user_id, purpose, expires_at) VALUES ($1,$2,$3,$4)`,
-		token, userID, purpose, time.Now().Add(ttl))
+	tx, err := db.BeginTx(ctx, nil)
 	if err != nil {
+		return "", err
+	}
+	defer tx.Rollback()
+	if _, err = tx.ExecContext(ctx, `
+		UPDATE auth_tokens SET used_at = now()
+		WHERE user_id = $1 AND purpose = $2 AND used_at IS NULL`, userID, purpose); err != nil {
+		return "", err
+	}
+	if _, err = tx.ExecContext(ctx, `
+		INSERT INTO auth_tokens (token, user_id, purpose, expires_at) VALUES ($1,$2,$3,$4)`,
+		tokenDigest(token), userID, purpose, time.Now().Add(ttl)); err != nil {
+		return "", err
+	}
+	if err = tx.Commit(); err != nil {
 		return "", err
 	}
 	return token, nil
@@ -52,14 +64,14 @@ func issueAuthToken(ctx context.Context, db *sql.DB, userID int64, purpose strin
 
 // consumeAuthToken validates a single-use token for the given purpose and marks it used.
 // Returns errInvalidToken for anything unusable (unknown, expired, already used).
-func consumeAuthToken(ctx context.Context, db *sql.DB, token, purpose string) (int64, error) {
+func consumeAuthToken(ctx context.Context, db queryExecer, token, purpose string) (int64, error) {
 	var userID int64
 	// single atomic claim: two concurrent requests can never both consume the same token
 	err := db.QueryRowContext(ctx, `
 		UPDATE auth_tokens SET used_at = now()
-		WHERE token = $1 AND purpose = $2 AND used_at IS NULL AND expires_at > now()
+		WHERE (token = $1 OR token = $2) AND purpose = $3 AND used_at IS NULL AND expires_at > now()
 		RETURNING user_id`,
-		token, purpose).Scan(&userID)
+		tokenDigest(token), token, purpose).Scan(&userID)
 	if errors.Is(err, sql.ErrNoRows) {
 		return 0, errInvalidToken
 	}
@@ -120,6 +132,28 @@ func sendResetEmail(to, token string) error {
 	return sendAuthMail(to, "Reset your NOXIOAI password", text, html)
 }
 
+func sendNewLoginEmail(to, userAgent, ipHint string) error {
+	when := time.Now().UTC().Format("2 Jan 2006, 15:04 UTC")
+	body := fmt.Sprintf("A new device signed in to your NOXIOAI account at %s. Device: %s. Network: %s. If this was not you, reset your password and end active sessions from Account Security.", when, userAgent, ipHint)
+	text := body + "\n\nAccount security: " + appBaseURL() + "/account"
+	html := authMailHTML("New sign-in to your account", body, appBaseURL()+"/account", "Review sessions")
+	return sendAuthMail(to, "New sign-in to your NOXIOAI account", text, html)
+}
+
+func sendPasswordChangedEmail(to string) error {
+	body := "Your NOXIOAI password was changed and all existing sessions were ended. If you did not make this change, contact hi@noxioai.com immediately."
+	text := body + "\n\nLog in: " + appBaseURL() + "/login"
+	html := authMailHTML("Your password was changed", body, appBaseURL()+"/login", "Log in securely")
+	return sendAuthMail(to, "Your NOXIOAI password was changed", text, html)
+}
+
+func sendPasskeyChangedEmail(to, action string) error {
+	body := fmt.Sprintf("A passkey was %s on your NOXIOAI account. If you did not make this change, review your active sessions and reset your password immediately.", action)
+	text := body + "\n\nAccount security: " + appBaseURL() + "/account"
+	html := authMailHTML("Passkey security changed", body, appBaseURL()+"/account", "Review account security")
+	return sendAuthMail(to, "Passkey security changed on your NOXIOAI account", text, html)
+}
+
 func writeAuthError(w http.ResponseWriter, status int, code string) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
@@ -129,6 +163,9 @@ func writeAuthError(w http.ResponseWriter, status int, code string) {
 // registerAuthEmail wires email verification and password-reset endpoints onto the mux.
 func registerAuthEmail(mux *http.ServeMux, db *sql.DB) {
 	mux.HandleFunc("POST /api/auth/verify/confirm", func(w http.ResponseWriter, r *http.Request) {
+		if !requireSameOrigin(w, r) || !enforceAuthRateLimit(w, r, "verify-ip", "", ratePolicy{Limit: 20, Window: time.Hour, Block: 5 * time.Minute}) {
+			return
+		}
 		if db == nil {
 			http.Error(w, "database unavailable", http.StatusServiceUnavailable)
 			return
@@ -136,11 +173,24 @@ func registerAuthEmail(mux *http.ServeMux, db *sql.DB) {
 		var req struct {
 			Token string `json:"token"`
 		}
-		if json.NewDecoder(r.Body).Decode(&req) != nil || strings.TrimSpace(req.Token) == "" {
+		if decodeAuthJSON(w, r, &req) != nil || len(req.Token) != 64 {
 			writeAuthError(w, http.StatusBadRequest, "invalid_token")
 			return
 		}
-		userID, err := consumeAuthToken(r.Context(), db, req.Token, "verify")
+		if _, err := hex.DecodeString(req.Token); err != nil {
+			writeAuthError(w, http.StatusBadRequest, "invalid_token")
+			return
+		}
+		if !enforceAuthRateLimit(w, r, "verify-token", req.Token, ratePolicy{Limit: 5, Window: 15 * time.Minute, Block: 15 * time.Minute}) {
+			return
+		}
+		tx, err := db.BeginTx(r.Context(), nil)
+		if err != nil {
+			http.Error(w, "could not verify email", http.StatusInternalServerError)
+			return
+		}
+		defer tx.Rollback()
+		userID, err := consumeAuthToken(r.Context(), tx, req.Token, "verify")
 		if errors.Is(err, errInvalidToken) {
 			writeAuthError(w, http.StatusBadRequest, "invalid_token")
 			return
@@ -149,15 +199,29 @@ func registerAuthEmail(mux *http.ServeMux, db *sql.DB) {
 			http.Error(w, "could not verify email", http.StatusInternalServerError)
 			return
 		}
-		if _, err := db.ExecContext(r.Context(), `UPDATE users SET verified_at = now() WHERE id = $1`, userID); err != nil {
+		if _, err := tx.ExecContext(r.Context(), `UPDATE users SET verified_at = now() WHERE id = $1`, userID); err != nil {
 			http.Error(w, "could not verify email", http.StatusInternalServerError)
 			return
 		}
+		if err := tx.Commit(); err != nil {
+			http.Error(w, "could not verify email", http.StatusInternalServerError)
+			return
+		}
+		recordAuthEvent(r.Context(), db, &userID, "email_verified", r)
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]bool{"ok": true})
 	})
 
 	mux.HandleFunc("POST /api/auth/reset/request", func(w http.ResponseWriter, r *http.Request) {
+		started := time.Now()
+		defer func() {
+			if remaining := minimumResetResponseDelay - time.Since(started); remaining > 0 {
+				time.Sleep(remaining)
+			}
+		}()
+		if !requireSameOrigin(w, r) || !enforceAuthRateLimit(w, r, "reset-request-ip", "", ratePolicy{Limit: 5, Window: 15 * time.Minute, Block: 15 * time.Minute}) {
+			return
+		}
 		if db == nil {
 			http.Error(w, "database unavailable", http.StatusServiceUnavailable)
 			return
@@ -165,11 +229,14 @@ func registerAuthEmail(mux *http.ServeMux, db *sql.DB) {
 		var req struct {
 			Email string `json:"email"`
 		}
-		json.NewDecoder(r.Body).Decode(&req)
-		email := strings.TrimSpace(req.Email)
-		if email != "" {
+		if decodeAuthJSON(w, r, &req) != nil {
+			writeAuthError(w, http.StatusBadRequest, "invalid_request")
+			return
+		}
+		email, _ := normalizeEmail(req.Email)
+		if email != "" && enforceAuthRateLimit(w, r, "reset-request-identity", email, ratePolicy{Limit: 3, Window: time.Hour, Block: 30 * time.Minute}) {
 			var userID int64
-			if err := db.QueryRowContext(r.Context(), `SELECT id FROM users WHERE email = $1`, email).Scan(&userID); err == nil {
+			if err := db.QueryRowContext(r.Context(), `SELECT id FROM users WHERE lower(email) = $1`, email).Scan(&userID); err == nil {
 				if token, terr := issueAuthToken(r.Context(), db, userID, "reset", resetTokenTTL); terr == nil {
 					go func(to, tok string) {
 						if err := sendResetEmail(to, tok); err != nil {
@@ -177,6 +244,9 @@ func registerAuthEmail(mux *http.ServeMux, db *sql.DB) {
 						}
 					}(email, token)
 				}
+				recordAuthEvent(r.Context(), db, &userID, "password_reset_requested", r)
+			} else {
+				recordAuthEvent(r.Context(), db, nil, "password_reset_requested", r)
 			}
 		}
 		// Always respond ok — never reveal whether the account exists.
@@ -185,6 +255,9 @@ func registerAuthEmail(mux *http.ServeMux, db *sql.DB) {
 	})
 
 	mux.HandleFunc("POST /api/auth/reset/confirm", func(w http.ResponseWriter, r *http.Request) {
+		if !requireSameOrigin(w, r) || !enforceAuthRateLimit(w, r, "reset-confirm-ip", "", ratePolicy{Limit: 10, Window: time.Hour, Block: 15 * time.Minute}) {
+			return
+		}
 		if db == nil {
 			http.Error(w, "database unavailable", http.StatusServiceUnavailable)
 			return
@@ -193,11 +266,33 @@ func registerAuthEmail(mux *http.ServeMux, db *sql.DB) {
 			Token    string `json:"token"`
 			Password string `json:"password"`
 		}
-		if json.NewDecoder(r.Body).Decode(&req) != nil || len(req.Password) < 8 {
-			http.Error(w, "invalid reset data", http.StatusBadRequest)
+		if decodeAuthJSON(w, r, &req) != nil || len(req.Token) != 64 {
+			writeAuthError(w, http.StatusBadRequest, "invalid_reset_data")
 			return
 		}
-		userID, err := consumeAuthToken(r.Context(), db, req.Token, "reset")
+		if _, err := hex.DecodeString(req.Token); err != nil {
+			writeAuthError(w, http.StatusBadRequest, "invalid_token")
+			return
+		}
+		if !enforceAuthRateLimit(w, r, "reset-confirm-token", req.Token, ratePolicy{Limit: 5, Window: 15 * time.Minute, Block: 30 * time.Minute}) {
+			return
+		}
+		if err := validatePassword(r.Context(), req.Password); err != nil {
+			writeAuthError(w, http.StatusBadRequest, err.Error())
+			return
+		}
+		hash, err := hashPassword(req.Password)
+		if err != nil {
+			http.Error(w, "could not reset password", http.StatusInternalServerError)
+			return
+		}
+		tx, err := db.BeginTx(r.Context(), nil)
+		if err != nil {
+			http.Error(w, "could not reset password", http.StatusInternalServerError)
+			return
+		}
+		defer tx.Rollback()
+		userID, err := consumeAuthToken(r.Context(), tx, req.Token, "reset")
 		if errors.Is(err, errInvalidToken) {
 			writeAuthError(w, http.StatusBadRequest, "invalid_token")
 			return
@@ -206,20 +301,37 @@ func registerAuthEmail(mux *http.ServeMux, db *sql.DB) {
 			http.Error(w, "could not reset password", http.StatusInternalServerError)
 			return
 		}
-		hash, err := hashPassword(req.Password)
-		if err != nil {
+		var email string
+		if err := tx.QueryRowContext(r.Context(), `SELECT email FROM users WHERE id = $1`, userID).Scan(&email); err != nil {
 			http.Error(w, "could not reset password", http.StatusInternalServerError)
 			return
 		}
-		if _, err := db.ExecContext(r.Context(), `UPDATE users SET password_hash = $1 WHERE id = $2`, hash, userID); err != nil {
+		if _, err := tx.ExecContext(r.Context(), `UPDATE users SET password_hash = $1 WHERE id = $2`, hash, userID); err != nil {
 			http.Error(w, "could not reset password", http.StatusInternalServerError)
 			return
 		}
 		// Invalidate every existing session for this account.
-		if _, err := db.ExecContext(r.Context(), `DELETE FROM sessions WHERE user_id = $1`, userID); err != nil {
+		if _, err := tx.ExecContext(r.Context(), `DELETE FROM sessions WHERE user_id = $1`, userID); err != nil {
 			http.Error(w, "could not reset password", http.StatusInternalServerError)
 			return
 		}
+		if _, err := tx.ExecContext(r.Context(), `
+			UPDATE auth_tokens SET used_at = now()
+			WHERE user_id = $1 AND purpose = 'reset' AND used_at IS NULL`, userID); err != nil {
+			http.Error(w, "could not reset password", http.StatusInternalServerError)
+			return
+		}
+		if err := tx.Commit(); err != nil {
+			http.Error(w, "could not reset password", http.StatusInternalServerError)
+			return
+		}
+		clearSessionCookie(w)
+		recordAuthEvent(r.Context(), db, &userID, "password_reset_completed", r)
+		go func() {
+			if mailErr := sendPasswordChangedEmail(email); mailErr != nil {
+				fmt.Fprintln(os.Stderr, "auth: send password changed email:", mailErr)
+			}
+		}()
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]bool{"ok": true})
 	})

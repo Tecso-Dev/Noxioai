@@ -142,7 +142,7 @@ func authenticatedTenant(w http.ResponseWriter, r *http.Request, db *sql.DB) (*U
 		http.Error(w, "could not get current user", http.StatusInternalServerError)
 		return nil, false
 	}
-	if user == nil {
+	if user == nil || !user.Verified {
 		http.Error(w, "unauthorized", http.StatusUnauthorized)
 		return nil, false
 	}
