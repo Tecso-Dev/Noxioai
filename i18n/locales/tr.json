@@ -828,5 +828,16 @@
       "body": "Küçük işletmelere her an çalışan bir ekip vermek: yoğun günde yetkin, mesai bittikten sonra güvenilir ve her zaman işletme sahibinin kontrolünde."
     },
     "cta": "Bekleme listesine katıl"
+  },
+  "error404": {
+    "eyebrow": "Sistem / Hata",
+    "notFoundTitle": "Bu rota mevcut değil",
+    "notFoundMessage": "Aradığınız sayfa taşınmış, yeniden adlandırılmış ya da hiç var olmamış olabilir.",
+    "genericTitle": "Bir şeyler bozuldu",
+    "genericMessage": "Beklenmeyen bir hata bu sayfanın yüklenmesini engelledi.",
+    "terminalNotFound": "rota bulunamadı",
+    "terminalGeneric": "beklenmeyen hata",
+    "pathLabel": "İstenen yol",
+    "cta": "Ana sayfaya dön"
   }
 }

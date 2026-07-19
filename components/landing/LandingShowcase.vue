@@ -12,7 +12,11 @@ const codeColumns = [
     "  mission: 'launch campaign'",
     '})',
     '',
-    'await office.run()'
+    'await office.run()',
+    '',
+    "office.on('mission:blocked', async (m) => {",
+    '  await telegram.notifyOwner(m)',
+    '})'
   ],
   [
     'type Mission = {',
@@ -25,7 +29,11 @@ const codeColumns = [
     'const result = await team.route(',
     '  mission,',
     '  { memory: true }',
-    ')'
+    ')',
+    '',
+    'if (result.needsApproval) {',
+    '  await gate.wait(result.id)',
+    '}'
   ],
   [
     "stream.on('agent:ready', ({ agent }) => {",
@@ -36,9 +44,51 @@ const codeColumns = [
     '  })',
     '})',
     '',
+    "stream.on('agent:error', (err) => {",
+    '  retry.schedule(err.taskId, {',
+    "    backoff: 'exponential'",
+    '  })',
+    '})',
+    '',
     'export default workspace'
+  ],
+  [
+    'class TenantContext {',
+    '  constructor(tenantId) {',
+    '    this.tenantId = tenantId',
+    '    this.scope = isolate(tenantId)',
+    '  }',
+    '',
+    '  async run(task) {',
+    '    const ctx = this.scope.enter()',
+    '    return task.execute(ctx)',
+    '  }',
+    '}',
+    '',
+    'const auth = await verify(token, {',
+    '  constantTime: true',
+    '})'
+  ],
+  [
+    'async function draft(lead) {',
+    '  const brief = await atlas.analyze(lead)',
+    '  const copy = await deepseek.write(brief)',
+    '',
+    '  return {',
+    '    lead,',
+    '    copy,',
+    "    status: 'pending_approval'",
+    '  }',
+    '}',
+    '',
+    "bot.on('approve', async (id) => {",
+    '  await queue.publish(id)',
+    '})'
   ]
 ]
+
+// duplicated once so the track can loop seamlessly at translateX(-50%)
+const loopedCodeColumns = [...codeColumns, ...codeColumns]
 
 const surfaces = [
   { key: 'command', image: '/showcase/command-center.webp' },
@@ -73,13 +123,14 @@ const surfaces = [
       </div>
 
       <div class="showcase-code" aria-hidden="true">
-        <div
-          v-for="(column, columnIndex) in codeColumns"
-          :key="columnIndex"
-          class="showcase-code__column"
-          :style="{ '--column-delay': `${columnIndex * -2.4}s` }"
-        >
-          <code v-for="(line, lineIndex) in column" :key="lineIndex" :class="{ 'is-accent': line.includes('agent') || line.includes('mission') || line.includes('office') }">{{ line || ' ' }}</code>
+        <div class="showcase-code__track">
+          <div
+            v-for="(column, columnIndex) in loopedCodeColumns"
+            :key="columnIndex"
+            class="showcase-code__column"
+          >
+            <code v-for="(line, lineIndex) in column" :key="lineIndex" :class="{ 'is-accent': line.includes('agent') || line.includes('mission') || line.includes('office') }">{{ line || ' ' }}</code>
+          </div>
         </div>
       </div>
 
@@ -95,8 +146,8 @@ const surfaces = [
             v-for="(surface, index) in surfaces"
             :key="surface.key"
             v-motion
-            :initial="{ opacity: 0, x: 30 }"
-            :visible-once="{ opacity: 1, x: 0, transition: { duration: 520, delay: 180 + index * 120 } }"
+            :initial="{ opacity: 0, y: 24 }"
+            :visible-once="{ opacity: 1, y: 0, transition: { duration: 520, delay: 180 + index * 120 } }"
             class="product-surface"
             role="listitem"
           >
@@ -120,8 +171,8 @@ const surfaces = [
 
           <article
             v-motion
-            :initial="{ opacity: 0, x: 30 }"
-            :visible-once="{ opacity: 1, x: 0, transition: { duration: 520, delay: 420 } }"
+            :initial="{ opacity: 0, y: 24 }"
+            :visible-once="{ opacity: 1, y: 0, transition: { duration: 520, delay: 420 } }"
             class="product-surface product-surface--feed"
             role="listitem"
           >
@@ -218,7 +269,7 @@ const surfaces = [
   align-items: center;
   background: rgba(3, 10, 22, 0.74);
   border-bottom: 1px solid rgba(72, 202, 228, 0.11);
-  color: rgba(207, 242, 250, 0.58);
+  color: rgba(242, 239, 232, 0.5);
   display: flex;
   font-family: 'DM Mono', monospace;
   font-size: 0.62rem;
@@ -239,9 +290,9 @@ const surfaces = [
 }
 
 .showcase-stage__pulse {
-  background: #59f6b5;
+  background: var(--cyan);
   border-radius: 50%;
-  box-shadow: 0 0 0 4px rgba(89, 246, 181, 0.08), 0 0 14px rgba(89, 246, 181, 0.8);
+  box-shadow: 0 0 0 4px var(--cyan-soft), 0 0 14px rgba(72, 202, 228, 0.8);
   height: 0.38rem;
   width: 0.38rem;
 }
@@ -251,9 +302,6 @@ const surfaces = [
 }
 
 .showcase-code {
-  display: grid;
-  gap: 1.1rem;
-  grid-template-columns: repeat(3, minmax(10.5rem, 1fr));
   inset: 2.75rem 59% 0 0;
   mask-image: linear-gradient(90deg, black 0%, black 68%, transparent 100%);
   overflow: hidden;
@@ -261,17 +309,23 @@ const surfaces = [
   position: absolute;
 }
 
-.showcase-code__column {
-  animation: code-drift 12s ease-in-out infinite alternate;
-  animation-delay: var(--column-delay);
+.showcase-code__track {
+  animation: showcase-marquee 46s linear infinite;
   display: flex;
+  gap: 1.1rem;
+  width: max-content;
+}
+
+.showcase-code__column {
+  display: flex;
+  flex: 0 0 10.5rem;
   flex-direction: column;
   gap: 0.22rem;
   opacity: 0.62;
 }
 
 .showcase-code__column code {
-  color: rgba(124, 178, 201, 0.54);
+  color: rgba(154, 149, 176, 0.55);
   font-family: 'DM Mono', monospace;
   font-size: 0.62rem;
   line-height: 1.55;
@@ -303,7 +357,7 @@ const surfaces = [
 }
 
 .showcase-seam__spark {
-  background: #dffbff;
+  background: var(--ivory);
   border-radius: 50%;
   box-shadow: 0 0 12px 3px rgba(72, 202, 228, 0.72);
   height: 3px;
@@ -388,10 +442,10 @@ const surfaces = [
 }
 
 .product-surface__signal {
-  background: #59f6b5;
+  background: var(--cyan);
   border: 2px solid rgba(3, 10, 20, 0.8);
   border-radius: 50%;
-  box-shadow: 0 0 12px rgba(89, 246, 181, 0.8);
+  box-shadow: 0 0 12px rgba(72, 202, 228, 0.8);
   height: 0.55rem;
   position: absolute;
   right: 0.75rem;
@@ -444,9 +498,9 @@ const surfaces = [
 }
 
 .mission-feed__live {
-  border: 1px solid rgba(89, 246, 181, 0.34);
+  border: 1px solid rgba(72, 202, 228, 0.34);
   border-radius: 999px;
-  color: #59f6b5;
+  color: var(--cyan);
   padding: 0.18rem 0.4rem;
 }
 
@@ -482,7 +536,7 @@ const surfaces = [
   background: rgba(12, 31, 49, 0.74);
   border: 1px solid rgba(72, 202, 228, 0.11);
   border-radius: 0.42rem;
-  color: rgba(207, 232, 239, 0.72);
+  color: rgba(242, 239, 232, 0.72);
   display: flex;
   font-size: 0.52rem;
   gap: 0.45rem;
@@ -493,10 +547,10 @@ const surfaces = [
 
 .mission-feed__agent {
   align-items: center;
-  background: rgba(140, 81, 255, 0.18);
-  border: 1px solid rgba(140, 81, 255, 0.5);
+  background: rgba(242, 239, 232, 0.08);
+  border: 1px solid rgba(242, 239, 232, 0.24);
   border-radius: 50%;
-  color: #c6a7ff;
+  color: var(--ivory);
   display: inline-flex;
   flex: 0 0 1.15rem;
   font-family: 'DM Mono', monospace;
@@ -516,9 +570,9 @@ const surfaces = [
   color: var(--cyan);
 }
 
-@keyframes code-drift {
-  from { transform: translateY(0); }
-  to { transform: translateY(-1.2rem); }
+@keyframes showcase-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
 @media (max-width: 900px) {
@@ -590,13 +644,15 @@ const surfaces = [
   }
 
   .showcase-code {
-    gap: 0.7rem;
-    grid-template-columns: repeat(2, minmax(10rem, 1fr));
     padding-inline-start: 0.85rem;
   }
 
-  .showcase-code__column:nth-child(3) {
-    display: none;
+  .showcase-code__track {
+    gap: 0.7rem;
+  }
+
+  .showcase-code__column {
+    flex-basis: 10rem;
   }
 
   .showcase-eyebrow {
@@ -611,7 +667,7 @@ const surfaces = [
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .showcase-code__column {
+  .showcase-code__track {
     animation: none;
   }
 
@@ -621,6 +677,13 @@ const surfaces = [
   .product-surface:hover .product-surface__visual img {
     transform: none;
     transition: none;
+  }
+
+  /* v-motion sets inline opacity/transform via JS; force the final state so
+     the staggered reveal doesn't animate under reduced motion */
+  .product-surface {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 </style>

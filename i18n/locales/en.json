@@ -828,5 +828,16 @@
       "body": "Give small businesses an always-on team: capable when the day is busy, dependable after the office closes and always under the owner's control."
     },
     "cta": "Join the waitlist"
+  },
+  "error404": {
+    "eyebrow": "System / Fault",
+    "notFoundTitle": "This route doesn't exist",
+    "notFoundMessage": "The page you're looking for was moved, renamed, or never existed.",
+    "genericTitle": "Something broke",
+    "genericMessage": "An unexpected error stopped this page from loading.",
+    "terminalNotFound": "route not found",
+    "terminalGeneric": "unexpected fault",
+    "pathLabel": "Requested path",
+    "cta": "Back to home"
   }
 }
