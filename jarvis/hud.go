@@ -132,15 +132,29 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 		}
 	})
 
+	// The public HUD entry point (noxioai.com/admin). Gated by is_admin, not
+	// a secret URL — a human loading the page without a valid admin session
+	// is bounced to /login rather than shown a bare JSON error.
+	mux.HandleFunc("GET /admin", func(w http.ResponseWriter, r *http.Request) {
+		if _, ok := resolveAdmin(r, db); !ok {
+			http.Redirect(w, r, "/login", http.StatusFound)
+			return
+		}
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		if _, err := w.Write(hudHTML); err != nil {
+			return
+		}
+	})
+
 	mux.HandleFunc("GET /api/status", func(w http.ResponseWriter, r *http.Request) {
+		if _, ok := requireAdmin(w, r, db); !ok {
+			return
+		}
 		ctx := r.Context()
-		var ownerID int64
-		if db != nil {
-			var ok bool
-			ownerID, ok = sessionOwner(db, w, r)
-			if !ok {
-				return
-			}
+		ownerID, err := defaultOwnerID(ctx, db)
+		if err != nil {
+			http.Error(w, "owner lookup failed", http.StatusInternalServerError)
+			return
 		}
 		lastOps := map[string]string{}
 		if db != nil {
@@ -249,13 +263,17 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 
 	// Agent dossier for the workspace popups: mission history from experiences.
 	mux.HandleFunc("GET /api/agent", func(w http.ResponseWriter, r *http.Request) {
-		name := strings.ToLower(r.URL.Query().Get("name"))
-		if db == nil || name == "" {
-			http.Error(w, "need ?name and a live CRM", http.StatusBadRequest)
+		if _, ok := requireAdmin(w, r, db); !ok {
 			return
 		}
-		ownerID, ok := sessionOwner(db, w, r)
-		if !ok {
+		name := strings.ToLower(r.URL.Query().Get("name"))
+		if name == "" {
+			http.Error(w, "need ?name", http.StatusBadRequest)
+			return
+		}
+		ownerID, err := defaultOwnerID(r.Context(), db)
+		if err != nil {
+			http.Error(w, "owner lookup failed", http.StatusInternalServerError)
 			return
 		}
 		missions := []map[string]string{}
@@ -294,15 +312,19 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 	}
 
 	mux.HandleFunc("POST /api/oracle", func(w http.ResponseWriter, r *http.Request) {
+		if _, ok := requireAdmin(w, r, db); !ok {
+			return
+		}
 		var req struct {
 			Niche string `json:"niche"`
 		}
-		if json.NewDecoder(r.Body).Decode(&req) != nil || req.Niche == "" || db == nil {
-			http.Error(w, "need {niche} and a live CRM", http.StatusBadRequest)
+		if json.NewDecoder(r.Body).Decode(&req) != nil || req.Niche == "" {
+			http.Error(w, "need {niche}", http.StatusBadRequest)
 			return
 		}
-		ownerID, ok := sessionOwner(db, w, r)
-		if !ok {
+		ownerID, err := defaultOwnerID(r.Context(), db)
+		if err != nil {
+			http.Error(w, "owner lookup failed", http.StatusInternalServerError)
 			return
 		}
 		runAgent(&Oracle{Brain: brain, DB: db, OwnerID: ownerID}, req.Niche, "🔎 ORACLE hunting: "+req.Niche)
@@ -310,15 +332,19 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 	})
 
 	mux.HandleFunc("POST /api/atlas", func(w http.ResponseWriter, r *http.Request) {
+		if _, ok := requireAdmin(w, r, db); !ok {
+			return
+		}
 		var req struct {
 			Lead int64 `json:"lead"`
 		}
-		if json.NewDecoder(r.Body).Decode(&req) != nil || req.Lead == 0 || db == nil {
-			http.Error(w, "need {lead} and a live CRM", http.StatusBadRequest)
+		if json.NewDecoder(r.Body).Decode(&req) != nil || req.Lead == 0 {
+			http.Error(w, "need {lead}", http.StatusBadRequest)
 			return
 		}
-		ownerID, ok := sessionOwner(db, w, r)
-		if !ok {
+		ownerID, err := defaultOwnerID(r.Context(), db)
+		if err != nil {
+			http.Error(w, "owner lookup failed", http.StatusInternalServerError)
 			return
 		}
 		runAgent(&Atlas{Brain: brain, DB: db, OwnerID: ownerID}, fmt.Sprint(req.Lead), fmt.Sprintf("✍️ ATLAS drafting for lead %d", req.Lead))
@@ -326,15 +352,19 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 	})
 
 	mux.HandleFunc("POST /api/pixel", func(w http.ResponseWriter, r *http.Request) {
+		if _, ok := requireAdmin(w, r, db); !ok {
+			return
+		}
 		var req struct {
 			Lead int64 `json:"lead"`
 		}
-		if json.NewDecoder(r.Body).Decode(&req) != nil || req.Lead == 0 || db == nil {
-			http.Error(w, "need {lead} and a live CRM", http.StatusBadRequest)
+		if json.NewDecoder(r.Body).Decode(&req) != nil || req.Lead == 0 {
+			http.Error(w, "need {lead}", http.StatusBadRequest)
 			return
 		}
-		ownerID, ok := sessionOwner(db, w, r)
-		if !ok {
+		ownerID, err := defaultOwnerID(r.Context(), db)
+		if err != nil {
+			http.Error(w, "owner lookup failed", http.StatusInternalServerError)
 			return
 		}
 		act.add("🎨 PIXEL reviewing lead %d", req.Lead)
@@ -352,12 +382,12 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 	})
 
 	mux.HandleFunc("POST /api/inbox", func(w http.ResponseWriter, r *http.Request) {
-		if db == nil {
-			http.Error(w, "CRM offline", http.StatusServiceUnavailable)
+		if _, ok := requireAdmin(w, r, db); !ok {
 			return
 		}
-		ownerID, ok := sessionOwner(db, w, r)
-		if !ok {
+		ownerID, err := defaultOwnerID(r.Context(), db)
+		if err != nil {
+			http.Error(w, "owner lookup failed", http.StatusInternalServerError)
 			return
 		}
 		act.add("📬 HERALD checking inbox for replies")
@@ -375,12 +405,12 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 	})
 
 	mux.HandleFunc("POST /api/brief", func(w http.ResponseWriter, r *http.Request) {
-		if db == nil {
-			http.Error(w, "CRM offline", http.StatusServiceUnavailable)
+		if _, ok := requireAdmin(w, r, db); !ok {
 			return
 		}
-		ownerID, ok := sessionOwner(db, w, r)
-		if !ok {
+		ownerID, err := defaultOwnerID(r.Context(), db)
+		if err != nil {
+			http.Error(w, "owner lookup failed", http.StatusInternalServerError)
 			return
 		}
 		act.add("📨 briefing requested")
@@ -400,15 +430,19 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 
 	// HERALD dispatch — only works on drafts Sobhan already approved.
 	mux.HandleFunc("POST /api/send", func(w http.ResponseWriter, r *http.Request) {
+		if _, ok := requireAdmin(w, r, db); !ok {
+			return
+		}
 		var req struct {
 			ID int64 `json:"id"`
 		}
-		if json.NewDecoder(r.Body).Decode(&req) != nil || req.ID == 0 || db == nil {
-			http.Error(w, "need {id} and a live CRM", http.StatusBadRequest)
+		if json.NewDecoder(r.Body).Decode(&req) != nil || req.ID == 0 {
+			http.Error(w, "need {id}", http.StatusBadRequest)
 			return
 		}
-		ownerID, ok := sessionOwner(db, w, r)
-		if !ok {
+		ownerID, err := defaultOwnerID(r.Context(), db)
+		if err != nil {
+			http.Error(w, "owner lookup failed", http.StatusInternalServerError)
 			return
 		}
 		to, err := HeraldSend(r.Context(), db, ownerID, req.ID)
@@ -424,15 +458,19 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 
 	// Approve stays synchronous — it IS the human gate (Principle 1).
 	mux.HandleFunc("POST /api/approve", func(w http.ResponseWriter, r *http.Request) {
+		if _, ok := requireAdmin(w, r, db); !ok {
+			return
+		}
 		var req struct {
 			ID int64 `json:"id"`
 		}
-		if json.NewDecoder(r.Body).Decode(&req) != nil || req.ID == 0 || db == nil {
-			http.Error(w, "need {id} and a live CRM", http.StatusBadRequest)
+		if json.NewDecoder(r.Body).Decode(&req) != nil || req.ID == 0 {
+			http.Error(w, "need {id}", http.StatusBadRequest)
 			return
 		}
-		ownerID, ok := sessionOwner(db, w, r)
-		if !ok {
+		ownerID, err := defaultOwnerID(r.Context(), db)
+		if err != nil {
+			http.Error(w, "owner lookup failed", http.StatusInternalServerError)
 			return
 		}
 		draft, err := ApproveOutreach(r.Context(), db, ownerID, req.ID)

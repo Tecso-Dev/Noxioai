@@ -4,6 +4,14 @@
     {
       "source": "/api/:path*",
       "destination": "https://api.noxioai.com/api/:path*"
+    },
+    {
+      "source": "/admin",
+      "destination": "https://api.noxioai.com/admin"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "https://api.noxioai.com/admin/:path*"
     }
   ],
   "headers": [

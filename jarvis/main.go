@@ -403,12 +403,12 @@ func serveHTTP(brain *Brain, memory *MemoryStore) {
 
 func registerChat(mux *http.ServeMux, brain *Brain, db *sql.DB) {
 	mux.HandleFunc("POST /chat", func(w http.ResponseWriter, r *http.Request) {
-		if db == nil {
-			http.Error(w, "CRM offline", http.StatusServiceUnavailable)
+		if _, ok := requireAdmin(w, r, db); !ok {
 			return
 		}
-		ownerID, ok := sessionOwner(db, w, r)
-		if !ok {
+		ownerID, err := defaultOwnerID(r.Context(), db)
+		if err != nil {
+			http.Error(w, "owner lookup failed", http.StatusInternalServerError)
 			return
 		}
 		var req struct {
@@ -430,7 +430,7 @@ func registerChat(mux *http.ServeMux, brain *Brain, db *sql.DB) {
 			http.Error(w, "streaming unsupported", http.StatusInternalServerError)
 			return
 		}
-		_, err := brain.Chat(history, func(tok string) {
+		_, err = brain.Chat(history, func(tok string) {
 			data, _ := json.Marshal(map[string]string{"token": tok})
 			fmt.Fprintf(w, "data: %s\n\n", data)
 			flusher.Flush()
