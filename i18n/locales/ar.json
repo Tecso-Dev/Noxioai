@@ -223,6 +223,34 @@
       }
     }
   },
+  "tenantbot": {
+    "connectTitle": "اربط بوت Telegram الخاص بك",
+    "connectDescription": "ألصق رمز BotFather الخاص بك. سيجيب هذا البوت عن عملائك على مدار الساعة من قاعدة معرفة نشاطك التجاري.",
+    "tokenLabel": "رمز BotFather",
+    "tokenPlaceholder": "ألصق رمز البوت",
+    "tokenHelp": "أنشئ بوتًا أو اختره في {'@'}BotFather، ثم ألصق رمزه هنا. لن تعرض NOXIOAI الرمز مرة أخرى.",
+    "tokenRequired": "أدخل رمز بوت Telegram.",
+    "connect": "ربط البوت",
+    "connecting": "جارٍ الربط…",
+    "connected": "متصل ويجيب على مدار الساعة",
+    "active": "نشط",
+    "disconnect": "قطع الاتصال",
+    "disconnectConfirm": "هل تريد قطع اتصال بوت Telegram هذا؟",
+    "connectSuccess": "تم ربط بوت Telegram وأصبح جاهزًا.",
+    "disconnectSuccess": "تم قطع اتصال بوت Telegram.",
+    "connectError": "تعذر ربط هذا البوت. تحقق من الرمز وحاول مجددًا.",
+    "disconnectError": "تعذر قطع اتصال هذا البوت. حاول مجددًا.",
+    "loadError": "تعذر تحميل اتصال بوت Telegram.",
+    "recentTitle": "رسائل العملاء الأخيرة",
+    "recentDescription": "آخر 50 سؤالًا من العملاء والإجابات التي أرسلها وكيلك.",
+    "refresh": "تحديث",
+    "messagesLoadError": "تعذر تحميل رسائل العملاء الأخيرة.",
+    "empty": "لا توجد رسائل من العملاء بعد.",
+    "customer": "العميل",
+    "assistant": "وكيلك",
+    "escalated": "متابعة بشرية",
+    "unknownCustomer": "عميل Telegram"
+  },
   "auth": {
     "login": {
       "title": "مرحبًا بعودتك",

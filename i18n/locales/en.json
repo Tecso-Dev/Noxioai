@@ -223,6 +223,34 @@
       }
     }
   },
+  "tenantbot": {
+    "connectTitle": "Connect your Telegram bot",
+    "connectDescription": "Paste your own BotFather token. This bot will answer your customers 24/7 from your business knowledge base.",
+    "tokenLabel": "BotFather token",
+    "tokenPlaceholder": "Paste the bot token",
+    "tokenHelp": "Create or select a bot in {'@'}BotFather, then paste its token here. NOXIOAI never displays the token again.",
+    "tokenRequired": "Enter your Telegram bot token.",
+    "connect": "Connect bot",
+    "connecting": "Connecting…",
+    "connected": "Connected and answering 24/7",
+    "active": "Live",
+    "disconnect": "Disconnect",
+    "disconnectConfirm": "Disconnect this Telegram bot?",
+    "connectSuccess": "Your Telegram bot is connected and ready.",
+    "disconnectSuccess": "Your Telegram bot has been disconnected.",
+    "connectError": "We could not connect this bot. Check the token and try again.",
+    "disconnectError": "We could not disconnect this bot. Please try again.",
+    "loadError": "We could not load your Telegram bot connection.",
+    "recentTitle": "Recent customer messages",
+    "recentDescription": "The latest 50 customer questions and the answers your agent sent.",
+    "refresh": "Refresh",
+    "messagesLoadError": "We could not load recent customer messages.",
+    "empty": "No customer messages yet.",
+    "customer": "Customer",
+    "assistant": "Your agent",
+    "escalated": "Human follow-up",
+    "unknownCustomer": "Telegram customer"
+  },
   "auth": {
     "login": {
       "title": "Welcome back",

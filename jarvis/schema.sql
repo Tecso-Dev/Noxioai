@@ -87,6 +87,25 @@ CREATE TABLE IF NOT EXISTS business_profiles (
   created_at     TIMESTAMPTZ DEFAULT now(),
   updated_at     TIMESTAMPTZ DEFAULT now()
 );
+CREATE TABLE IF NOT EXISTS tenant_bots (
+  owner_id       BIGINT PRIMARY KEY REFERENCES users(id),
+  bot_token      TEXT NOT NULL,
+  bot_username   TEXT,
+  webhook_secret TEXT NOT NULL UNIQUE,
+  active         BOOLEAN DEFAULT TRUE,
+  created_at     TIMESTAMPTZ DEFAULT now()
+);
+CREATE TABLE IF NOT EXISTS tenant_messages (
+  id            BIGSERIAL PRIMARY KEY,
+  owner_id      BIGINT REFERENCES users(id),
+  from_chat     TEXT,
+  from_name     TEXT,
+  customer_text TEXT,
+  agent_reply   TEXT,
+  escalated     BOOLEAN DEFAULT FALSE,
+  created_at    TIMESTAMPTZ DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS idx_tenant_messages_owner ON tenant_messages(owner_id);
 CREATE TABLE IF NOT EXISTS sessions (
   token      TEXT PRIMARY KEY,
   user_id    BIGINT REFERENCES users(id),

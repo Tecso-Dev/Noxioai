@@ -223,6 +223,34 @@
       }
     }
   },
+  "tenantbot": {
+    "connectTitle": "Telegram botunuzu bağlayın",
+    "connectDescription": "Kendi BotFather tokenınızı yapıştırın. Bu bot, işletme bilgi tabanınızdan müşterilerinize 7/24 yanıt verir.",
+    "tokenLabel": "BotFather tokenı",
+    "tokenPlaceholder": "Bot tokenını yapıştırın",
+    "tokenHelp": "{'@'}BotFather içinde bir bot oluşturun veya seçin, ardından tokenını buraya yapıştırın. NOXIOAI tokenı bir daha göstermez.",
+    "tokenRequired": "Telegram bot tokenınızı girin.",
+    "connect": "Botu bağla",
+    "connecting": "Bağlanıyor…",
+    "connected": "Bağlı ve 7/24 yanıt veriyor",
+    "active": "Canlı",
+    "disconnect": "Bağlantıyı kes",
+    "disconnectConfirm": "Bu Telegram botunun bağlantısı kesilsin mi?",
+    "connectSuccess": "Telegram botunuz bağlandı ve hazır.",
+    "disconnectSuccess": "Telegram botunuzun bağlantısı kesildi.",
+    "connectError": "Bu botu bağlayamadık. Tokenı kontrol edip tekrar deneyin.",
+    "disconnectError": "Bu botun bağlantısını kesemedik. Lütfen tekrar deneyin.",
+    "loadError": "Telegram bot bağlantınızı yükleyemedik.",
+    "recentTitle": "Son müşteri mesajları",
+    "recentDescription": "Son 50 müşteri sorusu ve temsilcinizin gönderdiği yanıtlar.",
+    "refresh": "Yenile",
+    "messagesLoadError": "Son müşteri mesajlarını yükleyemedik.",
+    "empty": "Henüz müşteri mesajı yok.",
+    "customer": "Müşteri",
+    "assistant": "Temsilciniz",
+    "escalated": "İnsan takibi",
+    "unknownCustomer": "Telegram müşterisi"
+  },
   "auth": {
     "login": {
       "title": "Tekrar hoş geldiniz",
