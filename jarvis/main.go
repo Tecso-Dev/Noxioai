@@ -37,6 +37,71 @@ func mustOwnerID(db *sql.DB) int64 {
 func main() {
 	loadDotEnv()
 
+	if len(os.Args) > 1 && os.Args[1] == "social" {
+		if !socialBrainConfigured() {
+			log.Print(socialBrainGuardMessage)
+			return
+		}
+		db := mustDB()
+		defer db.Close()
+		if err := RunSocial(context.Background(), db); err != nil {
+			fmt.Fprintln(os.Stderr, "✗ social:", err)
+			os.Exit(1)
+		}
+		fmt.Printf("✓ %d social drafts stored and delivered for approval\n", socialDraftCount)
+		return
+	}
+
+	if len(os.Args) > 1 && os.Args[1] == "social-approve" {
+		if len(os.Args) != 3 {
+			fmt.Fprintln(os.Stderr, "usage: jarvis social-approve <id>")
+			os.Exit(1)
+		}
+		id, err := strconv.ParseInt(os.Args[2], 10, 64)
+		if err != nil || id <= 0 {
+			fmt.Fprintln(os.Stderr, "usage: jarvis social-approve <id>")
+			os.Exit(1)
+		}
+		db := mustDB()
+		defer db.Close()
+		result, err := ApproveSocialPost(context.Background(), db, id)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "✗ social-approve:", err)
+			os.Exit(1)
+		}
+		switch {
+		case result.AlreadyPosted:
+			fmt.Printf("✓ social post #%d was already posted\n", id)
+		case result.Published:
+			fmt.Printf("✓ social post #%d APPROVED and published to Telegram\n", id)
+		case result.Platform == "instagram":
+			fmt.Printf("✓ social post #%d APPROVED — Instagram-ready; post it manually using official Instagram tools\n", id)
+		default:
+			fmt.Printf("✓ social post #%d APPROVED — JARVIS_SOCIAL_CHANNEL is not configured; post it manually\n", id)
+		}
+		return
+	}
+
+	if len(os.Args) > 1 && os.Args[1] == "social-reject" {
+		if len(os.Args) != 3 {
+			fmt.Fprintln(os.Stderr, "usage: jarvis social-reject <id>")
+			os.Exit(1)
+		}
+		id, err := strconv.ParseInt(os.Args[2], 10, 64)
+		if err != nil || id <= 0 {
+			fmt.Fprintln(os.Stderr, "usage: jarvis social-reject <id>")
+			os.Exit(1)
+		}
+		db := mustDB()
+		defer db.Close()
+		if err := RejectSocialPost(context.Background(), db, id); err != nil {
+			fmt.Fprintln(os.Stderr, "✗ social-reject:", err)
+			os.Exit(1)
+		}
+		fmt.Printf("✓ social post #%d REJECTED\n", id)
+		return
+	}
+
 	if len(os.Args) > 1 && os.Args[1] == "seo" {
 		_, enabled, err := seoServiceAccountPath()
 		if err != nil {

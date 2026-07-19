@@ -174,6 +174,18 @@ CREATE TABLE IF NOT EXISTS seo_reports (
   blog_draft   TEXT
 );
 
+-- Platform-global NOXIOAI marketing queue. Telegram is human-approved before
+-- publishing; Instagram rows remain ready for manual posting.
+CREATE TABLE IF NOT EXISTS social_posts (
+  id         BIGSERIAL PRIMARY KEY,
+  platform   TEXT,
+  caption    TEXT,
+  image_url  TEXT,
+  status     TEXT DEFAULT 'draft',          -- draft | approved | posted | rejected
+  created_at TIMESTAMPTZ DEFAULT now(),
+  posted_at  TIMESTAMPTZ
+);
+
 -- ── multi-tenant ownership (PRODUCT-BUILD.md Phase P1) ──────────────────────
 -- Every CRM row belongs to exactly one platform user; per-owner uniques
 -- replace the old global ones so two tenants can target the same company.
