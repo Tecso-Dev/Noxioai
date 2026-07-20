@@ -1,5 +1,5 @@
 (appapi) {
-	@public path /api/auth/* /api/billing/* /api/stripe/* /api/waitlist /api/profile /api/bot /api/bot/connect /api/bot/messages /api/tg/* /api/concierge /admin /admin/* /api/status /api/agent /chat /api/oracle /api/atlas /api/send /api/approve /api/brief /api/inbox /api/pixel /three.min.js /jarvis-startup.mp3
+	@public path /api/auth/* /api/billing/* /api/stripe/* /api/waitlist /api/profile /api/bot /api/bot/connect /api/bot/messages /api/tg/* /api/concierge /admin /admin/* /api/status /api/agent /chat /api/oracle /api/atlas /api/send /api/approve /api/brief /api/inbox /api/pixel /api/system /api/chat/history /three.min.js /jarvis-startup.mp3
 	handle @public {
 		header {
 			Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
