@@ -30,3 +30,27 @@ func TestShouldEscalate(t *testing.T) {
 		})
 	}
 }
+
+func TestBotGateDecision(t *testing.T) {
+	cases := []struct {
+		name       string
+		authorized bool
+		match      bool
+		attempts   int
+		wantAllow  bool
+		wantReply  string
+	}{
+		{"authorized user passes silently", true, false, 0, true, ""},
+		{"authorized user typing the password still passes", true, true, 0, true, ""},
+		{"correct password grants access", false, true, 3, false, supportGrantedReply},
+		{"wrong password gets locked prompt", false, false, 0, false, supportLockedReply},
+		{"over attempt budget goes silent", false, false, supportMaxPassAttempts, false, ""},
+		{"correct password after budget still grants", false, true, supportMaxPassAttempts, false, supportGrantedReply},
+	}
+	for _, c := range cases {
+		allow, reply := botGateDecision(c.authorized, c.match, c.attempts)
+		if allow != c.wantAllow || reply != c.wantReply {
+			t.Errorf("%s: got (%v, %q), want (%v, %q)", c.name, allow, reply, c.wantAllow, c.wantReply)
+		}
+	}
+}

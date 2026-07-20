@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"crypto/subtle"
 	"database/sql"
 	"encoding/json"
 	"fmt"
@@ -36,6 +37,10 @@ const (
 	supportCooldown     = 2 * time.Second
 	supportHumanReply   = "Thanks — I'm connecting you with a human, we'll reply here shortly."
 	supportShortenReply = "Please shorten your question."
+
+	supportLockedReply     = "🔒 This bot is private. Send the access password to continue."
+	supportGrantedReply    = "✅ Access granted. How can I help?"
+	supportMaxPassAttempts = 10
 )
 
 type supportUpdate struct {
@@ -81,6 +86,9 @@ func RunSupportBot(ctx context.Context, db *sql.DB) {
 	lastProcessed := make(map[int64]time.Time)
 	var offset int64
 
+	ownerChat, _ := strconv.ParseInt(strings.TrimSpace(os.Getenv("JARVIS_TELEGRAM_CHAT")), 10, 64)
+	botPassword := strings.TrimSpace(os.Getenv("JARVIS_BOT_PASSWORD"))
+
 	log.Print("NOXIOAI support bot listening")
 	for {
 		if err := ctx.Err(); err != nil {
@@ -118,6 +126,12 @@ func RunSupportBot(ctx context.Context, db *sql.DB) {
 				continue
 			}
 			lastProcessed[chatID] = now
+
+			if botPassword != "" && chatID != ownerChat {
+				if !gateSupportUser(ctx, client, token, db, update.Message, text, botPassword) {
+					continue
+				}
+			}
 
 			handleSupportMessage(ctx, client, token, brain, db, update.Message, text)
 		}
@@ -236,6 +250,67 @@ func sendSupportMessage(ctx context.Context, client *http.Client, token string, 
 		return fmt.Errorf("telegram sendMessage: %s", result.Description)
 	}
 	return nil
+}
+
+// botGateDecision decides how the password gate treats a non-owner message.
+// allow=true passes the message on to normal support handling; reply (if any)
+// is sent to the user.
+func botGateDecision(authorized, match bool, attempts int) (allow bool, reply string) {
+	switch {
+	case authorized:
+		return true, ""
+	case match:
+		return false, supportGrantedReply
+	case attempts >= supportMaxPassAttempts:
+		return false, "" // silent: over the attempt budget
+	default:
+		return false, supportLockedReply
+	}
+}
+
+// gateSupportUser records every contact in bot_users and enforces the access
+// password for non-owner chats. Fails open on DB errors so a DB hiccup cannot
+// lock the owner-facing support flow entirely closed.
+func gateSupportUser(ctx context.Context, client *http.Client, token string, db *sql.DB, message *supportMessage, text, password string) bool {
+	chatID := message.Chat.ID
+	username, label := supportCustomerIdentity(message)
+
+	var authorized bool
+	var attempts int
+	err := db.QueryRowContext(ctx, `
+		INSERT INTO bot_users (chat_id, username, first_name)
+		VALUES ($1, $2, $3)
+		ON CONFLICT (chat_id) DO UPDATE
+		SET username = EXCLUDED.username, first_name = EXCLUDED.first_name, last_seen = now()
+		RETURNING authorized, attempts`,
+		chatID, username, message.Chat.FirstName).Scan(&authorized, &attempts)
+	if err != nil {
+		log.Printf("bot gate persist chat %d: %v", chatID, err)
+		return true
+	}
+
+	match := subtle.ConstantTimeCompare([]byte(text), []byte(password)) == 1
+	allow, reply := botGateDecision(authorized, match, attempts)
+
+	if !allow && match && !authorized {
+		if _, err := db.ExecContext(ctx, `UPDATE bot_users SET authorized = TRUE WHERE chat_id = $1`, chatID); err != nil {
+			log.Printf("bot gate authorize chat %d: %v", chatID, err)
+		}
+		if err := SendTelegram(fmt.Sprintf("🔑 New bot user authorized: %s (chat %d)", label, chatID)); err != nil {
+			log.Printf("bot gate owner alert chat %d: %v", chatID, err)
+		}
+	}
+	if !allow && !match && !authorized && attempts < supportMaxPassAttempts {
+		if _, err := db.ExecContext(ctx, `UPDATE bot_users SET attempts = attempts + 1 WHERE chat_id = $1`, chatID); err != nil {
+			log.Printf("bot gate attempts chat %d: %v", chatID, err)
+		}
+	}
+	if reply != "" {
+		if err := sendSupportMessage(ctx, client, token, chatID, reply); err != nil {
+			log.Printf("bot gate reply chat %d: %v", chatID, err)
+		}
+	}
+	return allow
 }
 
 func supportCustomerIdentity(message *supportMessage) (string, string) {

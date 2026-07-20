@@ -213,6 +213,16 @@ CREATE TABLE IF NOT EXISTS support_messages (
   created_at   TIMESTAMPTZ DEFAULT now()
 );
 
+CREATE TABLE IF NOT EXISTS bot_users (
+  chat_id    BIGINT PRIMARY KEY,
+  username   TEXT,
+  first_name TEXT,
+  authorized BOOLEAN DEFAULT FALSE,
+  attempts   INT DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  last_seen  TIMESTAMPTZ DEFAULT now()
+);
+
 -- Platform-global reporting for NOXIOAI's own website; deliberately not
 -- tenant-owned and never used as a publishing queue.
 CREATE TABLE IF NOT EXISTS seo_reports (
