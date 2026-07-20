@@ -75,13 +75,13 @@ flowchart LR
 ## Latest activity
 
 <!-- ACTIVITY:START -->
-_Auto-updated 2026-07-20 10:29 UTC_
+_Auto-updated 2026-07-20 16:48 UTC_
 
+- `29ecf95` MADUSA: trend scout + content machine — watches YouTube/Reddit/HN creators and signals, computes momentum + trend stage, DeepSeek MAP report to Telegram, CLI approval gate, FA+EN per-platform packager with LTX-2.3 storyboards, Vultr GPU render worker (snapshot lifecycle, orphan reconcile, hard hour cap), HUD tile, brief section, 08:30 cycle + 15min render timers — 2026-07-20
 - `791b0dd` support bot: password gate for non-owner chats — bot_users table records every contact (identity, attempts, last_seen), env JARVIS_BOT_PASSWORD unlocks access (constant-time compare, 10-attempt budget then silent, owner alerted on new authorization) — 2026-07-20
 - `5aeda7b` chore: verify Vercel auto-deploy after Git integration relink — 2026-07-20
 - `37c4eab` docs: point netops agent + deploy runbook at new Vultr prod server (95.179.242.172); aeza wiped after migration — 2026-07-20
 - `6125460` docs: rewrite README for the actual product — multi-tenant AI-employee SaaS with the per-tenant Telegram customer-response agent as the live wedge (was the stale Phase-B Office framing) — 2026-07-19
-- `135c69d` landing: hacker-themed error/404 page (glitch status code, terminal line, 4 locales, reduced-motion safe) + LandingShowcase polish — palette-matched to design tokens, seamless left→right code marquee, staggered card reveal, denser code — 2026-07-19
 <!-- ACTIVITY:END -->
 
 ## Run locally
