@@ -75,13 +75,13 @@ flowchart LR
 ## Latest activity
 
 <!-- ACTIVITY:START -->
-_Auto-updated 2026-07-20 17:38 UTC_
+_Auto-updated 2026-07-20 18:09 UTC_
 
+- `c0a6d1f` jarvis: CEO mode (whitelisted subagent dispatch from admin chat, outbound verbs excluded in code), persistent chat memory + fact learning, server monitoring (/api/system, health CLI, 10min Telegram watchdog, live HUD System panel), OpenRouter balance, voice fixes (SFX+speech first-gesture, mic-grant auto-reload); site: gold color-coherence sweep (navy/slate-blue → night/gold tokens) — 2026-07-20
 - `8486808` hud: startup SFX fires on first user gesture when browser blocks autoplay (one-shot pointerdown/keydown arm) — 2026-07-20
 - `3446d5a` vercel: route HUD assets + admin chat to backend (/chat, /three.min.js, /jarvis-startup.mp3) — fixes dead noxioai.com/admin dashboard (JS crashed on 404'd three.min.js, boot sequence never ran) — 2026-07-20
 - `fcc4e37` deploy: sync Caddyfile with live prod config — /admin HUD + agent APIs routed publicly, auth enforced in-app via is_admin gate (resolveAdmin/requireAdmin) — 2026-07-20
 - `ef510e1` auth: Continue with Google — server-side OAuth code flow (state cookie CSRF, strict id_token claims validation, link-by-verified-email, sessions via existing issueUserSession), users.google_sub, login/signup buttons EN/FA/TR/AR — 2026-07-20
-- `29ecf95` MADUSA: trend scout + content machine — watches YouTube/Reddit/HN creators and signals, computes momentum + trend stage, DeepSeek MAP report to Telegram, CLI approval gate, FA+EN per-platform packager with LTX-2.3 storyboards, Vultr GPU render worker (snapshot lifecycle, orphan reconcile, hard hour cap), HUD tile, brief section, 08:30 cycle + 15min render timers — 2026-07-20
 <!-- ACTIVITY:END -->
 
 ## Run locally
