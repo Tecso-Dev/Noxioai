@@ -12,6 +12,18 @@
     {
       "source": "/admin/:path*",
       "destination": "https://api.noxioai.com/admin/:path*"
+    },
+    {
+      "source": "/chat",
+      "destination": "https://api.noxioai.com/chat"
+    },
+    {
+      "source": "/three.min.js",
+      "destination": "https://api.noxioai.com/three.min.js"
+    },
+    {
+      "source": "/jarvis-startup.mp3",
+      "destination": "https://api.noxioai.com/jarvis-startup.mp3"
     }
   ],
   "headers": [
