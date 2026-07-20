@@ -78,12 +78,27 @@ export function usePasskeys() {
     return $fetch<AuthCapabilities>(`${api}/api/auth/capabilities`, { credentials: 'include' })
   }
 
-  async function login(remember = false): Promise<void> {
+  async function conditionalMediationAvailable(): Promise<boolean> {
+    if (!supported.value) return false
+    const check = (window.PublicKeyCredential as any)?.isConditionalMediationAvailable
+    if (typeof check !== 'function') return false
+    try {
+      return await check()
+    } catch {
+      return false
+    }
+  }
+
+  async function login(remember = false, options?: { mediation?: CredentialMediationRequirement; signal?: AbortSignal }): Promise<void> {
     if (!supported.value) throw new Error('passkeys_unsupported')
-    const options = await $fetch<PublicKeyOptions>(`${api}/api/auth/passkeys/login/start`, {
+    const request = await $fetch<PublicKeyOptions>(`${api}/api/auth/passkeys/login/start`, {
       method: 'POST', credentials: 'include', body: { remember }
     })
-    const credential = await navigator.credentials.get({ publicKey: decodeRequestOptions(options) }) as PublicKeyCredential | null
+    const credential = await navigator.credentials.get({
+      publicKey: decodeRequestOptions(request),
+      mediation: options?.mediation,
+      signal: options?.signal
+    }) as PublicKeyCredential | null
     if (!credential) throw new Error('passkey_cancelled')
     await $fetch(`${api}/api/auth/passkeys/login/finish`, {
       method: 'POST', credentials: 'include', body: serializeCredential(credential)
@@ -103,5 +118,5 @@ export function usePasskeys() {
     })
   }
 
-  return { supported, capabilities, login, register }
+  return { supported, capabilities, conditionalMediationAvailable, login, register }
 }

@@ -2,7 +2,7 @@
 const { t } = useI18n()
 const localePath = useLocalePath()
 const api = useRuntimeConfig().public.apiBase
-const { supported, capabilities, login: passkeyLogin } = usePasskeys()
+const { supported, capabilities, conditionalMediationAvailable, login: passkeyLogin } = usePasskeys()
 
 useSeoMeta({ title: () => `${t('auth.login.title')} — NOXIOAI` })
 
@@ -16,15 +16,37 @@ const authCapabilities = ref<AuthCapabilities | null>(null)
 
 const passkeyAvailable = computed(() => supported.value && authCapabilities.value?.passkeys === true)
 
+let conditionalAbort: AbortController | null = null
+
 onMounted(async () => {
   try {
     authCapabilities.value = await capabilities()
   } catch {
     authCapabilities.value = null
   }
+  startConditionalPasskey()
 })
 
+onBeforeUnmount(() => {
+  conditionalAbort?.abort()
+  conditionalAbort = null
+})
+
+// Offers passkeys in the browser's username autofill without opening a modal;
+// aborted silently when the user signs in another way or leaves the page.
+async function startConditionalPasskey() {
+  if (!passkeyAvailable.value || !await conditionalMediationAvailable()) return
+  conditionalAbort = new AbortController()
+  try {
+    await passkeyLogin(remember.value, { mediation: 'conditional', signal: conditionalAbort.signal })
+    await navigateTo(localePath('/app'))
+  } catch {
+    // Abort and dismissal are normal outcomes here; explicit flows report errors.
+  }
+}
+
 async function submit() {
+  conditionalAbort?.abort()
   err.value = ''
   busy.value = true
   try {
@@ -45,6 +67,7 @@ async function submit() {
 }
 
 async function usePasskey() {
+  conditionalAbort?.abort()
   err.value = ''
   passkeyBusy.value = true
   try {
@@ -73,7 +96,7 @@ async function usePasskey() {
           name="username"
           type="text"
           required
-          autocomplete="username"
+          autocomplete="username webauthn"
           autocapitalize="none"
           spellcheck="false"
           autofocus
