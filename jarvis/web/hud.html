@@ -491,7 +491,16 @@ function setStartupSFXState(label,state=''){
 async function playStartupSFX(){
   startupSFX.pause();startupSFX.currentTime=0;
   try{await startupSFX.play();setStartupSFXState('SFX PLAYING','playing')}
-  catch{setStartupSFXState('ENABLE STARTUP SFX','needs-gesture')}
+  catch{setStartupSFXState('ENABLE STARTUP SFX','needs-gesture');armSFXGesture()}
+}
+// Browsers block audio before the first user gesture — arm a one-shot
+// listener so the startup sound fires on the first click/keypress anywhere.
+let sfxArmed=false;
+function armSFXGesture(){
+  if(sfxArmed)return;sfxArmed=true;
+  const fire=()=>{removeEventListener('pointerdown',fire,true);removeEventListener('keydown',fire,true);playStartupSFX()};
+  addEventListener('pointerdown',fire,true);
+  addEventListener('keydown',fire,true);
 }
 startupSFX.addEventListener('ended',()=>setStartupSFXState('REPLAY STARTUP SFX'));
 $('sfxcontrol').addEventListener('click',playStartupSFX);
