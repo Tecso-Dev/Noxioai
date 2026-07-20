@@ -1,6 +1,5 @@
 (appapi) {
-	# ONLY the genuinely-public app endpoints reach the backend.
-	@public path /api/auth/* /api/billing/* /api/stripe/* /api/waitlist /api/profile
+	@public path /api/auth/* /api/billing/* /api/stripe/* /api/waitlist /api/profile /api/bot /api/bot/connect /api/bot/messages /api/tg/* /api/concierge /admin /admin/* /api/status /api/agent /chat /api/oracle /api/atlas /api/send /api/approve /api/brief /api/inbox /api/pixel /three.min.js /jarvis-startup.mp3
 	handle @public {
 		header {
 			Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
@@ -12,8 +11,6 @@
 			header_up X-Real-IP {remote_host}
 		}
 	}
-	# HUD, agent controls (/api/send /atlas /oracle /brief /inbox /pixel /approve),
-	# /chat, /api/status, /api/agent, static HUD assets → blocked from the internet.
 	handle {
 		respond "404" 404
 	}
@@ -23,6 +20,6 @@ api.noxioai.com {
 	import appapi
 }
 
-95.181.160.117.nip.io {
+95.179.242.172.nip.io {
 	import appapi
 }
