@@ -108,3 +108,5 @@ See [jarvis/README.md](jarvis/README.md) for every agent command and configurati
 ---
 
 Built by [Sobhan Azimzadeh](https://github.com/sobhanaz) · dual-national (Iran/Poland), full-stack.
+
+<!-- deploy-check: 2026-07-20 vercel git integration relinked -->
