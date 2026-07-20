@@ -75,13 +75,13 @@ flowchart LR
 ## Latest activity
 
 <!-- ACTIVITY:START -->
-_Auto-updated 2026-07-20 09:56 UTC_
+_Auto-updated 2026-07-20 10:04 UTC_
 
+- `5aeda7b` chore: verify Vercel auto-deploy after Git integration relink — 2026-07-20
 - `37c4eab` docs: point netops agent + deploy runbook at new Vultr prod server (95.179.242.172); aeza wiped after migration — 2026-07-20
 - `6125460` docs: rewrite README for the actual product — multi-tenant AI-employee SaaS with the per-tenant Telegram customer-response agent as the live wedge (was the stale Phase-B Office framing) — 2026-07-19
 - `135c69d` landing: hacker-themed error/404 page (glitch status code, terminal line, 4 locales, reduced-motion safe) + LandingShowcase polish — palette-matched to design tokens, seamless left→right code marquee, staggered card reveal, denser code — 2026-07-19
 - `1feaf1f` JARVIS admin: online super-admin HUD gated by is_admin — requireAdmin on every agent-control endpoint (403 non-admin), GET /admin serves cockpit (302 /login if not admin), data scoped to ops owner; DB-free requireAdmin unit test; /admin rewrite to api.noxioai.com (Codex-spec'd, Claude-built + security-reviewed) — 2026-07-19
-- `4652779` concierge: require verified user (auth-refresh follow-up) — 2026-07-19
 <!-- ACTIVITY:END -->
 
 ## Run locally
