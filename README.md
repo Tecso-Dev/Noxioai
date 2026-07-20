@@ -75,13 +75,13 @@ flowchart LR
 ## Latest activity
 
 <!-- ACTIVITY:START -->
-_Auto-updated 2026-07-20 17:25 UTC_
+_Auto-updated 2026-07-20 17:31 UTC_
 
+- `3446d5a` vercel: route HUD assets + admin chat to backend (/chat, /three.min.js, /jarvis-startup.mp3) — fixes dead noxioai.com/admin dashboard (JS crashed on 404'd three.min.js, boot sequence never ran) — 2026-07-20
 - `fcc4e37` deploy: sync Caddyfile with live prod config — /admin HUD + agent APIs routed publicly, auth enforced in-app via is_admin gate (resolveAdmin/requireAdmin) — 2026-07-20
 - `ef510e1` auth: Continue with Google — server-side OAuth code flow (state cookie CSRF, strict id_token claims validation, link-by-verified-email, sessions via existing issueUserSession), users.google_sub, login/signup buttons EN/FA/TR/AR — 2026-07-20
 - `29ecf95` MADUSA: trend scout + content machine — watches YouTube/Reddit/HN creators and signals, computes momentum + trend stage, DeepSeek MAP report to Telegram, CLI approval gate, FA+EN per-platform packager with LTX-2.3 storyboards, Vultr GPU render worker (snapshot lifecycle, orphan reconcile, hard hour cap), HUD tile, brief section, 08:30 cycle + 15min render timers — 2026-07-20
 - `791b0dd` support bot: password gate for non-owner chats — bot_users table records every contact (identity, attempts, last_seen), env JARVIS_BOT_PASSWORD unlocks access (constant-time compare, 10-attempt budget then silent, owner alerted on new authorization) — 2026-07-20
-- `5aeda7b` chore: verify Vercel auto-deploy after Git integration relink — 2026-07-20
 <!-- ACTIVITY:END -->
 
 ## Run locally
