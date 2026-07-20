@@ -190,6 +190,7 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 				mkAgent("CALEB", "Marketing strategist", "ready"),
 				mkAgent("PIXEL", "Design & motion critic", "v2"),
 				mkAgent("HERALD", "Email dispatch", heraldStatus()),
+				mkAgent("MADUSA", "Trend scout · content machine", "scheduled"),
 			},
 			"activity": act.snapshot(),
 			"act_seq":  act.seq(),

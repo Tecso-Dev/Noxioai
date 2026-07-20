@@ -328,3 +328,106 @@ CREATE INDEX IF NOT EXISTS idx_contacts_owner    ON contacts(owner_id);
 CREATE INDEX IF NOT EXISTS idx_leads_owner       ON leads(owner_id);
 CREATE INDEX IF NOT EXISTS idx_outreach_owner    ON outreach(owner_id);
 CREATE INDEX IF NOT EXISTS idx_experiences_owner ON experiences(owner_id);
+
+-- ── MADUSA persona agent (SPEC: approved 2026-07-20) ────────────────────────
+-- Trend scout + content machine for the AI-automation niche: ingest YouTube
+-- creators + Reddit/HN signals, score momentum, propose short-form video
+-- ideas (the "MAP") for human approval before any rendering happens.
+CREATE TABLE IF NOT EXISTS madusa_creators (
+  id         BIGSERIAL PRIMARY KEY,
+  platform   TEXT NOT NULL DEFAULT 'youtube',
+  handle     TEXT NOT NULL UNIQUE,
+  channel_id TEXT,
+  title      TEXT,
+  niche      TEXT DEFAULT 'ai-automation',
+  active     BOOLEAN NOT NULL DEFAULT true,
+  added_by   TEXT NOT NULL DEFAULT 'seed',
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS madusa_snapshots (
+  id          BIGSERIAL PRIMARY KEY,
+  creator_id  BIGINT NOT NULL REFERENCES madusa_creators(id) ON DELETE CASCADE,
+  day         DATE NOT NULL DEFAULT current_date,
+  subs        BIGINT,
+  views       BIGINT,
+  video_count INT,
+  UNIQUE (creator_id, day)
+);
+
+CREATE TABLE IF NOT EXISTS madusa_videos (
+  id           BIGSERIAL PRIMARY KEY,
+  creator_id   BIGINT NOT NULL REFERENCES madusa_creators(id) ON DELETE CASCADE,
+  video_id     TEXT NOT NULL UNIQUE,
+  title        TEXT,
+  published_at TIMESTAMPTZ,
+  duration_s   INT,
+  views        BIGINT,
+  likes        BIGINT,
+  comments     BIGINT,
+  views_prev   BIGINT,
+  fetched_prev TIMESTAMPTZ,
+  fetched_at   TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS madusa_signals (
+  id           BIGSERIAL PRIMARY KEY,
+  source       TEXT NOT NULL,
+  title        TEXT NOT NULL,
+  url          TEXT NOT NULL UNIQUE,
+  score        INT,
+  comments     INT,
+  score_prev   INT,
+  fetched_prev TIMESTAMPTZ,
+  fetched_at   TIMESTAMPTZ DEFAULT now(),
+  created_at   TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS madusa_trends (
+  id            BIGSERIAL PRIMARY KEY,
+  day           DATE NOT NULL DEFAULT current_date,
+  topic         TEXT NOT NULL,
+  stage         TEXT NOT NULL,
+  velocity      REAL,
+  evidence      TEXT,
+  hook_patterns TEXT,
+  created_at    TIMESTAMPTZ DEFAULT now()
+);
+
+-- status: proposed | approved | packed | rendering | delivered | rejected | failed
+CREATE TABLE IF NOT EXISTS madusa_posts (
+  id           BIGSERIAL PRIMARY KEY,
+  trend_id     BIGINT REFERENCES madusa_trends(id),
+  idea         TEXT NOT NULL,
+  hook         TEXT,
+  format       TEXT NOT NULL DEFAULT 'reel',
+  storyboard   JSONB,
+  caption_fa   TEXT,
+  caption_en   TEXT,
+  hashtags     TEXT,
+  titles       JSONB,
+  status       TEXT NOT NULL DEFAULT 'proposed',
+  video_url    TEXT,
+  image_url    TEXT,
+  approved_at  TIMESTAMPTZ,
+  delivered_at TIMESTAMPTZ,
+  created_at   TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS madusa_renders (
+  id          BIGSERIAL PRIMARY KEY,
+  post_id     BIGINT REFERENCES madusa_posts(id),
+  instance_id TEXT,
+  instance_ip TEXT,
+  status      TEXT NOT NULL DEFAULT 'creating',
+  cost_hours  REAL,
+  log         TEXT,
+  started_at  TIMESTAMPTZ DEFAULT now(),
+  finished_at TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS idx_madusa_snapshots_creator ON madusa_snapshots(creator_id);
+CREATE INDEX IF NOT EXISTS idx_madusa_videos_creator    ON madusa_videos(creator_id);
+CREATE INDEX IF NOT EXISTS idx_madusa_posts_status      ON madusa_posts(status);
+CREATE INDEX IF NOT EXISTS idx_madusa_posts_trend       ON madusa_posts(trend_id);
+CREATE INDEX IF NOT EXISTS idx_madusa_renders_post      ON madusa_renders(post_id);

@@ -1,0 +1,10 @@
+[Unit]
+Description=MADUSA render queue processor
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=jarvis
+WorkingDirectory=/opt/jarvis
+ExecStart=/opt/jarvis/jarvis madusa render

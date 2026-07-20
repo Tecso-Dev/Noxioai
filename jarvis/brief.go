@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -97,12 +98,59 @@ func RunBrief(ctx context.Context, db *sql.DB, ownerID int64, brain *Brain) erro
 		b.WriteString("\n📈 CALEB — marketing memo:\n" + memo + "\n")
 	}
 
+	// MADUSA section — best effort; skip silently if tables are empty/missing.
+	if section := madusaBriefSection(ctx, db); section != "" {
+		b.WriteString(section)
+	}
+
 	// Brain cost watch (user asked to monitor the DeepSeek balance).
 	if bal := deepseekBalance(); bal != "" {
 		b.WriteString("\n🧠 Brain balance: " + bal + "\n")
 	}
 
 	return SendTelegram(b.String())
+}
+
+// madusaBriefSection summarizes MADUSA activity for the morning brief: how
+// many items are proposed (with up to 3 one-liners), and how many approved
+// items are waiting for the render timer. Best effort — any query error
+// (including the tables not existing yet) is logged and the brief continues
+// without this section.
+func madusaBriefSection(ctx context.Context, db *sql.DB) string {
+	var proposed, approved int
+	if err := db.QueryRowContext(ctx,
+		`SELECT count(*) FILTER (WHERE status = 'proposed'), count(*) FILTER (WHERE status = 'approved') FROM madusa_posts`).
+		Scan(&proposed, &approved); err != nil {
+		log.Printf("brief: madusa section skipped: %v", err)
+		return ""
+	}
+	if proposed == 0 && approved == 0 {
+		return ""
+	}
+
+	var b strings.Builder
+	fmt.Fprintf(&b, "\n🐍 MADUSA: %d proposed, %d approved awaiting render\n", proposed, approved)
+
+	rows, err := db.QueryContext(ctx,
+		`SELECT id, idea FROM madusa_posts WHERE status = 'proposed' ORDER BY id DESC LIMIT 3`)
+	if err != nil {
+		log.Printf("brief: madusa proposed items skipped: %v", err)
+		return b.String()
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var id int64
+		var idea string
+		if err := rows.Scan(&id, &idea); err != nil {
+			log.Printf("brief: madusa item scan skipped: %v", err)
+			break
+		}
+		fmt.Fprintf(&b, "  #%d %s — jarvis madusa approve %d\n", id, idea, id)
+	}
+	if err := rows.Err(); err != nil {
+		log.Printf("brief: madusa items iteration: %v", err)
+	}
+	return b.String()
 }
 
 // deepseekBalance returns the remaining API credit, or "" when the brain

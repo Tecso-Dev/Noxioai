@@ -295,6 +295,121 @@ func main() {
 		return
 	}
 
+	if len(os.Args) > 1 && os.Args[1] == "madusa" {
+		usage := "usage: jarvis madusa <cycle|map|approve <id>|reject <id>|render|status|creators list|creators add <handle>|creators rm <handle>|seed>"
+		if len(os.Args) < 3 {
+			fmt.Fprintln(os.Stderr, usage)
+			os.Exit(1)
+		}
+		db := mustDB()
+		defer db.Close()
+		ctx := context.Background()
+		switch os.Args[2] {
+		case "cycle":
+			if err := RunMadusaCycle(ctx, db, NewBrainFromEnv(), mustOwnerID(db)); err != nil {
+				fmt.Fprintln(os.Stderr, "✗ madusa cycle:", err)
+				os.Exit(1)
+			}
+			fmt.Println("✓ MADUSA cycle complete")
+		case "map":
+			if err := MadusaMap(ctx, db); err != nil {
+				fmt.Fprintln(os.Stderr, "✗ madusa map:", err)
+				os.Exit(1)
+			}
+			fmt.Println("✓ MADUSA map re-sent")
+		case "approve":
+			if len(os.Args) != 4 {
+				fmt.Fprintln(os.Stderr, "usage: jarvis madusa approve <id>")
+				os.Exit(1)
+			}
+			id, err := strconv.ParseInt(os.Args[3], 10, 64)
+			if err != nil {
+				fmt.Fprintln(os.Stderr, "usage: jarvis madusa approve <id>")
+				os.Exit(1)
+			}
+			if err := MadusaApprove(ctx, db, id); err != nil {
+				fmt.Fprintln(os.Stderr, "✗ madusa approve:", err)
+				os.Exit(1)
+			}
+			fmt.Printf("✓ post #%d approved — render timer will pick it up within 15 min; run 'jarvis madusa render' to start now\n", id)
+		case "reject":
+			if len(os.Args) != 4 {
+				fmt.Fprintln(os.Stderr, "usage: jarvis madusa reject <id>")
+				os.Exit(1)
+			}
+			id, err := strconv.ParseInt(os.Args[3], 10, 64)
+			if err != nil {
+				fmt.Fprintln(os.Stderr, "usage: jarvis madusa reject <id>")
+				os.Exit(1)
+			}
+			if err := MadusaReject(ctx, db, id); err != nil {
+				fmt.Fprintln(os.Stderr, "✗ madusa reject:", err)
+				os.Exit(1)
+			}
+			fmt.Printf("✓ post #%d rejected\n", id)
+		case "render":
+			if err := MadusaRender(ctx, db, NewBrainFromEnv()); err != nil {
+				fmt.Fprintln(os.Stderr, "✗ madusa render:", err)
+				os.Exit(1)
+			}
+			fmt.Println("✓ MADUSA render complete")
+		case "status":
+			s, err := MadusaStatus(ctx, db)
+			if err != nil {
+				fmt.Fprintln(os.Stderr, "✗ madusa status:", err)
+				os.Exit(1)
+			}
+			fmt.Println(s)
+		case "creators":
+			if len(os.Args) < 4 {
+				fmt.Fprintln(os.Stderr, usage)
+				os.Exit(1)
+			}
+			switch os.Args[3] {
+			case "list":
+				s, err := MadusaCreatorList(ctx, db)
+				if err != nil {
+					fmt.Fprintln(os.Stderr, "✗ madusa creators list:", err)
+					os.Exit(1)
+				}
+				fmt.Println(s)
+			case "add":
+				if len(os.Args) != 5 {
+					fmt.Fprintln(os.Stderr, "usage: jarvis madusa creators add <handle>")
+					os.Exit(1)
+				}
+				if err := MadusaCreatorAdd(ctx, db, os.Args[4]); err != nil {
+					fmt.Fprintln(os.Stderr, "✗ madusa creators add:", err)
+					os.Exit(1)
+				}
+				fmt.Printf("✓ creator %s added\n", os.Args[4])
+			case "rm":
+				if len(os.Args) != 5 {
+					fmt.Fprintln(os.Stderr, "usage: jarvis madusa creators rm <handle>")
+					os.Exit(1)
+				}
+				if err := MadusaCreatorRemove(ctx, db, os.Args[4]); err != nil {
+					fmt.Fprintln(os.Stderr, "✗ madusa creators rm:", err)
+					os.Exit(1)
+				}
+				fmt.Printf("✓ creator %s removed\n", os.Args[4])
+			default:
+				fmt.Fprintln(os.Stderr, usage)
+				os.Exit(1)
+			}
+		case "seed":
+			if err := MadusaSeedCreators(ctx, db); err != nil {
+				fmt.Fprintln(os.Stderr, "✗ madusa seed:", err)
+				os.Exit(1)
+			}
+			fmt.Println("✓ MADUSA creators seeded")
+		default:
+			fmt.Fprintln(os.Stderr, usage)
+			os.Exit(1)
+		}
+		return
+	}
+
 	brain := NewBrainFromEnv()
 	memory := LoadMemory()
 	fmt.Printf("⚡ JARVIS v0.2 — brain: %s (%s) — memory: %d facts\n", brain.Model, brain.BaseURL, len(memory.Facts))

@@ -661,8 +661,8 @@ setInterval(()=>{const n=new Date();
   floorGlow.scale.set(2.6,.46,1);floorGlow.position.y=-1.5;scene.add(floorGlow);
 
   // ---- agent network: sub-agents around the core on flowing light streams ----
-  const NET_HUE={ORACLE:265,ATLAS:145,FRIDAY:40,CALEB:320,PIXEL:220,HERALD:20};
-  const NET_POS=[[-1.85,.34,-.2],[-1.12,-.44,.3],[-.5,.6,-.45],[.58,-.52,.35],[1.22,.48,-.25],[1.86,-.3,.15]];
+  const NET_HUE={ORACLE:265,ATLAS:145,FRIDAY:40,CALEB:320,PIXEL:220,HERALD:20,MADUSA:85};
+  const NET_POS=[[-1.85,.34,-.2],[-1.12,-.44,.3],[-.5,.6,-.45],[.58,-.52,.35],[1.22,.48,-.25],[1.86,-.3,.15],[2.5,.4,-.15]];
   const net=new THREE.Group();scene.add(net);
   window.netBusy={};
   const netAgents=[];
@@ -798,7 +798,7 @@ setInterval(()=>{const n=new Date();
 
 
 /* ---------- agent workspace: one mini data-sphere per agent ---------- */
-const AGENT_HUE={ORACLE:265,ATLAS:145,FRIDAY:40,CALEB:320,PIXEL:220,HERALD:20};
+const AGENT_HUE={ORACLE:265,ATLAS:145,FRIDAY:40,CALEB:320,PIXEL:220,HERALD:20,MADUSA:85};
 const miniSprite=(()=>{const c=document.createElement('canvas');c.width=c.height=32;
   const g=c.getContext('2d'),gr=g.createRadialGradient(16,16,0,16,16,16);
   gr.addColorStop(0,'rgba(255,255,255,1)');gr.addColorStop(1,'rgba(255,255,255,0)');
