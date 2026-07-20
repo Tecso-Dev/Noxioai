@@ -98,3 +98,13 @@ Attempts (append-only):
 - 2026-07-20 6:4xpm M2 attempt 1 → DONE. main.go dispatch + brief section + 4 units, gate green. Deviations correct (README quiet on timers; no EnvironmentFile convention — binary loads /opt/jarvis/.env itself).
 - 2026-07-20 ~6:50pm M5 attempt 1 → PASS_WITH_NOTES (verifier). All 10 criteria pass. 4 fixable findings batch-fixed INLINE by LEAD (below dispatch gate): madusaGet query-strip rewrap + global UA; madusaSSHKeyPath home-dir fallback; destroy-defer moved before renders INSERT; madusaTruncate rune-safe + test. Full gate incl. -race green after fixes. Targeted re-verify sent to same verifier.
 - Keys: JARVIS_YOUTUBE_KEY + JARVIS_VULTR_KEY placed in prod /opt/jarvis/.env (600, 17 vars). Vultr token verified 200 from Mac; 401 from prod = ACL missing 95.179.242.172/32 (user's one remaining click). Known cosmetic ceilings accepted: trend_id unlinked in MAP re-send; ownerID param unused.
+- 2026-07-20 ~6:50pm M5 re-verify → PASS all 4 fixes. SHIPPED: commit 29ecf95 pushed, binary deployed, schema applied, timers enabled. First live cycle: 3 proposals, MAP delivered. Reddit 403 from DC IP (fail-soft, known gap). Render timer PARKED: Vultr gates vcg plans behind support ticket (user filing); no L40S stock → plan vcg-a16-6c-64g-16vram fra $0.47/hr in env. jarvis ssh key registered (id 99939ee5), home=/opt/jarvis. Snapshot build = next after access granted.
+
+## MISSION G: Google SSO for platform (2026-07-20 evening, user-initiated via OAuth client creation)
+
+| ID | Task | Write set | Seat | Status |
+|----|------|-----------|------|--------|
+| G1 | /api/auth/google start+callback (stdlib code flow, state cookie, id_token claims validation, link-by-verified-email, reuse session path) + users.google_sub + login/signup buttons + i18n ×4 + tests | jarvis/auth_google.go+test, schema.sql, pages/login.vue, pages/signup.vue, i18n ×4, 1-line route registration | sonnet | DISPATCHED |
+| G2 | Verify (blind) + deploy binary + push (Vercel auto-deploys front) | — | verifier+LEAD | after G1 |
+
+User actions pending: add redirect URI https://noxioai.com/api/auth/google/callback in console; publish consent screen when ready for public. Creds already in prod .env (JARVIS_GOOGLE_CLIENT_ID/SECRET). Secret exposed in chat → recommend rotation after flow verified.

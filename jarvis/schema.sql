@@ -82,9 +82,11 @@ ALTER TABLE users ADD COLUMN IF NOT EXISTS webauthn_id BYTEA;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS terms_accepted_at TIMESTAMPTZ;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS privacy_accepted_at TIMESTAMPTZ;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS legal_version TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS google_sub TEXT;
 CREATE UNIQUE INDEX IF NOT EXISTS users_email_lower_key ON users (lower(email));
 CREATE UNIQUE INDEX IF NOT EXISTS users_username_lower_key ON users (lower(username)) WHERE username IS NOT NULL;
 CREATE UNIQUE INDEX IF NOT EXISTS users_webauthn_id_key ON users (webauthn_id) WHERE webauthn_id IS NOT NULL;
+CREATE UNIQUE INDEX IF NOT EXISTS users_google_sub_key ON users (google_sub) WHERE google_sub IS NOT NULL;
 
 CREATE TABLE IF NOT EXISTS business_profiles (
   id             BIGSERIAL PRIMARY KEY,

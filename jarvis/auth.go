@@ -558,4 +558,5 @@ func registerAuth(mux *http.ServeMux, db *sql.DB) {
 
 	registerAuthEmail(mux, db)
 	registerPasskeys(mux, db)
+	registerGoogleAuth(mux, db)
 }
