@@ -1,6 +1,6 @@
 # Disaster Recovery — rebuild the NOXIOAI server from zero
 
-Current production: **95.181.160.117** (aeza DE, Ubuntu 26.04, expires 2026-08-24).
+Current production: **95.179.242.172** (aeza DE, Ubuntu 26.04, expires 2026-08-24).
 If that box is lost, a fresh Ubuntu VPS becomes production in ~20 minutes:
 
 ## 1. Access
