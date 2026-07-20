@@ -159,6 +159,38 @@ func main() {
 		return
 	}
 
+	if len(os.Args) > 1 && os.Args[1] == "health" {
+		db, _ := OpenDB() // db may be nil (Postgres down) — status reports it offline
+		if db != nil {
+			defer db.Close()
+		}
+		fmt.Println(renderHealth(collectSystemStatus(context.Background(), db)))
+		return
+	}
+
+	if len(os.Args) > 1 && os.Args[1] == "healthcheck" {
+		db, _ := OpenDB()
+		if db != nil {
+			defer db.Close()
+		}
+		s := collectSystemStatus(context.Background(), db)
+		problems := evaluateProblems(s)
+		changed, newHash := hasStateChanged(readLastHealthHash(), problems)
+		if !changed {
+			return // silent, exit 0
+		}
+		writeLastHealthHash(newHash)
+		msg := "✅ all clear"
+		if len(problems) > 0 {
+			msg = "⚠️ JARVIS health problems:\n" + strings.Join(problems, "\n")
+		}
+		if err := SendTelegram(msg); err != nil {
+			fmt.Fprintln(os.Stderr, "✗ healthcheck telegram:", err)
+			os.Exit(1)
+		}
+		return
+	}
+
 	if len(os.Args) > 2 && os.Args[1] == "db" && os.Args[2] == "init" {
 		db, err := OpenDB()
 		if err != nil {
@@ -516,6 +548,29 @@ func serveHTTP(brain *Brain, memory *MemoryStore) {
 	}
 }
 
+// chatRow is one persisted admin-console turn, as read from chat_messages.
+type chatRow struct {
+	Role      string
+	Content   string
+	CreatedAt time.Time
+}
+
+// ChatTurn is the JSON shape GET /api/chat/history returns.
+type ChatTurn struct {
+	Role    string `json:"role"`
+	Content string `json:"content"`
+	Ts      string `json:"ts"`
+}
+
+// shapeChatHistory turns newest-first DB rows into oldest-first JSON turns.
+func shapeChatHistory(rows []chatRow) []ChatTurn {
+	turns := make([]ChatTurn, len(rows))
+	for i, r := range rows {
+		turns[len(rows)-1-i] = ChatTurn{Role: r.Role, Content: r.Content, Ts: r.CreatedAt.Format(time.RFC3339)}
+	}
+	return turns
+}
+
 func registerChat(mux *http.ServeMux, brain *Brain, db *sql.DB) {
 	mux.HandleFunc("POST /chat", func(w http.ResponseWriter, r *http.Request) {
 		if _, ok := requireAdmin(w, r, db); !ok {
@@ -533,9 +588,14 @@ func registerChat(mux *http.ServeMux, brain *Brain, db *sql.DB) {
 			http.Error(w, "bad request", http.StatusBadRequest)
 			return
 		}
-		// Personal JARVIS memory remains CLI-only until P2 introduces tenant
-		// business profiles. Web chat receives only this tenant's CRM snapshot.
-		system := systemPrompt + "\n\n## Live business data (real, current — answer from THIS, never invent)\n" + crmSnapshot(r.Context(), db, ownerID)
+		// Owner decision 2026-07-20: the admin console gets JARVIS's personal
+		// memory (profile + learned facts), same as the CLI REPL. Tenant bot
+		// and support paths never call LoadMemory/SystemContext — this stays
+		// admin-only.
+		memory := LoadMemory()
+		system := systemPrompt + memory.SystemContext() +
+			"\n\n## Live business data (real, current — answer from THIS, never invent)\n" + crmSnapshot(r.Context(), db, ownerID) +
+			ceoSystemPromptSection
 		history := append([]Message{{Role: "system", Content: system}}, req.Messages...)
 
 		w.Header().Set("Content-Type", "text/event-stream")
@@ -545,15 +605,43 @@ func registerChat(mux *http.ServeMux, brain *Brain, db *sql.DB) {
 			http.Error(w, "streaming unsupported", http.StatusInternalServerError)
 			return
 		}
-		_, err = brain.Chat(history, func(tok string) {
-			data, _ := json.Marshal(map[string]string{"token": tok})
-			fmt.Fprintf(w, "data: %s\n\n", data)
-			flusher.Flush()
-		})
+		filter := newSSELineFilter(w, flusher)
+		reply, err := brain.Chat(history, filter.Token)
+		filter.Flush()
 		if err != nil {
 			fmt.Fprintf(w, "data: %s\n\n", `{"error":"brain error"}`)
+		} else {
+			var userMsg string
+			if n := len(req.Messages); n > 0 {
+				userMsg = req.Messages[n-1].Content
+			}
+			strippedReply := stripCEOCommandLines(reply)
+			if err := saveChatMessage(r.Context(), db, ownerID, "user", userMsg); err != nil {
+				log.Printf("chat history save (user) failed: %v", err)
+			}
+			if err := saveChatMessage(r.Context(), db, ownerID, "assistant", strippedReply); err != nil {
+				log.Printf("chat history save (assistant) failed: %v", err)
+			}
+			memory.Learn(brain, userMsg, strippedReply)
+
+			if cmds := parseCEOCommands(reply); len(cmds) > 0 {
+				runCEOCommands(db, brain, ownerID, cmds)
+				writeSSEToken(w, flusher, ceoDispatchSummary(cmds))
+			}
 		}
 		fmt.Fprint(w, "data: [DONE]\n\n")
 		flusher.Flush()
 	})
+}
+
+// saveChatMessage persists one turn of the admin console conversation.
+// Best-effort only — a storage hiccup must never break the live SSE stream.
+func saveChatMessage(ctx context.Context, db *sql.DB, ownerID int64, role, content string) error {
+	if db == nil || content == "" {
+		return nil
+	}
+	_, err := db.ExecContext(ctx,
+		`INSERT INTO chat_messages (owner_id, role, content) VALUES ($1, $2, $3)`,
+		ownerID, role, content)
+	return err
 }

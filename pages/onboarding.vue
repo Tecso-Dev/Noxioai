@@ -200,7 +200,7 @@ async function submit() {
   font-weight: 700;
 }
 .field-input {
-  background: rgba(5, 10, 22, 0.72);
+  background: rgba(20, 20, 31, 0.72);
   border: 1px solid var(--line-soft);
   border-radius: 0.75rem;
   color: var(--ivory);

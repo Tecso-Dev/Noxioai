@@ -180,7 +180,7 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 		resp := map[string]any{
 			"model":   brain.Model,
 			"facts":   len(memory.Facts),
-			"balance": deepseekBalance(),
+			"balance": brainBalance(),
 			"uptime":  time.Since(started).Round(time.Minute).String(),
 			"db":      "offline",
 			"agents": []map[string]string{
@@ -260,6 +260,15 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 		}
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(resp)
+	})
+
+	// Live host/service snapshot behind the HUD's System panel.
+	mux.HandleFunc("GET /api/system", func(w http.ResponseWriter, r *http.Request) {
+		if _, ok := requireAdmin(w, r, db); !ok {
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(collectSystemStatus(r.Context(), db))
 	})
 
 	// Agent dossier for the workspace popups: mission history from experiences.
@@ -455,6 +464,32 @@ func registerHUD(mux *http.ServeMux, brain *Brain, memory *MemoryStore, db *sql.
 		act.add("✉️ HERALD dispatched #%d to %s", req.ID, to)
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]string{"to": to})
+	})
+
+	// Admin console boot-load: last 50 turns so a reload doesn't look amnesiac.
+	mux.HandleFunc("GET /api/chat/history", func(w http.ResponseWriter, r *http.Request) {
+		if _, ok := requireAdmin(w, r, db); !ok {
+			return
+		}
+		ownerID, err := defaultOwnerID(r.Context(), db)
+		if err != nil {
+			http.Error(w, "owner lookup failed", http.StatusInternalServerError)
+			return
+		}
+		var rows []chatRow
+		if rs, err := db.QueryContext(r.Context(),
+			`SELECT role, content, created_at FROM chat_messages
+			 WHERE owner_id=$1 ORDER BY created_at DESC LIMIT 50`, ownerID); err == nil {
+			for rs.Next() {
+				var cr chatRow
+				if rs.Scan(&cr.Role, &cr.Content, &cr.CreatedAt) == nil {
+					rows = append(rows, cr)
+				}
+			}
+			rs.Close()
+		}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(shapeChatHistory(rows))
 	})
 
 	// Approve stays synchronous — it IS the human gate (Principle 1).

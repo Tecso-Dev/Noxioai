@@ -230,48 +230,48 @@ async function logout() {
 </template>
 
 <style scoped>
-.security-page { background: #040914; color: var(--ivory); min-block-size: 100dvh; padding: 1.5rem clamp(1.25rem, 5vw, 5rem) 5rem; position: relative; }
+.security-page { background: var(--night); color: var(--ivory); min-block-size: 100dvh; padding: 1.5rem clamp(1.25rem, 5vw, 5rem) 5rem; position: relative; }
 .security-header { align-items: center; display: flex; justify-content: space-between; margin: 0 auto; max-inline-size: 68rem; position: relative; z-index: 2; }
 .auth-brand { align-items: center; color: var(--ivory); display: inline-flex; font-size: 1rem; font-weight: 800; gap: .65rem; letter-spacing: -.04em; text-decoration: none; }
 .auth-brand img { block-size: 2rem; border: 1px solid rgba(212,191,148,.28); border-radius: 50%; inline-size: 2rem; }
 .auth-brand span span { color: var(--gold); }
-.security-logout { background: transparent; border: 1px solid rgba(151,179,207,.2); color: #9eacbc; cursor: pointer; font-size: .7rem; padding: .6rem .9rem; }
+.security-logout { background: transparent; border: 1px solid rgba(242,239,232,.16); color: var(--dim); cursor: pointer; font-size: .7rem; padding: .6rem .9rem; }
 .security-content { margin: 4.5rem auto 0; max-inline-size: 58rem; position: relative; z-index: 1; }
 .security-heading { align-items: flex-end; display: flex; gap: 2rem; justify-content: space-between; margin-block-end: 2rem; }
-.security-heading p { color: var(--cyan); font-family: 'DM Mono', monospace; font-size: .62rem; letter-spacing: .14em; margin: 0 0 .75rem; text-transform: uppercase; }
+.security-heading p { color: var(--gold); font-family: 'DM Mono', monospace; font-size: .62rem; letter-spacing: .14em; margin: 0 0 .75rem; text-transform: uppercase; }
 .security-heading h1 { font-size: clamp(2rem, 5vw, 3.25rem); letter-spacing: -.055em; line-height: 1; margin: 0; }
-.security-heading > div > div { color: #8191a4; font-size: .8rem; margin-block-start: .8rem; }
+.security-heading > div > div { color: var(--dim); font-size: .8rem; margin-block-start: .8rem; }
 .security-score { align-items: center; border: 1px solid rgba(89,212,170,.22); color: #87cdb5; display: flex; font-family: 'DM Mono', monospace; font-size: .6rem; gap: .5rem; letter-spacing: .08em; padding: .55rem .75rem; text-transform: uppercase; }
 .security-score i { background: #59d4aa; border-radius: 50%; box-shadow: 0 0 12px rgba(89,212,170,.5); block-size: .4rem; inline-size: .4rem; }
-.security-card { background: rgba(5,17,31,.78); border: 1px solid rgba(151,179,207,.14); margin-block-start: 1rem; padding: clamp(1.25rem, 4vw, 2rem); }
+.security-card { background: rgba(20,20,31,.78); border: 1px solid var(--line-soft); margin-block-start: 1rem; padding: clamp(1.25rem, 4vw, 2rem); }
 .security-card__head { align-items: center; display: flex; justify-content: space-between; }
 .security-card__head > div { align-items: center; display: flex; gap: .75rem; }
-.security-card__head > div > span { color: #718399; font-family: 'DM Mono', monospace; font-size: .58rem; }
+.security-card__head > div > span { color: var(--dim); font-family: 'DM Mono', monospace; font-size: .58rem; }
 .security-card h2 { font-size: 1rem; letter-spacing: -.02em; margin: 0; }
 .security-badge, .security-count { border: 1px solid rgba(89,212,170,.2); color: #75c6aa; font-family: 'DM Mono', monospace; font-size: .57rem; padding: .35rem .5rem; text-transform: uppercase; }
 .security-badge.warning { border-color: rgba(212,191,148,.24); color: var(--gold); }
-.security-count { border-color: rgba(72,202,228,.18); color: var(--cyan); min-inline-size: 1.7rem; text-align: center; }
-.security-card__description { color: #77889c; font-size: .73rem; line-height: 1.65; margin: .8rem 0 1.25rem; max-inline-size: 65ch; }
+.security-count { border-color: rgba(212,191,148,.22); color: var(--gold); min-inline-size: 1.7rem; text-align: center; }
+.security-card__description { color: var(--dim); font-size: .73rem; line-height: 1.65; margin: .8rem 0 1.25rem; max-inline-size: 65ch; }
 .security-profile-grid { display: grid; gap: 1rem; grid-template-columns: repeat(2, 1fr); margin: 1.5rem 0; }
-.security-profile-grid div { border-inline-start: 1px solid rgba(72,202,228,.2); padding-inline-start: .75rem; }
-.security-profile-grid dt { color: #718399; font-size: .58rem; letter-spacing: .08em; text-transform: uppercase; }
-.security-profile-grid dd { color: #d5dee7; font-size: .8rem; margin: .35rem 0 0; overflow-wrap: anywhere; }
+.security-profile-grid div { border-inline-start: 1px solid rgba(212,191,148,.24); padding-inline-start: .75rem; }
+.security-profile-grid dt { color: var(--dim); font-size: .58rem; letter-spacing: .08em; text-transform: uppercase; }
+.security-profile-grid dd { color: var(--ivory); font-size: .8rem; margin: .35rem 0 0; overflow-wrap: anywhere; }
 .security-link { color: var(--gold); font-size: .68rem; text-decoration: none; }
 .security-list { display: grid; list-style: none; margin: 0 0 1rem; padding: 0; }
-.security-list li { align-items: center; border-block-start: 1px solid rgba(151,179,207,.1); display: flex; gap: .85rem; min-inline-size: 0; padding: .9rem 0; }
-.security-item-icon { align-items: center; background: rgba(72,202,228,.06); border: 1px solid rgba(72,202,228,.15); color: var(--cyan); display: flex; flex: 0 0 auto; justify-content: center; block-size: 2.25rem; inline-size: 2.25rem; }
+.security-list li { align-items: center; border-block-start: 1px solid var(--line-soft); display: flex; gap: .85rem; min-inline-size: 0; padding: .9rem 0; }
+.security-item-icon { align-items: center; background: rgba(212,191,148,.08); border: 1px solid rgba(212,191,148,.2); color: var(--gold); display: flex; flex: 0 0 auto; justify-content: center; block-size: 2.25rem; inline-size: 2.25rem; }
 .security-item-icon svg { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.4; block-size: 1.1rem; inline-size: 1.1rem; }
 .security-item-copy { flex: 1; min-inline-size: 0; }
 .security-item-copy strong, .security-item-copy small { display: block; }
-.security-item-copy strong { color: #c8d3de; font-size: .75rem; }
+.security-item-copy strong { color: var(--ivory); font-size: .75rem; }
 .security-item-copy strong em { background: rgba(89,212,170,.08); color: #75c6aa; font-size: .52rem; font-style: normal; margin-inline-start: .4rem; padding: .2rem .35rem; text-transform: uppercase; }
-.security-item-copy small { color: #718399; font-size: .62rem; margin-block-start: .25rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.security-list button { background: transparent; border: 0; color: #8697aa; cursor: pointer; flex: 0 0 auto; font-size: .62rem; padding: .5rem; }
+.security-item-copy small { color: var(--dim); font-size: .62rem; margin-block-start: .25rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.security-list button { background: transparent; border: 0; color: var(--dim); cursor: pointer; flex: 0 0 auto; font-size: .62rem; padding: .5rem; }
 .security-list button:hover { color: #fca5a5; }
-.security-action { background: rgba(72,202,228,.06); border: 1px solid rgba(72,202,228,.22); color: #a8dce8; cursor: pointer; font-size: .67rem; padding: .65rem .85rem; }
+.security-action { background: rgba(212,191,148,.08); border: 1px solid rgba(212,191,148,.28); color: var(--gold); cursor: pointer; font-size: .67rem; padding: .65rem .85rem; }
 .security-action--danger { background: rgba(248,113,113,.04); border-color: rgba(248,113,113,.18); color: #e7a0a0; }
-.security-unavailable { color: #718399; font-size: .65rem; margin: 0; }
+.security-unavailable { color: var(--dim); font-size: .65rem; margin: 0; }
 .security-message { background: rgba(89,212,170,.06); border: 1px solid rgba(89,212,170,.2); color: #8dd0ba; font-size: .7rem; padding: .7rem .8rem; }
-.security-loading { color: #718399; font-family: 'DM Mono', monospace; font-size: .7rem; padding: 4rem; text-align: center; }
+.security-loading { color: var(--dim); font-family: 'DM Mono', monospace; font-size: .7rem; padding: 4rem; text-align: center; }
 @media (max-width: 620px) { .security-content { margin-block-start: 3rem; } .security-heading { align-items: flex-start; flex-direction: column; } .security-profile-grid { grid-template-columns: 1fr; } .security-list li { align-items: flex-start; flex-wrap: wrap; } .security-list button { margin-inline-start: 3.1rem; } }
 </style>

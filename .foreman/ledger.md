@@ -108,3 +108,18 @@ Attempts (append-only):
 | G2 | Verify (blind) + deploy binary + push (Vercel auto-deploys front) | — | verifier+LEAD | after G1 |
 
 User actions pending: add redirect URI https://noxioai.com/api/auth/google/callback in console; publish consent screen when ready for public. Creds already in prod .env (JARVIS_GOOGLE_CLIENT_ID/SECRET). Secret exposed in chat → recommend rotation after flow verified.
+- G1 DONE, G2 verifier PASS_WITH_NOTES (all 9 security criteria pass). LEAD inline fixes: JSON→redirect on state/token failures, terms/privacy timestamps on Google signup. User completed console side (redirect URI + published In production). SHIPPED ef510e1: pushed (Vercel front), binary deployed, db init (google_sub), smoke test = 302 to accounts.google.com with correct client_id. Remaining notes accepted: locale hardcoded 'en' on Google signup; button unconditional (prod configured). Secret rotation recommended post-verification.
+
+## MISSION H: /admin fixes + monitoring + color sweep (2026-07-20 evening)
+
+Done inline by LEAD: Caddyfile repo sync (fcc4e37); vercel.json rewrites /chat,/three.min.js,/jarvis-startup.mp3 → fixed dead noxioai.com/admin (3446d5a, verified: three.min.js 200, /chat 403 unauth, E2E /api/status 200 via minted-then-deleted debug session for user 9); HUD SFX first-gesture autoplay fallback (deployed+pushed). User confirmed HUD fully alive (7 orbs incl MADUSA).
+
+| ID | Task | Write set | Seat | Status |
+|----|------|-----------|------|--------|
+| H1 | Server monitoring: system.go (/proc parsers, systemctl, db/site probes) + /api/system + jarvis health/healthcheck (state-change Telegram alerts) + brief section + HUD System panel live data + health timer 10min | jarvis/system.go+test, main.go, brief.go, hud.go, web/hud.html(System panel), deploy/systemd/jarvis-health.* | sonnet | DISPATCHED |
+| H2 | Gold color-coherence sweep: kill stray blues on platform pages (login/signup/verify/reset/app/error/landing), tokens per DESIGN-SYSTEM.md; HUD cyan EXCLUDED (user's definitive cyan decision stands unless he says otherwise) | pages/**, components/**, layouts/**, app.vue, error.vue, assets/css/main.css | sonnet | DISPATCHED |
+| H3 | Verify + deploy binary + install health timer + push | — | LEAD | after H1+H2+H4 |
+| H4 | Persistent admin-console memory: chat_messages table, memory injection into /chat (admin-only), fact extraction on exchanges, /api/chat/history + console restore | jarvis/schema.sql, main.go, memory.go(minor), hud.go(route), web/hud.html(console boot), memory_chat_test.go | sonnet | DISPATCHED |
+
+- H1 DONE: system.go+16 tests, /api/system, health+healthcheck CLI (state-change Telegram alerts), SERVER brief section, HUD System panel live, health timer units, brainBalance() w/ OpenRouter credits (addendum). Auto-fixed dead $('uptime2') that would've broken poll(). Gate green.
+- Pending user-visible fixes riding H3 deploy: voice-greeting first-gesture (needs hud.html — LEAD applies after H4 lands to avoid conflict), balance tile, System panel, color sweep, chat memory.

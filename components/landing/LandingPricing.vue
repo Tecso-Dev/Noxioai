@@ -83,7 +83,7 @@ async function choosePlan(plan: string) {
 <style scoped>
 /* featured tier: gold hairline (border-brand in template) + a subtle gold glow */
 .glass-card--featured {
-  background: rgba(18, 43, 72, 0.6);
+  background: rgba(20, 20, 31, 0.6);
   box-shadow: 0 0 30px rgba(212, 191, 148, 0.16);
 }
 </style>

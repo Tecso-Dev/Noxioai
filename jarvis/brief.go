@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -103,8 +104,11 @@ func RunBrief(ctx context.Context, db *sql.DB, ownerID int64, brain *Brain) erro
 		b.WriteString(section)
 	}
 
+	// SERVER health — fail-soft (collectSystemStatus never errors).
+	b.WriteString(serverBriefSection(ctx, db))
+
 	// Brain cost watch (user asked to monitor the DeepSeek balance).
-	if bal := deepseekBalance(); bal != "" {
+	if bal := brainBalance(); bal != "" {
 		b.WriteString("\n🧠 Brain balance: " + bal + "\n")
 	}
 
@@ -153,13 +157,26 @@ func madusaBriefSection(ctx context.Context, db *sql.DB) string {
 	return b.String()
 }
 
-// deepseekBalance returns the remaining API credit, or "" when the brain
-// isn't DeepSeek or the check fails (never blocks the briefing).
-func deepseekBalance() string {
+// brainBalance returns the remaining API credit for whichever brain
+// provider is configured (DeepSeek or OpenRouter), or "" when neither
+// matches or the check fails — never blocks the briefing, never logs the key.
+func brainBalance() string {
 	key := os.Getenv("JARVIS_API_KEY")
-	if key == "" || !strings.Contains(os.Getenv("JARVIS_BASE_URL"), "deepseek") {
+	base := os.Getenv("JARVIS_BASE_URL")
+	if key == "" {
 		return ""
 	}
+	switch {
+	case strings.Contains(base, "deepseek"):
+		return deepseekBalance(key)
+	case strings.Contains(base, "openrouter"):
+		return openRouterBalance(key)
+	default:
+		return ""
+	}
+}
+
+func deepseekBalance(key string) string {
 	req, err := http.NewRequest("GET", "https://api.deepseek.com/user/balance", nil)
 	if err != nil {
 		return ""
@@ -180,4 +197,41 @@ func deepseekBalance() string {
 		return ""
 	}
 	return "$" + out.BalanceInfos[0].TotalBalance + " " + out.BalanceInfos[0].Currency
+}
+
+func openRouterBalance(key string) string {
+	req, err := http.NewRequest("GET", "https://openrouter.ai/api/v1/credits", nil)
+	if err != nil {
+		return ""
+	}
+	req.Header.Set("Authorization", "Bearer "+key)
+	resp, err := (&http.Client{Timeout: 10 * time.Second}).Do(req)
+	if err != nil {
+		return ""
+	}
+	defer resp.Body.Close()
+	data, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return ""
+	}
+	out, ok := formatOpenRouterCredits(data)
+	if !ok {
+		return ""
+	}
+	return out
+}
+
+// formatOpenRouterCredits parses the OpenRouter /credits response body and
+// formats the remaining balance. Pure (no network) — for testability.
+func formatOpenRouterCredits(data []byte) (string, bool) {
+	var out struct {
+		Data struct {
+			TotalCredits float64 `json:"total_credits"`
+			TotalUsage   float64 `json:"total_usage"`
+		} `json:"data"`
+	}
+	if json.Unmarshal(data, &out) != nil {
+		return "", false
+	}
+	return fmt.Sprintf("$%.2f", out.Data.TotalCredits-out.Data.TotalUsage), true
 }

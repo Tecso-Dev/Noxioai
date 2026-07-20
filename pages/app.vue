@@ -401,7 +401,7 @@ const cards = [
   background: rgba(3, 8, 18, 0.24);
 }
 .concierge-message-list {
-  background: rgba(5, 10, 22, 0.64);
+  background: rgba(20, 20, 31, 0.64);
   border: 1px solid var(--line-soft);
   scroll-behavior: smooth;
 }
@@ -425,7 +425,7 @@ const cards = [
   text-transform: uppercase;
 }
 .concierge-input {
-  background: rgba(5, 10, 22, 0.74);
+  background: rgba(20, 20, 31, 0.74);
   border: 1px solid var(--line-soft);
   color: var(--ivory);
   outline: none;
@@ -449,11 +449,11 @@ const cards = [
 .connected-panel,
 .empty-messages,
 .message-row {
-  background: rgba(5, 10, 22, 0.6);
+  background: rgba(20, 20, 31, 0.6);
   border: 1px solid var(--line-soft);
 }
 .bot-token-input {
-  background: rgba(5, 10, 22, 0.74);
+  background: rgba(20, 20, 31, 0.74);
   border: 1px solid var(--line-soft);
   color: var(--ivory);
   outline: none;

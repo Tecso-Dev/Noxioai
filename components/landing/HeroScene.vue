@@ -18,7 +18,7 @@ function initScene(host: HTMLDivElement) {
   const renderer = new THREE.WebGLRenderer({ canvas: el, alpha: true, antialias: true })
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
   const scene = new THREE.Scene()
-  scene.fog = new THREE.Fog(0x050a16, 3, 6.5)
+  scene.fog = new THREE.Fog(0x0b0b12, 3, 6.5)
   const cam = new THREE.PerspectiveCamera(38, 2, 0.1, 100)
   cam.position.z = 3.6
 

@@ -395,9 +395,13 @@ body.modal-open{overflow:hidden}
     </div>
     <div class="panel reveal" style="--d:.3s;flex:1">
       <h2>System</h2>
-      <div class="kv"><span>Endpoint</span><b>127.0.0.1:7700</b></div>
-      <div class="kv"><span>Uptime</span><b id="uptime2">—</b></div>
-      <div class="kv"><span>Runtime</span><b>~/Library/JARVIS</b></div>
+      <div class="kv"><span>Host</span><b id="sys-host">—</b></div>
+      <div class="kv"><span>Uptime</span><b id="sys-uptime">—</b></div>
+      <div class="kv"><span>Load</span><b id="sys-load">—</b></div>
+      <div class="kv"><span>Mem</span><b id="sys-mem">—</b></div>
+      <div class="kv"><span>Disk</span><b id="sys-disk">—</b></div>
+      <div class="kv"><span>Services</span><b id="sys-services">—</b></div>
+      <div class="kv"><span>Site</span><b id="sys-site">—</b></div>
       <div class="kv"><span>Briefing</span><b>daily 08:00 → Telegram</b></div>
       <div class="kv"><span>Licence</span><b>© Sobhan Azimzadeh</b></div>
     </div>
@@ -504,9 +508,25 @@ function armSFXGesture(){
 }
 startupSFX.addEventListener('ended',()=>setStartupSFXState('REPLAY STARTUP SFX'));
 $('sfxcontrol').addEventListener('click',playStartupSFX);
-window.addEventListener('load',()=>{
+// Restore prior console turns from persistent memory (never spoken, never
+// animated — this is a silent redraw of history, not a new exchange).
+async function loadChatHistory(){
+  try{
+    const r=await fetch('/api/chat/history');
+    if(!r.ok)return;
+    const history=await r.json();
+    if(!Array.isArray(history)||!history.length)return;
+    for(const h of history)addMsg(h.role==='assistant'?'jarvis':'you',h.content);
+    const d=document.createElement('div');
+    d.style.cssText='align-self:center;font-size:10px;letter-spacing:.2em;color:var(--cyan-dim);opacity:.55;margin:4px 0;text-transform:uppercase';
+    d.textContent='— session restored —';
+    $('log').appendChild(d);
+  }catch{}
+}
+window.addEventListener('load',async()=>{
   requestAnimationFrame(()=>document.getElementById('app').classList.add('in'));
   playStartupSFX();
+  await loadChatHistory();
   setTimeout(()=>{
     const welcome=pickWelcomeLine();
     addMsg('jarvis',welcome);
@@ -1024,9 +1044,20 @@ let voice=null;
 function pickVoice(){const vs=speechSynthesis.getVoices();
   voice=vs.find(v=>/en-GB/i.test(v.lang)&&/daniel/i.test(v.name))||vs.find(v=>/en-GB/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang))||null}
 speechSynthesis.onvoiceschanged=pickVoice;pickVoice();
+// Chrome discards speech synthesis before the first user gesture — queue the
+// line and speak it on the first click/keypress instead of losing it.
+let pendingSpeech=null,hadGesture=false;
+(function(){
+  const mark=()=>{hadGesture=true;
+    removeEventListener('pointerdown',mark,true);removeEventListener('keydown',mark,true);
+    if(pendingSpeech){const t=pendingSpeech;pendingSpeech=null;speak(t)}};
+  addEventListener('pointerdown',mark,true);
+  addEventListener('keydown',mark,true);
+})();
 function speak(text){
   const clean=text.replace(/[*_#`]|[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu,'').trim();
   if(!clean){setAvatar(micOn?'listening':'idle');return}
+  if(!hadGesture){pendingSpeech=text;return}
   speechSynthesis.cancel();
   const u=new SpeechSynthesisUtterance(clean);if(voice)u.voice=voice;u.rate=1.02;u.pitch=.92;
   u.onboundary=()=>{if(window.wordPulse)wordPulse()}; // entity pulses on every spoken word
@@ -1037,6 +1068,15 @@ function speak(text){
 }
 
 /* ---------- voice in ---------- */
+// Chrome applies a mic-permission grant only after reload — watch the
+// permission and reload automatically so the user never sees stale MIC BLOCKED.
+if(navigator.permissions&&navigator.permissions.query){
+  navigator.permissions.query({name:'microphone'}).then(st=>{
+    st.onchange=()=>{if(st.state==='granted'){
+      $('talkstate').textContent='MIC PERMISSION GRANTED — RELOADING…';
+      setTimeout(()=>location.reload(),600)}};
+  }).catch(()=>{});
+}
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 let rec=null,micOn=false;
 function toggleMic(){
@@ -1113,7 +1153,7 @@ async function poll(){
     const s=await(await fetch('/api/status')).json();
     $('model').textContent=s.model;$('balance').textContent=s.balance||'—';
     $('dbstate').textContent=s.db.toUpperCase();
-    $('uptime').textContent='UPTIME '+(s.uptime||'—');$('uptime2').textContent=s.uptime||'—';
+    $('uptime').textContent='UPTIME '+(s.uptime||'—');
     countUp($('facts'),s.facts||0);countUp($('leadcount'),s.lead_count||0);
     countUp($('draftcount'),s.pending_count||0);countUp($('expcount'),s.exp_count||0);
     countUp($('contactcount'),s.contact_count||0);
@@ -1141,6 +1181,22 @@ async function poll(){
   }catch(e){$('sysstatus').textContent='SERVER OFFLINE'}
 }
 setInterval(poll,5000);poll();
+
+/* ---------- system panel ---------- */
+async function pollSystem(){
+  try{
+    const s=await(await fetch('/api/system')).json();
+    $('sys-host').textContent=s.hostname||'n/a';
+    $('sys-uptime').textContent=s.uptime||'n/a';
+    $('sys-load').textContent=s.load1<0?'n/a':`${s.load1.toFixed(2)} ${s.load5.toFixed(2)} ${s.load15.toFixed(2)}`;
+    $('sys-mem').textContent=s.mem_pct<0?'n/a':s.mem_pct.toFixed(1)+'%';
+    $('sys-disk').textContent=s.disk_pct<0?'n/a':s.disk_pct.toFixed(1)+'%';
+    $('sys-services').innerHTML=(s.services||[]).map(sv=>
+      `<span style="color:${sv.state==='active'?'var(--green)':'var(--red)'}">●</span> ${sv.name}`).join('&nbsp; ');
+    $('sys-site').innerHTML=s.site_ok?'<span style="color:var(--green)">●</span> up':'<span style="color:var(--red)">●</span> down';
+  }catch(e){}
+}
+setInterval(pollSystem,60000);pollSystem();
 
 /* ---------- actions ---------- */
 async function runOracle(){const n=$('niche').value.trim();if(!n){speak('Name a niche first, Sir.');return}

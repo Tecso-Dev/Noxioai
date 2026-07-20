@@ -433,3 +433,14 @@ CREATE INDEX IF NOT EXISTS idx_madusa_videos_creator    ON madusa_videos(creator
 CREATE INDEX IF NOT EXISTS idx_madusa_posts_status      ON madusa_posts(status);
 CREATE INDEX IF NOT EXISTS idx_madusa_posts_trend       ON madusa_posts(trend_id);
 CREATE INDEX IF NOT EXISTS idx_madusa_renders_post      ON madusa_renders(post_id);
+
+-- ── admin console persistent chat log (owner-facing JARVIS console only) ────
+CREATE TABLE IF NOT EXISTS chat_messages (
+  id         BIGSERIAL PRIMARY KEY,
+  owner_id   BIGINT NOT NULL,
+  role       TEXT NOT NULL,
+  content    TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_chat_messages_owner_created ON chat_messages(owner_id, created_at DESC);

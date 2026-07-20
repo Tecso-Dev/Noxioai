@@ -50,11 +50,11 @@ const visible = ref(false)
 
 <style scoped>
 .auth-field { display: grid; gap: .5rem; }
-.auth-field label { color: #c3cedb; font-size: .76rem; font-weight: 600; }
+.auth-field label { color: var(--dim); font-size: .76rem; font-weight: 600; }
 .auth-password-wrap { position: relative; }
 .auth-password-wrap input { padding-inline-end: 3.25rem; }
-.auth-password-toggle { align-items: center; background: transparent; border: 0; color: #71839a; cursor: pointer; display: flex; justify-content: center; padding: .65rem; position: absolute; inset-block: 50% auto; inset-inline-end: .45rem; translate: 0 -50%; }
-.auth-password-toggle:hover { color: var(--cyan); }
+.auth-password-toggle { align-items: center; background: transparent; border: 0; color: var(--dim); cursor: pointer; display: flex; justify-content: center; padding: .65rem; position: absolute; inset-block: 50% auto; inset-inline-end: .45rem; translate: 0 -50%; }
+.auth-password-toggle:hover { color: var(--gold); }
 .auth-password-toggle svg { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.5; block-size: 1.15rem; inline-size: 1.15rem; }
-.auth-password-toggle:focus-visible { border-radius: .25rem; outline: 2px solid var(--cyan); outline-offset: 1px; }
+.auth-password-toggle:focus-visible { border-radius: .25rem; outline: 2px solid var(--gold); outline-offset: 1px; }
 </style>

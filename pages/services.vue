@@ -240,7 +240,7 @@ async function submit() {
 
 <style scoped>
 .glass-card--featured {
-  background: linear-gradient(140deg, rgba(212, 191, 148, 0.14), rgba(7, 24, 39, 0.6));
+  background: linear-gradient(140deg, rgba(212, 191, 148, 0.14), rgba(20, 20, 31, 0.6));
   box-shadow: 0 0 34px rgba(212, 191, 148, 0.16);
 }
 </style>
